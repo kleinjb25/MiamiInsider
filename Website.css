@@ -19,6 +19,9 @@ button {
     width:7%;
     border-radius: 20%;
 }
+p {
+    color: #B61E2E;
+}
 html {
     background-color: #15292b;
 }
