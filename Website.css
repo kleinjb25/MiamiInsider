@@ -1,0 +1,21 @@
+#menu {
+    font-size: 150%;
+    background-color:#B61E2E;
+    
+}
+img {
+    width: 25%;
+    height: 25%;
+}
+h1 {
+    display:inline-block;
+    margin-right: 2%;
+    margin-left:2%;
+    justify-content: center;
+    align-content: center;
+    
+}
+button {
+    width:7%;
+    border-radius: 20%;
+}
