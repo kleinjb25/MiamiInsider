@@ -7,5 +7,6 @@
 - The *templates/* directory should contain all of the .html files and the *static/* directory should contain all .css files.
 
 #### Database stuff:
+- All the database stuff is stored in the *database/* directory.
 - The database file is the SQLite file database.db, you don't need to have SQLite installed to run the project, but you do need it installed if you want to run SQL commands on the file. If you want to install SQLite, [this](https://www.youtube.com/watch?v=XA3w8tQnYCA) video really helped me.
 - the models.py file contains all of the SQLAlchemy code needed to create the necessary tables (called *models*).
