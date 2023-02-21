@@ -1,0 +1,33 @@
+#menu {
+    font-size: 150%;
+    background-color:#B61E2E;
+    display:inline-block;
+    
+}
+img {
+    float: left;
+    width: 25%;
+}
+h1 {
+    display:inline-block;
+    margin: auto;
+    margin-top:2%;
+    margin-left:2%;
+    margin-right:2%;
+    justify-content: center;
+    align-content: center;
+    position: relative;
+    
+}
+button {
+    width:7%;
+    border-radius: 20%;
+    background-color:#15292b;
+    color:white;
+}
+p {
+    color: #B61E2E;
+}
+html {
+    background-color: #15292b;
+}
