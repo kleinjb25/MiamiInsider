@@ -9,6 +9,10 @@
         <title>MiamiInsider</title>
     </head>
     <body>
-        
+        <!-- for loop that gets locations (passed in the backend code) 
+            and prints name and id. -->
+        {% for loc in locations %}
+        <p>{{ loc.id }} - {{ loc.name }}</p>
+        {% endfor %}
     </body>
 </html>
