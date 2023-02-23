@@ -4,14 +4,22 @@
     <meta charset="UTF-8">
     <title>MiamiInsider - Home</title>
     <link rel="stylesheet" type="text/css" href="Website.css" />
-    <script src="Website.js"></script>
 </head>
 <body>
     <div id = "menu">
+        <!--look at tripadvisor website-->
         <img src="https://miamioh.edu/_hannonhill/_files/images/logos/primary-alternate-logos/alt-logo-oxford-black.png">
-        <h1>Miami Insider</h1>
-        <button id = "home" onclick = home()> Home </button>
-        <button id = "database" onclick = database()> Database </button>
+        <h1 id = "title">Miami Insider</h1>
+        <a href="Home.html"> Home </a>
+        <a href="Restaurants.html"> Restaurants </a>
+        <a href="Clinics.html"> Clinics </a>
+        <a href="Login.html"> Login/Sign up</a>
+        <div class="search">
+            <form action="/action_search.php">
+              <input type="text" placeholder="Search.." name="search">
+              <button type="submit">Submit</button>
+            </form>
+        </div> 
     </div>
     <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
         Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
