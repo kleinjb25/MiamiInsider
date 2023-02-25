@@ -34,9 +34,17 @@ img {
     color:#B61E2E;
     margin-right: 5%;
 }
-p {
+h2 {
     color: #B61E2E;
 }
+#brickbar {
+    background-color: red;
+    border-radius: 5%;
+    padding-bottom: 1%;
+}
+.hidden {
+		display: none;
+		}
 html {
     background-color: #15292b;
 }
