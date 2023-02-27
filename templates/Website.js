@@ -1,6 +1,4 @@
-function home() {
-    document.location.href = "Home.html";
-}
-function database() {
-    document.location.href = "Database.html";
-}
+function showhide() {
+		var tog = document.getElementById("toggle");
+		tog.classList.toggle('hidden');
+	}
