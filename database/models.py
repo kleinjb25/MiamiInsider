@@ -32,6 +32,7 @@ class Location(db.Model):
     contact_phone = db.Column(db.String(60))
     num_reviews = db.Column(db.Integer, nullable=False)
     avg_rating = db.Column(db.Float)
+    category = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=False)  # Relational
 
     def __repr__(self):
         return "<Location(id='%d', name='%s', avg_rating='%s')>" % (
@@ -40,13 +41,12 @@ class Location(db.Model):
             self.avg_rating,
         )
 
-'''
 class Review(db.Model):
     __tablename__ = "reviews"
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column()  # Relational
-    location_id = db.Column()  # Relational
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)  # Relational
+    location_id = db.Column(db.Integer, db.ForeignKey('locations.id'), nullable=False)  # Relational
     rating = db.Column(db.Integer, nullable=False)
     text = db.Column(db.String(1024))
 
@@ -55,5 +55,18 @@ class Review(db.Model):
             self.id,
             self.user_id,
             self.location_id,
-        )     
-'''
+        )
+
+class Category(db.Model):
+    __tablename__ = "categories"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(128))
+
+    def __repr__(self):
+        return "<Review(id='%d', user_id='%d', location_id='%d')>" % (
+            self.id,
+            self.user_id,
+            self.location_id,
+        )
+

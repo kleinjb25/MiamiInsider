@@ -9,3 +9,4 @@ MarkupSafe==2.1.2
 SQLAlchemy==2.0.3
 typing_extensions==4.5.0
 Werkzeug==2.2.3
+WTForms==3.0.1

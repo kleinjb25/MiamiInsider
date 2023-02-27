@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+<!-- THIS IS JUST AUTOMATICALLY GENERATED BOILERPLATE -->
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{{ url_for('static', filename='sample.css') }}">
+        <title>MiamiInsider</title>
+    </head>
+    <body>
+        <!-- for loop that gets locations (passed in the backend code) 
+            and prints name and id. -->
+        {% for loc in locations %}
+        <div class="loc-body">
+            <h3>{{ loc.id }} - {{ loc.name }}</h3>
+            <p>Located at {{ loc.address }}</p>
+            <p>Contact info: </p>
+            <ul>
+                <li>Email: {{ loc.contact_email }}</li>
+                <li>Phone: {{ loc.contact_phone }}</li>
+            </ul>
+            <p>{{ loc.description }}</p>
+            <p>Reviews: {{ loc.num_reviews }}</p>
+            <p>Category: {{ loc.category }}</p>
+
+
+            <form action="/del_loc/{{loc.id}}" method="POST">
+                <input type="submit" value="DELETE">
+            </form>
+        </div>
+        {% endfor %}
+
+        <div class="loc-body">
+            <h2>Add a sample location: </h2>
+            <form action="/post_loc" method="POST">
+                <input type="text" name="name" placeholder="Name"><br>
+                <input type="text" name="address" placeholder="Address"><br>
+                <input type="text" name="description" placeholder="Description"><br>
+                <input type="email" name="contact_email" placeholder="Contact email"><br>
+                <input type="text" name="contact_phone" placeholder="Phone number"><br>
+                <input type="number" name="category_id" placeholder="Category ID"><br>
+                <input type="submit">
+            </form>
+
+            <h3>Reference category list: </h3>
+            <ul>
+            {% for c in categories %}
+                <li>{{ c.id }} - {{ c.name }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+    </body>
+</html>
