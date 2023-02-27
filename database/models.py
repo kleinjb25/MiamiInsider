@@ -1,4 +1,5 @@
-from flask_sqlalchemy import SQLAlchemy#, Model, Column, Integer, String, Float, Date
+from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
 
 db = SQLAlchemy()
 
@@ -9,9 +10,16 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(30), nullable=False)
     last_name = db.Column(db.String(30), nullable=False)
-    email = db.Column(db.String(60), nullable=False)
+    email = db.Column(db.String(60), unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
     num_reviews = db.Column(db.Integer, nullable=False)
+
+    def __init__(self, first_name, last_name, email, password):
+        self.first_name = first_name
+        self.last_name = last_name
+        self.email = email
+        self.password = generate_password_hash(password)
+        self.num_reviews = 0
 
     def __repr__(self):
         return "<User(id='%d', first_name='%s', last_name='%s', email='%s')>" % (
@@ -20,6 +28,9 @@ class User(db.Model):
             self.last_name,
             self.email
         )
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
 
 class Location(db.Model):
     __tablename__ = "locations"
@@ -33,6 +44,14 @@ class Location(db.Model):
     num_reviews = db.Column(db.Integer, nullable=False)
     avg_rating = db.Column(db.Float)
     category = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=False)  # Relational
+
+    def __init__(self, name, address, description, contact_email, contact_phone, category):
+        self.name = name
+        self.address = address
+        self.contact_email = contact_email
+        self.contact_phone = contact_phone
+        self.num_reviews = 0
+        self.category = category
 
     def __repr__(self):
         return "<Location(id='%d', name='%s', avg_rating='%s')>" % (

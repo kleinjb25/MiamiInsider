@@ -10,6 +10,15 @@
         <title>MiamiInsider</title>
     </head>
     <body>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, m in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ m }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith%}
         <!-- for loop that gets locations (passed in the backend code) 
             and prints name and id. -->
         {% for loc in locations %}
