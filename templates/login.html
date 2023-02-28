@@ -2,7 +2,7 @@
 {% block content %}
 <div>
     {% include 'utils/flash_messages.html' %}
-    <form method="post" action="">
+    <form method="post">
         {{ form.hidden_tag() }}
         <div>
             {{ form.email.label() }} - {{ form.email }}
