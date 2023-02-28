@@ -9,6 +9,7 @@
 img {
     float: left;
     width: 15%;
+    padding-left: 1%;
 }
 #title {
     display:inline-block;
@@ -38,8 +39,7 @@ h2 {
     color: #B61E2E;
 }
 #brickbar {
-    background-color: red;
-    border-radius: 5%;
+    background-color: #B61E2E;
     padding-bottom: 1%;
 }
 .hidden {
