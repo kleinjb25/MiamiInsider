@@ -10,19 +10,12 @@
         <title>MiamiInsider</title>
     </head>
     <body>
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, m in messages %}
-                    <div class="alert alert-{{ category }}">
-                        {{ m }}
-                    </div>
-                {% endfor %}
-            {% endif %}
-        {% endwith%}
+        {% include 'utils/flash_messages.html' %}
+
         <!-- for loop that gets locations (passed in the backend code) 
             and prints name and id. -->
         {% for loc in locations %}
-        <div class="loc-body">
+        <div class="main-body">
             <h3>{{ loc.id }} - {{ loc.name }}</h3>
             <p>Located at {{ loc.address }}</p>
             <p>Contact info: </p>
@@ -41,7 +34,7 @@
         </div>
         {% endfor %}
 
-        <div class="loc-body">
+        <div class="main-body">
             <h2>Add a sample location: </h2>
             <form action="/post_loc" method="POST">
                 <input type="text" name="name" placeholder="Name"><br>
@@ -60,5 +53,15 @@
             {% endfor %}
             </ul>
         </div>
+
+        <div class="login-body">
+            {% if not session.logged_in %}
+            <p>You are not logged in. <a href="{{ url_for('login') }}">Log in</a> here.</p>
+            {% else %}
+            <a href="{{ url_for('logout') }}">Log out</a>
+            {% endif %}
+        </div>
+
+        {% include 'utils/footer.html' %}
     </body>
 </html>

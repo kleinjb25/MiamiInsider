@@ -2,40 +2,52 @@
 {% block content %}
 <div>
     {% include 'utils/flash_messages.html' %}
-    <form method="post" action="">
-        {{ form.hidden_tag() }}
-        <div>
-            {{ form.first_name.label() }} - {{ form.first_name }}
-            {% for error in form.first_name.errors %}
-            <span>{{error}}</span>
-            {% endfor %}
-        </div>
-        <div>
-            {{ form.last_name.label() }} - {{ form.last_name }}
-            {% for error in form.first_name.errors %}
-            <span>{{error}}</span>
-            {% endfor %}
-        </div>
-        <div>
-            {{ form.email.label() }} - {{ form.email }}
-            {% for error in form.email.errors %}
-            <span>{{error}}</span>
-            {% endfor %}
-        </div>
-        <div>
-            {{ form.password.label() }} - {{ form.password }}
-            {% for error in form.password.errors %}
-            <span>{{error}}</span>
-            {% endfor %}
-        </div>
-        <div>
-            {{ form.confirm_password.label() }} - {{ form.confirm_password }}
-            {% for error in form.confirm_password.errors %}
-            <span>{{error}}</span>
-            {% endfor %}
-        </div>
-        <div>{{ form.submit }}</div>
-    </form>
-    <p>Already have an account? <a href="{{ url_for('login') }}">Log in</a></p>
+    <div class="main-body">
+        <form method="post" action="">
+            {{ form.hidden_tag() }}
+            <div>
+                <h4>{{ form.first_name.label() }}</h4>
+                {{ form.first_name }}
+                {% for error in form.first_name.errors %}
+                <span>{{error}}</span>
+                {% endfor %}
+            </div>
+            <div>
+                <h4>{{ form.last_name.label() }}</h4>
+                {{ form.last_name }}
+                {% for error in form.first_name.errors %}
+                <span>{{error}}</span>
+                {% endfor %}
+            </div>
+            <div>
+                <h4>{{ form.email.label() }}</h4>
+                {{ form.email }}
+                {% for error in form.email.errors %}
+                <span>{{error}}</span>
+                {% endfor %}
+            </div>
+            <div>
+                <h4>{{ form.password.label() }}</h4>
+                {{ form.password }}
+                {% for error in form.password.errors %}
+                <span>{{error}}</span>
+                {% endfor %}
+            </div>
+            <div>
+                <h4>{{ form.confirm_password.label() }}</h4>
+                {{ form.confirm_password }}
+                {% for error in form.confirm_password.errors %}
+                <span>{{error}}</span>
+                {% endfor %}
+            </div>
+            <div>{{ form.submit }}</div>
+        </form>
+    </div>
+    <div class="login-body">
+        <p>Already have an account? <a href="{{ url_for('login') }}">Log in</a></p>
+        <p><a href="{{ url_for('index') }}">Return home</a></p>
+    </div>
+
+    {% include 'utils/footer.html' %}
 </div>
 {% endblock content %}

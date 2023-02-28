@@ -1,8 +1,14 @@
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import DataRequired, Length, Email, EqualTo
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 import email_validator
+
+def validate_email_domain(form, field):
+    email = field.data
+    domain = email.split('@')[1] # Get the domain from the email
+    if domain != 'miamioh.edu': # Check if domain is not miamioh.edu
+        raise ValidationError('Email must be of @miamioh.edu domain')
 
 class RegistrationForm(FlaskForm):
     first_name = StringField('First name', validators=[
@@ -16,7 +22,8 @@ class RegistrationForm(FlaskForm):
     # TODO: E-Mail can only be @miamioh.edu
     email = StringField('Email', validators=[
         DataRequired(),
-        Email()
+        Email(),
+        validate_email_domain
     ])
     # NOTE: Maybe implement secure passwords?
     password = PasswordField('Password', validators=[

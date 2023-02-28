@@ -1,6 +1,7 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for, abort, flash
+from flask import Flask, render_template, request, redirect, url_for, abort, flash, session
 from sqlalchemy.exc import IntegrityError
+from wtforms.validators import ValidationError
 # All of the database related stuff is stored here, we are importing it all
 from database.models import *
 from forms import RegistrationForm, LoginForm
@@ -49,6 +50,9 @@ def index():
 # This will need to be done by creating css classes for them. Libraries like
 # Bootstrap and Bulma have premade ones.
 
+# TODO: Remember me does nothing, remove it?
+# TODO: Login form warning that email is invalid before form is submitted
+
 # Login route
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -62,6 +66,12 @@ def login():
 
         # Successful login
         if user and user.check_password(form.password.data):
+            # Sets the session data so that we can check if user is logged in 
+            # in other pages
+            session['user_id'] = user.id
+            session['username'] = user.first_name
+            session['logged_in'] = True
+
             flash(f'Successfully logged in. Welcome back!', 'success')
             return redirect(url_for('index'))
         
@@ -98,11 +108,30 @@ def register():
             flash(f'Email already taken, please choose a different one.', 'danger')
             return redirect(url_for('register'))
         
+        # If the email is not @miamioh.edu domain
+        except ValidationError:
+            db.session.rollback()
+            flash(f'Email has to be from the @miamioh.edu domain.', 'danger')
+            return redirect(url_for('register'))
+        
         # If everything goes fine and account is created:
         flash(f'Account created. Welcome aboard, {form.first_name.data}!', 'success')
         return redirect(url_for('index'))
 
     return render_template('register.html', form=form)
+
+@app.route('/logout', methods=['GET'])
+def logout():
+    # Clears session
+    session.pop('user_id', None)
+    session.pop('username', None)
+    session['logged_in'] = False
+
+    flash(f'You have been successfully logged out.', 'success')
+    return redirect(url_for('login'))
+
+# LOGIN/REGISTER STUFF END ---------------------------
+
 
 # Sample route to print all locations of a certain category.
 @app.route('/category/<int:id>', methods=['GET', 'POST'])
@@ -121,9 +150,6 @@ def view_category(id: int):
         abort(404)
 
     return render_template("category.html", locations=locs)
-
-# LOGIN/REGISTER STUFF END ---------------------------
-
 
 # Example of adding a location to the table
 @app.route('/post_loc', methods=['POST'])
