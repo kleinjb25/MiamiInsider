@@ -1,31 +1,23 @@
-{% extends "utils/login-register-template.html" %}
-{% block content %}
-    {% include 'utils/flash_messages.html' %}
-    <div class="login-body">
-        <h2>Log in</h2>
-        <form class="form-group" method="post">
-            {{ form.hidden_tag() }}
-            <div class="form-group">
-                <label for="email">{{ form.email.label }}</label>
-                {{ form.email(class="form-control") }}
-                {% for error in form.email.errors %}
-                <small class="form-text text-warn">{{error}}</small>
-                {% endfor %}
-            </div>
-            <div class="form-group">
-                <label for="password">{{ form.password.label }}</label>
-                {{ form.password(class="form-control") }}
-                {% for error in form.password.errors %}
-                <small class="form-text text-warn">{{error}}</small>
-                {% endfor %}
-            </div>
-            {{ form.submit(class="btn btn-primary") }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MiamiInsider - Login</title>
+    <link rel="stylesheet" type="text/css" href="Website.css" />
+</head>
+<body>
+    <div class="Login">
+        <h1 id = "Login"> Login </h1>
+        <form action="/action_login.php">
+            <label id = "email">Email:</label>
+            <input type="text" name="email"><br><br>
+            <label>Password:</label>
+            <input type="text" name="password"><br><br>
+            <input type="submit" value="Submit">
         </form>
-
-        <p>Don't have an account? <a href="{{ url_for('register') }}">Sign up</a></p>
-        <p><a href="{{ url_for('index') }}">Return home</a></p>
+        <br>
+        <a href="Sign_Up.html"> Sign up</a>
+        <a href="Home.html"> Home </a>
     </div>
-
-    {% include 'utils/footer.html' %}
-</div>
-{% endblock content %}
+    
+</body>

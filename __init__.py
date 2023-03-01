@@ -177,7 +177,6 @@ def account_delete():
         flash('You are not logged in', 'danger')
         return redirect(url_for('login'))
 
-
 # LOGIN/REGISTER STUFF END ---------------------------
 
 
