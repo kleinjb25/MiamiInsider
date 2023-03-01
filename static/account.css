@@ -1,0 +1,28 @@
+@import url('https://unpkg.com/css.gg@2.0.0/icons/css/home-alt.css');
+
+div.main {
+    margin: auto;
+    margin-top: 80px;
+    background-color: #ebebeb;
+    padding: 15px;
+
+    width: 35%;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+div.nav {
+    text-align: center;
+}
+
+div.body {
+    border-radius: 8px;
+    padding: 15px;
+    background-color: lightgrey;
+}
+
+button#edit-btn {
+    width: 180px;
+    text-align: center;
+    margin-bottom: 20px;
+}

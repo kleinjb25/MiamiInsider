@@ -1,33 +1,27 @@
-{% extends "account.html" %}
+{% extends "utils/login-register-template.html" %}
 {% block content %}
     {% include 'utils/flash_messages.html' %}
-    <div class="main-body">
-        <form method="post">
-            {{ form.hidden_tag() }}
-            <div>
-                <h4>{{ form.email.label() }}</h4>
-                {{ form.email }}
-                {% for error in form.email.errors %}
-                <span>{{error}}</span>
-                {% endfor %}
-            </div>
-            <div>
-                <h4>{{ form.password.label() }}</h4>
-                {{ form.password }}
-                {% for error in form.password.errors %}
-                <span>{{error}}</span>
-                {% endfor %}
-            </div>
-            <div>
-                {{ form.remember.label() }} {{ form.remember }}
-                {% for error in form.remember.errors %}
-                <span>{{error}}</span>
-                {% endfor %}
-            </div>
-            <div>{{ form.submit }}</div>
-        </form>
-    </div>
     <div class="login-body">
+        <h2>Log in</h2>
+        <form class="form-group" method="post">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                <label for="email">{{ form.email.label }}</label>
+                {{ form.email(class="form-control") }}
+                {% for error in form.email.errors %}
+                <small class="form-text text-warn">{{error}}</small>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                <label for="password">{{ form.password.label }}</label>
+                {{ form.password(class="form-control") }}
+                {% for error in form.password.errors %}
+                <small class="form-text text-warn">{{error}}</small>
+                {% endfor %}
+            </div>
+            {{ form.submit(class="btn btn-primary") }}
+        </form>
+
         <p>Don't have an account? <a href="{{ url_for('register') }}">Sign up</a></p>
         <p><a href="{{ url_for('index') }}">Return home</a></p>
     </div>

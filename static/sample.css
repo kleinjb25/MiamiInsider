@@ -1,4 +1,7 @@
-body { margin: 0; }
+body {
+    margin: 0;
+    box-sizing: border-box;
+}
 
 /* The main body in a page */
 div.main-body {
@@ -9,65 +12,22 @@ div.main-body {
     border-radius: 6px;
 }
 
-/* For error messages in forms */
-div.main-body span { color: red; }
-
-/* For labels in forms */
-div.main-body h4 { margin-bottom: -4px; }
-
-div.main-body input[type=text],
-input[type=password], input[type=email], 
-input[type=number], input[type=submit] {
-    margin-top: 8px;
-    padding: 4px;
-    border-radius: 4px;
-    border: none;
-}
-
-div.main-body input[type=submit] { font-weight: bold; }
-
-div.main-body input[type=submit]:hover {
-    background-color: #e4e4e4;
-    transition-duration: 250ms;
-}
-
-/* All login related divs */
 div.login-body {
-    width: 20%;
+    margin: auto;
+    padding: 20px;
     border-radius: 6px;
-    margin: 10px;
-    padding: 15px;
-
-    background-color: grey;
-    color: white;
+    width: 25%;
+    background-color: #e4e4e4;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 
-/* Login related links */
-div.login-body a {
-    color: #dcfffa;
-    text-decoration: none;
+div.login-body h2 {
+    text-align: center;
 }
 
-div.login-body a:hover {
-    color: #edfffd;
-    font-weight: bold;
-    transition-delay: 200ms;
+.text-warn {
+    color: red;
 }
-
-/* Alert formatting (called 'flash' in Flask) */
-div.alert {
-    margin: 10px;
-    padding: 15px;
-    border-radius: 8px;
-    width: 40%;
-
-    color: white;
-    font-weight: bolder;
-}
-
-.alert-success { background-color: #99ff00; }
-
-.alert-danger { background-color: #ff5050; }
 
 footer {
     background-color: lightcoral;

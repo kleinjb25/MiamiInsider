@@ -46,11 +46,6 @@ def index():
 
 # LOGIN/REGISTER STUFF BEGIN -------------------------
 
-# NOTE: Currently the login and register flashes don't have any formatting.
-# This will need to be done by creating css classes for them. Libraries like
-# Bootstrap and Bulma have premade ones.
-
-# TODO: Remember me does nothing, remove it?
 # TODO: Login form warning that email is invalid before form is submitted
 
 # Login route
@@ -120,7 +115,8 @@ def register():
 
     return render_template('register.html', form=form)
 
-@app.route('/logout', methods=['GET'])
+# Route to log user out
+@app.route('/logout')
 def logout():
     # Clears session
     session.pop('user_id', None)
@@ -129,6 +125,58 @@ def logout():
 
     flash(f'You have been successfully logged out.', 'success')
     return redirect(url_for('login'))
+
+# Route to view a user's profile
+@app.route('/profile/<int:id>')
+def profile(id: int):
+    user = User.query.filter_by(id=id).first()
+    return render_template('profile.html', user=user)
+
+# Will show a list of a certain user's reviews
+@app.route('/reviews/<int:id>')
+def review_list(id: int):
+    reviews = Review.query.filter_by(user_id=id).first()
+    return render_template('reviews.html', reviews=reviews)
+
+# Route to view and update account information
+@app.route('/account', methods=['GET', 'POST'])
+def account():
+    if session['logged_in']:
+        user = User.query.filter_by(id=session['user_id']).first()
+        return render_template('account.html', user=user)
+    else:
+        flash('You are not logged in.', 'danger')
+        return redirect(url_for('login'))
+
+@app.route('/account_update', methods=['POST'])
+def account_update():
+    user = User.query.filter_by(id=request.form["id"]).first()
+    print(user == None)
+
+    # TODO: Make sure user exists
+    user.first_name = request.form["first_name"]
+    user.last_name = request.form["last_name"]
+    # TODO: Implement privacy setting here as well
+
+    db.session.commit()
+    flash('Your information was successfully updated.', 'success')
+    return redirect(url_for('account'))
+
+# Route to delete your account
+@app.route('/account/delete', methods=['POST'])
+def account_delete():
+    if session['logged_in']:
+        user = User.query.filter_by(id=session['user_id'])
+        db.session.delete(user)
+
+        # TODO: Error catching here if user not found
+        db.session.commit()
+        flash('Your account was successfully deleted', 'success')
+        return redirect(url_for('login'))
+    else:
+        flash('You are not logged in', 'danger')
+        return redirect(url_for('login'))
+
 
 # LOGIN/REGISTER STUFF END ---------------------------
 
