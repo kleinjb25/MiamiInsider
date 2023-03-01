@@ -39,7 +39,7 @@ with app.app_context():
 # Simply prints the list of current locations for now
 @app.route('/')
 def index():
-    return render_template("sample.html", 
+    return render_template("index.html", 
         locations=Location.query.all(),
         categories=Category.query.all())
 

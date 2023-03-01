@@ -2,8 +2,8 @@
 {% block content %}
 <div>
     {% include 'utils/flash_messages.html' %}
-    <div class="login-body">
-        <h2>Sign up</h2>
+    <div class="jumbotron login-body">
+        <h2 class="display-6 text-center">Log in</h2>
         <form method="post">
             {{ form.hidden_tag() }}
             
@@ -23,11 +23,12 @@
                 {% endfor %}
             </div>
 
-            {{ form.submit(class="btn btn-primary") }}
+            {{ form.submit(class="btn btn-success") }}
+            <span style="float: right;">
+                <a class="btn btn-warning" href="{{ url_for('register') }}">Sign up</a>
+                <a class="btn btn-secondary" href="{{ url_for('index') }}">Return home</a>
+            </span>
         </form>
-
-        <p>Don't have an account? <a href="{{ url_for('register') }}">Sign up</a></p>
-        <p><a href="{{ url_for('index') }}">Return home</a></p>
     </div>
 
     {% include 'utils/footer.html' %}

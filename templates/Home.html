@@ -1,44 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>MiamiInsider - Home</title>
     <link rel="stylesheet" type="text/css" href="Website.css" />
     <script src="Website.js"></script>
 </head>
+
 <body>
-    <div id = "menu">
+    <div id="menu">
         <!--look at tripadvisor website-->
-        <img src="https://miamioh.edu/_hannonhill/_files/images/logos/primary-alternate-logos/alt-logo-oxford-black.png">
-        <h1 id = "title">Miami Insider</h1>
+        <img
+            src="https://miamioh.edu/_hannonhill/_files/images/logos/primary-alternate-logos/alt-logo-oxford-black.png">
+        <h1 id="title">Miami Insider</h1>
         <a href="Home.html"> Home </a>
         <a href="Restaurants.html"> Restaurants </a>
         <a href="Clinics.html"> Clinics </a>
         <a href="Login.html"> Login/Sign up</a>
         <div class="search">
             <form action="/action_search.php">
-              <input type="text" placeholder="Search.." name="search">
-              <button type="submit">Submit</button>
+                <input type="text" placeholder="Search.." name="search">
+                <button type="submit">Submit</button>
             </form>
-        </div> 
-    </div>
-
-    <div id = "suggested">
-        <h2> Suggested places for you </h2>
-        <div id = "brickbar">
-            <img src="brickbar.png"> 
-            <h3> Brick Street Bar, Oxford OH. </h3>
-            <h3>  The most popular bar in all of Oxford. All of the cool kids go there, so you should too. </h3>
-            <a href="#button" onclick="showhide()">Review this business</a>
-		    <div id="toggle" class="hidden">
-                <p> What do you think about this business? </p>
-                <form action="/submit.php">
-			        <input type="text" name="reviewBox">
-                    <button type="submit"> Sumbit </button>
-                </form>
-		    </div>
         </div>
     </div>
-    
+
+    <div id="suggested">
+        <h2> Suggested places for you </h2>
+        <div id="brickbar">
+            <img src="brickbar.png">
+            <h3> Brick Street Bar, Oxford OH. </h3>
+            <h3> The most popular bar in all of Oxford. All of the cool kids go there, so you should too. </h3>
+            <a href="#button" onclick="showhide()">Review this business</a>
+            <div id="toggle" class="hidden">
+                <p> What do you think about this business? </p>
+                <form action="/submit.php">
+                    <input type="text" name="reviewBox">
+                    <button type="submit"> Sumbit </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
 </body>
+
 </html>

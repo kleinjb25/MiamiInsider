@@ -1,19 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="{{ url_for('static', filename='sample.css') }}">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
-            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        {% include 'utils/header-template.html' %}
         
-        <title>MiamiInsider - Account</title>
+        <title>MiamiInsider - Log in</title>
     </head>
     <body>
-        <h1>Account action occurring below</h1>
-        <div>
-            {% block content %}{% endblock %}
-        </div>
+        {% include 'utils/nav-template.html' %}
+        
+        {% block content %}{% endblock %}
     </body>
 </html>

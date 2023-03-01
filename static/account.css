@@ -1,8 +1,7 @@
-@import url('https://unpkg.com/css.gg@2.0.0/icons/css/home-alt.css');
+body {margin: 0;}
 
 div.main {
     margin: auto;
-    margin-top: 80px;
     background-color: #ebebeb;
     padding: 15px;
 

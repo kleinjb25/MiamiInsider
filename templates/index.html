@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% include 'utils/header-template.html' %}
+        <title>MiamiInsider - Home</title>
+    </head>
+    <body>
+        {% include 'utils/nav-template.html' %}
+
+        <div class="jumbotron">
+            <h2 class="display-5">Categories</h2>
+            <hr class="my-4">
+            <ul class="list-group">
+                {% for category in categories %}
+                <li class="list-group-item">
+                    <a href="#">{{ category.name }}</a>
+                </li>
+                {% endfor %}
+                <li class="list-group-item">Dapibus ac facilisis in</li>
+                <li class="list-group-item">Morbi leo risus</li>
+                <li class="list-group-item">Porta ac consectetur ac</li>
+                <li class="list-group-item">Vestibulum at eros</li>
+            </ul>
+        </div>
+
+        <div class="jumbotron">
+            <h2 class="display-5">Suggested Locations</h2>
+            <hr class="my-4">
+            <div class="suggested-container">
+
+                <div class="card" style="width: 18rem;">
+                    <img src="{{ url_for('static', filename='brickbar.png') }}" class="card-img-top" alt="Brick Street Bar">
+                    <div class="card-body">
+                        <h5 class="card-title">Brick Street Bar</h5>
+                        <p class="card-text">The most popular bar in all of Oxford. All of the cool kids go there, so you should too</p>
+                        <p><strong>Rating:</strong> 4.2/5</p>
+                        <a href="#" class="btn btn-outline-danger">View location</a>
+                    </div>
+                </div>
+
+                {% for location in locations %}
+                <div class="card" style="width: 18rem;">
+                    <img src="{{ location.id }}.png" class="card-img-top" alt="{{ location.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ location.name }}</h5>
+                        <p class="card-text">{{ location.description }}</p>
+                        <p><strong>Rating:</strong> {{ location.avg_rating }}/5</p>
+                        <a href="#" class="btn btn-primary">View location</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        {% include 'utils/footer.html' %}
+    </body>
+</html>
