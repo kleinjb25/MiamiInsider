@@ -25,3 +25,15 @@ button#edit-btn {
     text-align: center;
     margin-bottom: 20px;
 }
+
+button#del-btn {
+    width: 180px;
+    text-align: center;
+    margin-bottom: 20px;
+
+    float: right;
+    background-color: red;
+    color: white;
+    font-weight: bold;
+    border-color: #ebebeb;
+}

@@ -5,15 +5,19 @@
         MiamiInsider
     </a>
 
-    <form class="form-inline">
-        <input class="custom-search form-control" type="search" placeholder="Search..." aria-label="Search">
-        <button class="custom-search-btn btn btn-light" type="submit">Search</button>
+    <form method="POST" action="{{ url_for('search') }}" class="form-inline">
+        {{ search_form.hidden_tag() }}
+        
+        <div class="form-group">
+            {{ search_form.query(class="custom-search form-control", placeholder="Search...") }}
+            {{ search_form.submit(class="custom-search-btn btn btn-light") }}
+        </div>
     </form>
 
     {% if not session.logged_in %}
     <div class="btn-group" role="group">
-        <a class="btn btn-light btn-lg" href="{{ url_for('register') }}">Sign up</a>
-        <a class="btn btn-danger btn-lg" href="{{ url_for('login') }}">Log in</a>
+        <a class="btn btn-light" href="{{ url_for('register') }}">Sign up</a>
+        <a class="btn btn-danger" href="{{ url_for('login') }}">Log in</a>
     </div>
     {% else %}
     <a class="btn btn-danger" href="{{ url_for('account') }}">Account</a>

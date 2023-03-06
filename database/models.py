@@ -13,6 +13,7 @@ class User(db.Model):
     email = db.Column(db.String(60), unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
     num_reviews = db.Column(db.Integer, nullable=False)
+    private = db.Column(db.Boolean, nullable=False)
 
     def __init__(self, first_name, last_name, email, password):
         self.first_name = first_name
@@ -20,6 +21,7 @@ class User(db.Model):
         self.email = email
         self.password = generate_password_hash(password)
         self.num_reviews = 0
+        self.private = True
 
     def __repr__(self):
         return "<User(id='%d', first_name='%s', last_name='%s', email='%s')>" % (
