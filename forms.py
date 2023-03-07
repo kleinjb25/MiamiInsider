@@ -10,6 +10,19 @@ def validate_email_domain(form, field):
     if domain != 'miamioh.edu': # Check if domain is not miamioh.edu
         raise ValidationError('Email must be of @miamioh.edu domain')
 
+# NOTE: These are all available, only password_contains_number being used right now
+def password_contains_special(form, field):
+    if not any(char in field.data for char in '!@#$%^&*()_+-=[]{};:\'",.<>/?`~\\'):
+        raise ValidationError('Password must contain a special character')
+
+def password_contains_capital(form, field):
+    if not any(char.isupper() for char in field.data):
+        raise ValidationError('Password must contain a capital letter')
+
+def password_contains_number(form, field):
+    if not any(char.isdigit() for char in field.data):
+        raise ValidationError('Password must contain a number')
+
 class RegistrationForm(FlaskForm):
     first_name = StringField('First name', validators=[
         DataRequired(),
@@ -28,7 +41,8 @@ class RegistrationForm(FlaskForm):
     # NOTE: Maybe implement secure passwords?
     password = PasswordField('Password', validators=[
         DataRequired(),
-        Length(min=8)
+        Length(min=8),
+        password_contains_number
     ])
     confirm_password = PasswordField('Confirm password', validators=[
         DataRequired(),
