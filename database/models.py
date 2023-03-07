@@ -82,7 +82,8 @@ class Category(db.Model):
     __tablename__ = "categories"
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(128))
+    name = db.Column(db.String(128), nullable=False)
+    fa_tag = db.Column(db.String(64), nullable=False)
 
     def __repr__(self):
         return "<Review(id='%d', user_id='%d', location_id='%d')>" % (
