@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% include 'utils/header-template.html' %}
+        <title>Document</title>
+    </head>
+    <body>
+        {% include 'utils/nav-template.html' %}
+        
+        <div class="jumbotron">
+            <h1 class="display-3">{{ user.first_name }} {{ user.last_name }}</h1>
+            <!-- Will be able to set email private -->
+            <h4 class="display-6">Email: {{ user.email }}</h4>
+            <hr class="my-4">
+
+        </div>
+        {% include 'utils/footer.html' %}
+    </body>
+</html>

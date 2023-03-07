@@ -1,0 +1,39 @@
+body {margin: 0;}
+
+div.main {
+    margin: auto;
+    background-color: #ebebeb;
+    padding: 15px;
+
+    width: 35%;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+div.nav {
+    text-align: center;
+}
+
+div.body {
+    border-radius: 8px;
+    padding: 15px;
+    background-color: lightgrey;
+}
+
+button#edit-btn {
+    width: 180px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+button#del-btn {
+    width: 180px;
+    text-align: center;
+    margin-bottom: 20px;
+
+    float: right;
+    background-color: red;
+    color: white;
+    font-weight: bold;
+    border-color: #ebebeb;
+}

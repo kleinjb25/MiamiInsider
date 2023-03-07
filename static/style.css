@@ -1,0 +1,40 @@
+body {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.custom-search {
+    width: 400px!important;
+    border-top-right-radius: 0!important;
+    border-bottom-right-radius: 0!important;
+}
+
+.custom-search-btn {
+    border-top-left-radius: 0!important;
+    border-bottom-left-radius: 0!important;
+}
+
+div.suggested-container {
+    width: 100%;
+    padding: 20px;
+    background-color: whitesmoke;
+    border-radius: 8px;
+    overflow: auto;
+    white-space: nowrap;
+}
+
+.card {
+    display: inline-block !important;
+    white-space: normal;
+}
+
+div.login-body {
+    margin: auto;
+    margin-bottom: 60px;
+    width: 25%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.text-warn {
+    color: red;
+}

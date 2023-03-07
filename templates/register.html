@@ -1,51 +1,56 @@
-{% extends "account.html" %}
+{% extends "utils/login-register-template.html" %}
 {% block content %}
 <div>
     {% include 'utils/flash_messages.html' %}
-    <div class="main-body">
-        <form method="post" action="">
+    <div class="jumbotron login-body">
+        <h2 class="display-6 text-center">Sign up</h2>
+        <form method="post">
             {{ form.hidden_tag() }}
-            <div>
-                <h4>{{ form.first_name.label() }}</h4>
-                {{ form.first_name }}
+            <div class="form-group">
+                <label for="">{{ form.first_name.label }}</label>
+                {{ form.first_name(class="form-control") }}
                 {% for error in form.first_name.errors %}
-                <span>{{error}}</span>
+                <small class="form-text text-warn">{{error}}</small>
                 {% endfor %}
             </div>
-            <div>
-                <h4>{{ form.last_name.label() }}</h4>
-                {{ form.last_name }}
+
+            <div class="form-group">
+                <label for="">{{ form.last_name.label }}</label>
+                {{ form.last_name(class="form-control") }}
                 {% for error in form.first_name.errors %}
-                <span>{{error}}</span>
+                <small class="form-text text-warn">{{error}}</small>
                 {% endfor %}
             </div>
-            <div>
-                <h4>{{ form.email.label() }}</h4>
-                {{ form.email }}
+
+            <div class="form-group">
+                <label for="">{{ form.email.label }}</label>
+                {{ form.email(class="form-control") }}
                 {% for error in form.email.errors %}
-                <span>{{error}}</span>
+                <small class="form-text text-warn">{{error}}</small>
                 {% endfor %}
             </div>
-            <div>
-                <h4>{{ form.password.label() }}</h4>
-                {{ form.password }}
+
+            <div class="form-group">
+                <label for="">{{ form.password.label }}</label>
+                {{ form.password(class="form-control") }}
                 {% for error in form.password.errors %}
-                <span>{{error}}</span>
+                <small class="form-text text-warn">{{error}}</small>
                 {% endfor %}
             </div>
-            <div>
-                <h4>{{ form.confirm_password.label() }}</h4>
-                {{ form.confirm_password }}
+
+            <div class="form-group">
+                <label for="">{{ form.confirm_password.label }}</label>
+                {{ form.confirm_password(class="form-control") }}
                 {% for error in form.confirm_password.errors %}
-                <span>{{error}}</span>
+                <small class="form-text text-warn">{{error}}</small>
                 {% endfor %}
             </div>
-            <div>{{ form.submit }}</div>
+            {{ form.submit(class="btn btn-success") }}
+            <span style="float: right;">
+                <a class="btn btn-warning" href="{{ url_for('login') }}">Log in</a>
+                <a class="btn btn-secondary" href="{{ url_for('index') }}">Return home</a>
+            </span>
         </form>
-    </div>
-    <div class="login-body">
-        <p>Already have an account? <a href="{{ url_for('login') }}">Log in</a></p>
-        <p><a href="{{ url_for('index') }}">Return home</a></p>
     </div>
 
     {% include 'utils/footer.html' %}

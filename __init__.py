@@ -1,10 +1,9 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for, abort, flash, session
+from flask import Flask, render_template, request, redirect, url_for, abort, flash, session, jsonify
 from sqlalchemy.exc import IntegrityError
 from wtforms.validators import ValidationError
-# All of the database related stuff is stored here, we are importing it all
 from database.models import *
-from forms import RegistrationForm, LoginForm
+from forms import RegistrationForm, LoginForm, SearchForm, UpdateForm
 
 # -----------------
 # SETTING UP THE FLASK APP
@@ -39,18 +38,15 @@ with app.app_context():
 # Simply prints the list of current locations for now
 @app.route('/')
 def index():
-    return render_template("sample.html", 
+
+    return render_template("index.html", 
         locations=Location.query.all(),
-        categories=Category.query.all())
+        categories=Category.query.all(),
+        search_form=SearchForm())
 
 
 # LOGIN/REGISTER STUFF BEGIN -------------------------
 
-# NOTE: Currently the login and register flashes don't have any formatting.
-# This will need to be done by creating css classes for them. Libraries like
-# Bootstrap and Bulma have premade ones.
-
-# TODO: Remember me does nothing, remove it?
 # TODO: Login form warning that email is invalid before form is submitted
 
 # Login route
@@ -81,7 +77,7 @@ def login():
     else:
         flash(f'Login unsuccessful. Make sure your email is valid.', 'danger')
     
-    return render_template('login.html', form=form)
+    return render_template('login.html', form=form, search_form=SearchForm())
 
 # Register route
 @app.route('/register', methods=['GET', 'POST'])
@@ -116,11 +112,17 @@ def register():
         
         # If everything goes fine and account is created:
         flash(f'Account created. Welcome aboard, {form.first_name.data}!', 'success')
+
+        session['user_id'] = new_user.id
+        session['username'] = new_user.first_name
+        session['logged_in'] = True
+
         return redirect(url_for('index'))
 
-    return render_template('register.html', form=form)
+    return render_template('register.html', form=form, search_form=SearchForm())
 
-@app.route('/logout', methods=['GET'])
+# Route to log user out
+@app.route('/logout')
 def logout():
     # Clears session
     session.pop('user_id', None)
@@ -130,8 +132,73 @@ def logout():
     flash(f'You have been successfully logged out.', 'success')
     return redirect(url_for('login'))
 
+# Route to view a user's profile
+@app.route('/profile/<int:id>')
+def profile(id: int):
+    user = User.query.filter_by(id=id).first()
+    return render_template('profile.html', user=user, search_form=SearchForm())
+
+# Route to view and update account information
+@app.route('/account', methods=['GET', 'POST'])
+def account():
+    if session['logged_in']:
+        user = User.query.filter_by(id=session['user_id']).first()
+        if user == None:
+            session['logged_in'] = False
+            flash('There was an error validating your login.', 'danger')
+            return redirect(url_for('login'))
+        else:
+            return render_template('account.html', user=user, form=UpdateForm())
+    else:
+        flash('You are not logged in.', 'danger')
+        return redirect(url_for('login'))
+
+@app.route('/account_update', methods=['POST'])
+def account_update():
+    form = UpdateForm()
+
+    if form.validate_on_submit():
+        user = User.query.filter_by(id=session['user_id']).first()
+        if user != None:
+            user.first_name =form.first_name.data
+            user.last_name = form.last_name.data
+            db.session.commit()
+            flash('Your information was successfully updated.', 'success')
+        else:
+            flash('We were unable to validate your user.', 'danger')
+    else:
+        flash('We were unable to validate the form.', 'danger')
+    return redirect(url_for('account'))
+
+# Route to delete your account
+@app.route('/account/delete')
+def account_delete():
+    if session['logged_in']:
+        user = User.query.filter_by(id=session['user_id']).first_or_404()
+        db.session.delete(user)
+
+        # TODO: Error catching here if user not found
+        db.session.commit()
+        flash('Your account was successfully deleted', 'success')
+        return redirect(url_for('login'))
+    else:
+        flash('You are not logged in', 'danger')
+        return redirect(url_for('login'))
+
 # LOGIN/REGISTER STUFF END ---------------------------
 
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        # TODO: Process the form data here
+        results = form.query.data
+
+        return render_template('search.html', results=results)
+    else:
+        # TODO: What to do if form not validated?
+        return render_template('search.html', results=[])
 
 # Sample route to print all locations of a certain category.
 @app.route('/category/<int:id>', methods=['GET', 'POST'])

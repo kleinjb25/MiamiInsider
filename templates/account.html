@@ -4,13 +4,101 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Account</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='sample.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='account.css') }}">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <title>MiamiInsider - Account</title>
     </head>
     <body>
-        <h1>Account action occurring below</h1>
-        <div>
-            {% block content %}{% endblock %}
+        {% include 'utils/flash_messages.html' %}
+
+        <div class="main row">
+            <div class="nav nav-pills col-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url_for('index') }}">
+                            Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('account') }}">
+                            Account
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('profile', id=user.id) }}">
+                            Profile
+                        </a>
+                    </li>
+                    <li class="nav-item"> <!-- the href will be url_for review_list with id=user.id -->
+                        <a class="nav-link" href="#">
+                            Reviews
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-danger" href="{{ url_for('logout') }}">
+                            Log out
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="body col-9">
+
+                <button id="edit-btn">Edit information</button>
+                <button id="del-btn" onclick="confirmDelete()">Delete account</button>
+
+                <form method="POST" action="{{ url_for('account_update') }}">
+                    {{ form.csrf_token }}
+                    {{ form.hidden_tag() }}
+
+                    <div class="form-group">
+                        <label for="">{{ form.first_name.label }}</label>
+                        {{ form.first_name(value=user.first_name, disabled=True) }}
+                        {% for error in form.first_name.errors %}
+                        <small class="form-text text-warn">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">{{ form.last_name.label }}</label>
+                        {{ form.last_name(value=user.last_name, disabled=True) }}
+                        {% for error in form.last_name.errors %}
+                        <small class="form-text text-warn">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">{{ form.email.label }}</label>
+                        {{ form.email(value=user.email, disabled=True, readonly=True) }}
+                        {% for error in form.email.errors %}
+                        <small class="form-text text-warn">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+
+                    {{ form.submit(disabled=True) }}
+                </form>
+            </div>
         </div>
     </body>
+    <script>
+        const editBtn = document.getElementById('edit-btn');
+        const inputs = document.querySelectorAll('input:not([name=csrf_token])');
+
+        editBtn.addEventListener('click', () => {
+            inputs.forEach(input => {
+                input.disabled = !input.disabled;
+            });
+            if (editBtn.innerHTML == "Edit information") {
+                editBtn.innerHTML = "Stop editing";
+            } else {
+                editBtn.innerHTML = "Edit information";
+            }
+        });
+
+        function confirmDelete() {
+            if (confirm("Are you sure you want to delete your account?")) {
+                window.location.href = "{{ url_for('account_delete') }}";
+            }
+        }
+    </script>
 </html>
