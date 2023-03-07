@@ -29,8 +29,6 @@ with app.app_context():
 
 
 
-
-
 # -----------------
 # PAGES BELOW
 # -----------------
@@ -42,12 +40,14 @@ def index():
     return render_template("index.html", 
         locations=Location.query.all(),
         categories=Category.query.all(),
-        search_form=SearchForm())
+
+        search_form=SearchForm()
+    )
 
 
 # LOGIN/REGISTER STUFF BEGIN -------------------------
 
-# TODO: Login form warning that email is invalid before form is submitted
+# TODO: Profile page is currently incomplete
 
 # Login route
 @app.route('/login', methods=['GET', 'POST'])
@@ -74,10 +74,12 @@ def login():
         # Unsuccessful login (password didn't match)
         else:
             flash(f'Login unsuccessful. Check your email and password.', 'danger')
-    else:
-        flash(f'Login unsuccessful. Make sure your email is valid.', 'danger')
     
-    return render_template('login.html', form=form, search_form=SearchForm())
+    return render_template(
+        'login.html', form=form, 
+        
+        search_form=SearchForm()
+    )
 
 # Register route
 @app.route('/register', methods=['GET', 'POST'])
@@ -119,15 +121,16 @@ def register():
 
         return redirect(url_for('index'))
 
-    return render_template('register.html', form=form, search_form=SearchForm())
+    return render_template(
+        'register.html', form=form, 
+        
+        search_form=SearchForm()
+    )
 
 # Route to log user out
 @app.route('/logout')
 def logout():
-    # Clears session
-    session.pop('user_id', None)
-    session.pop('username', None)
-    session['logged_in'] = False
+    clear_login_session()
 
     flash(f'You have been successfully logged out.', 'success')
     return redirect(url_for('login'))
@@ -148,7 +151,10 @@ def account():
             flash('There was an error validating your login.', 'danger')
             return redirect(url_for('login'))
         else:
-            return render_template('account.html', user=user, form=UpdateForm())
+            return render_template(
+                'account.html', user=user, 
+                form=UpdateForm()
+            )
     else:
         flash('You are not logged in.', 'danger')
         return redirect(url_for('login'))
@@ -171,19 +177,27 @@ def account_update():
     return redirect(url_for('account'))
 
 # Route to delete your account
-@app.route('/account/delete')
+@app.route('/account/delete', methods=['POST'])
 def account_delete():
     if session['logged_in']:
         user = User.query.filter_by(id=session['user_id']).first_or_404()
         db.session.delete(user)
-
-        # TODO: Error catching here if user not found
-        db.session.commit()
-        flash('Your account was successfully deleted', 'success')
-        return redirect(url_for('login'))
+        if user == None:
+            flash('Your user id was not successfully validated.', 'danger')
+            return redirect(url_for('account'))
+        else:
+            db.session.commit()
+            clear_login_session()
+            return redirect(url_for('register'))
+        
     else:
         flash('You are not logged in', 'danger')
         return redirect(url_for('login'))
+
+def clear_login_session():
+    session.pop('user_id', None)
+    session.pop('username', None)
+    session['logged_in'] = False
 
 # LOGIN/REGISTER STUFF END ---------------------------
 
@@ -270,4 +284,4 @@ if __name__ == '__main__':
     # Port is set to 6969, change to anything you want
     #   Remember, has to be 1024 or above
     port = int(os.environ.get('PORT', 6969))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=port, debug=True)

@@ -97,7 +97,14 @@
 
         function confirmDelete() {
             if (confirm("Are you sure you want to delete your account?")) {
-                window.location.href = "{{ url_for('account_delete') }}";
+                // Send delete request using the fetch API
+                fetch("{{ url_for('account_delete') }}", { method: "POST" })
+                    .then(function (response) {
+                        if (response.ok) {
+                            // Redirect to login page once account deleted
+                            window.location.href = "{{ url_for('register') }}";
+                        }
+                    });
             }
         }
     </script>

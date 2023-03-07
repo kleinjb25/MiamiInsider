@@ -12,17 +12,16 @@
         <div class="jumbotron">
             <h2 class="display-5">Categories</h2>
             <hr class="my-4">
-            <ul class="list-group">
+            <div class="category-container">
                 {% for category in categories %}
-                <li class="list-group-item">
-                    <a href="#">{{ category.name }}</a>
-                </li>
+                <div class="category-card" style="width: 18rem;"><a href="#">
+                    <h5 class="card-title">
+                        <i class="fa-solid fa-{{ category.fa_tag}}"></i>
+                        {{ category.name }}
+                    </h5>
+                </a></div>
                 {% endfor %}
-                <li class="list-group-item">Dapibus ac facilisis in</li>
-                <li class="list-group-item">Morbi leo risus</li>
-                <li class="list-group-item">Porta ac consectetur ac</li>
-                <li class="list-group-item">Vestibulum at eros</li>
-            </ul>
+            </div>
         </div>
 
         <div class="jumbotron">
