@@ -1,4 +1,16 @@
-<footer>
-    <p>Copyright © 2023 <em>The IT Help Desk</em>.</p>
-    <a href="#">Privacy policy</a>
+<footer class="text-center text-white">
+    <div class="container p-4 pb-0">
+        <section>
+            <p class="d-flex justify-content-center align-items-center">
+                <span class="me-3">Register for free</span>
+                <a href="{{ url_for('register') }}" style="margin-left: 10px;" class="btn btn-outline-light">
+                    Sign up!
+                </a>
+            </p>
+        </section>
+    </div>
+
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+        © 2023 Copyright: <em>The IT Help Desk</em>
+    </div>
 </footer>

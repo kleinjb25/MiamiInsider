@@ -1,77 +1,91 @@
 #menu {
     font-size: 125%;
-    background-color:#B61E2E;
-    display:inline-block;
-    padding-bottom:2%;
+    background-color: #B61E2E;
+    display: inline-block;
+    padding-bottom: 2%;
     padding-top: 1%;
-    
+
 }
+
 img {
     float: left;
     width: 15%;
+    padding-left: 1%;
 }
+
 #title {
-    display:inline-block;
+    display: inline-block;
     margin: auto;
-    margin-top:1%;
-    margin-left:1.5%;
-    margin-right:1%;
+    margin-top: 1%;
+    margin-left: 1.5%;
+    margin-right: 1%;
     justify-content: center;
     align-content: center;
     position: relative;
 }
+
 #Login {
-    color:#B61E2E;
+    color: #B61E2E;
     text-align: center;
 }
 
 #email {
     margin-left: 2.2%;
 }
+
 .Login {
-    margin-top:10%;
+    margin-top: 10%;
     text-align: center;
-    color:#B61E2E;
+    color: #B61E2E;
     margin-right: 5%;
 }
+
 h2 {
     color: #B61E2E;
 }
+
 #brickbar {
-    background-color: red;
-    border-radius: 5%;
+    background-color: #B61E2E;
     padding-bottom: 1%;
 }
+
 .hidden {
-		display: none;
-		}
+    display: none;
+}
+
 html {
     background-color: #15292b;
 }
-a:link, a:visited {
+
+a:link,
+a:visited {
     margin-right: 1%;
-    background-color:#15292b;
+    background-color: #15292b;
     color: #B61E2E;
     padding: 1px 2px;
     border-radius: 15%;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-  }
-  a:hover {
-    color: #B61E2E;
-  }
-  a:active {
-    color: white;
-  }
-.search {
-    float:right;
-    display: block;
-    margin-top:2%;
-    margin-right:.5%;
 }
+
+a:hover {
+    color: #B61E2E;
+}
+
+a:active {
+    color: white;
+}
+
+.search {
+    float: right;
+    display: block;
+    margin-top: 2%;
+    margin-right: .5%;
+}
+
 button {
-    background-color:#15292b;
+    background-color: #15292b;
     color: #B61E2E;
     padding: 1px 2px;
     border-radius: 15%;

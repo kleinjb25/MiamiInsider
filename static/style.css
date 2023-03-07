@@ -1,0 +1,89 @@
+body {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.custom-search {
+    width: 400px!important;
+    border-top-right-radius: 0!important;
+    border-bottom-right-radius: 0!important;
+}
+
+.custom-search-btn {
+    border-top-left-radius: 0!important;
+    border-bottom-left-radius: 0!important;
+}
+
+/* CATEGORY RELATED STUFF STARTS */
+
+div.category-container {
+    width: 40%;
+    margin: auto;
+    padding: 20px;
+    background-color: whitesmoke;
+    border-radius: 8px;
+
+    /* Flexbox stuff */
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+div.category-card {
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 15px;
+    text-align: center;
+    border: none;
+    background-color: white;
+    width: 40%;
+
+    border-radius: 6px;
+
+    transition-duration: 250ms;
+}
+
+.category-card:hover {
+    box-shadow: 0 4px 8px 0 rgba(255, 0, 0, 0.2);
+}
+
+.category-card a,
+.category-card a:hover {
+    color: red;
+    text-decoration: none;
+}
+/* CATEGORY STUFF ENDS */
+
+div.suggested-container {
+    width: 100%;
+    padding: 20px;
+    background-color: whitesmoke;
+    border-radius: 8px;
+    overflow: auto;
+    white-space: nowrap;
+}
+
+.card {
+    display: inline-block !important;
+    white-space: normal;
+}
+
+div.login-body {
+    margin: auto;
+    margin-bottom: 60px;
+    width: 25%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.text-warn {
+    color: red;
+}
+
+.fa-solid {
+    margin-right: 5px;
+}
+
+footer {
+    background-color: #ba0f0f;
+}
