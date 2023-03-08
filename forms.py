@@ -10,6 +10,13 @@ def validate_email_domain(form, field):
     if domain != 'miamioh.edu': # Check if domain is not miamioh.edu
         raise ValidationError('Email must be of @miamioh.edu domain')
 
+def validate_phone_number(form, field):
+    # Using regex to validate phone number format
+    import re
+    pattern = r'^\(\d{3}\) \d{3}-\d{4}$'
+    if field.data != 'None' and not re.match(pattern, field.data):
+        raise ValidationError('Invalid phone number format. Format should be (XXX) XXX-XXXX')
+
 # NOTE: These are all available, only password_contains_number being used right now
 def password_contains_special(form, field):
     if not any(char in field.data for char in '!@#$%^&*()_+-=[]{};:\'",.<>/?`~\\'):
@@ -59,11 +66,12 @@ class LoginForm(FlaskForm):
     remember = BooleanField('Remember me?')
     submit = SubmitField('Login')
 
-# TODO: Implement this correctly
 class UpdateForm(FlaskForm):
     first_name = StringField('First name', validators=[DataRequired(), Length(min=1, max=30)])
     last_name = StringField('Last name', validators=[DataRequired(), Length(min=1, max=30)])
     email = StringField('Email', validators=[DataRequired(), Email(), validate_email_domain])
+    phone = StringField('Phone', validators=[DataRequired(), validate_phone_number])
+    private = BooleanField('Keep profile private')
     submit = SubmitField('Update')
 
 class SearchForm(FlaskForm):

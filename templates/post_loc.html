@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Upload Location with Image</title>
+</head>
+
+<body>
+
+    <h1>Upload Location with Image</h1>
+
+    <form action="{{ url_for('post_loc') }}" method="POST" enctype="multipart/form-data">
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name"><br><br>
+
+        <label for="address">Address:</label>
+        <input type="text" id="address" name="address"><br><br>
+
+        <label for="description">Description:</label><br>
+        <textarea type="text" id="description" name="description" rows="4" cols="50"></textarea><br><br>
+
+        <label for="contact_email">Contact Email:</label>
+        <input type="text" id="contact_email" name="contact_email"><br><br>
+
+        <label for="contact_phone">Contact Phone:</label>
+        <input type="text" id="contact_phone" name="contact_phone"><br><br>
+
+        <label for="category_id">Category:</label>
+        <select id="category_id" name="category_id">
+        {% for category in categories %}
+            <option value="{{ category.id }}">{{ category.name }}</option>
+        {% endfor %}
+        </select><br><br>
+
+        <label for="image">Image:</label>
+        <input type="file" id="image" name="image"><br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+    <h1>Upload Image for Location</h1>
+    <p>You only need to use this if you have a location with a missing image.</p>
+    <form method="POST" action="{{ url_for('post_loc_img') }}" enctype="multipart/form-data">
+        <label for="location_id">Location:</label>
+        <select id="location_id" name="location_id">
+        {% for location in locations %}
+            <option value="{{ location.id }}">{{ location.name }}</option>
+        {% endfor %}
+        </select><br><br>
+
+        <label for="location_name">Location Name:</label>
+        <input type="text" id="location_name" name="location_name"><br>
+        <small>Recommended that this matches the location above</small><br><br>
+
+        <label for="image">Image:</label>
+        <input type="file" id="image" name="image"><br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+
+    <div style="background-color: lightgrey; margin: 20px; padding: 20px; width: 40%;">
+        <h2>Locations: </h2>
+        {% for location in locations %}
+            <div style="background-color: whitesmoke;padding: 10px;">
+                <h3>ID: {{location.id}} - {{ location.name }}</h3>
+                <p>Address: {{location.address}}. Email: {{location.contact_email}}. Phone: {{location.contact_phone}}</p>
+                <p><strong>Description:</strong> {{location.description}}</p>
+                <p>Reviews: {{location.num_reviews}}. Avg Rating: {{location.avg_rating}}</p>
+                <p>Category: {{ categories[location.id+1].name }}</p>
+                <form method="POST" action="{{ url_for('post_loc_img') }}" enctype="multipart/form-data">
+                    <input type="hidden" id="location_id" name="location_id" value="{{ location.id }}">
+                    <input type="hidden" id="location_name" name="location_name" value="{{ location.name }}">
+                    <input type="file" id="image" name="image">
+                    <input type="submit", value="Update image">
+                </form>
+                <br>
+                <form method="POST" action="{{ url_for('del_loc', id=location.id) }}">
+                    <input style="background-color: red;" type="submit", value="Delete">
+                </form>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

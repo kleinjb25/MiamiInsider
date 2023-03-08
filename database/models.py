@@ -13,6 +13,8 @@ class User(db.Model):
     email = db.Column(db.String(60), unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
     num_reviews = db.Column(db.Integer, nullable=False)
+
+    phone = db.Column(db.String(14))
     private = db.Column(db.Boolean, nullable=False)
 
     def __init__(self, first_name, last_name, email, password):
@@ -50,6 +52,7 @@ class Location(db.Model):
     def __init__(self, name, address, description, contact_email, contact_phone, category):
         self.name = name
         self.address = address
+        self.description = description
         self.contact_email = contact_email
         self.contact_phone = contact_phone
         self.num_reviews = 0
@@ -60,6 +63,21 @@ class Location(db.Model):
             self.id,
             self.name,
             self.avg_rating,
+        )
+
+class LocationImage(db.Model):
+    __tablename__ = "location_images"
+
+    id = db.Column(db.Integer, primary_key=True)
+    location_id = db.Column(db.Integer, db.ForeignKey('locations.id'), unique=True, nullable=False)
+    name = db.Column(db.String)
+    data = db.Column(db.LargeBinary, nullable=False)
+
+    def __repr__(self):
+        return "<Location(id='%d', loc_id='%d', avg_rating='%d')>" % (
+            self.id,
+            self.location_id,
+            self.name,
         )
 
 class Review(db.Model):

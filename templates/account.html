@@ -47,12 +47,12 @@
                 <button id="edit-btn">Edit information</button>
                 <button id="del-btn" onclick="confirmDelete()">Delete account</button>
 
-                <form method="POST" action="{{ url_for('account_update') }}">
+                <form method="POST">
                     {{ form.csrf_token }}
                     {{ form.hidden_tag() }}
 
                     <div class="form-group">
-                        <label for="">{{ form.first_name.label }}</label>
+                        <label for="first_name">{{ form.first_name.label }}</label>
                         {{ form.first_name(value=user.first_name, disabled=True) }}
                         {% for error in form.first_name.errors %}
                         <small class="form-text text-warn">{{ error }}</small>
@@ -60,7 +60,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="">{{ form.last_name.label }}</label>
+                        <label for="last_name">{{ form.last_name.label }}</label>
                         {{ form.last_name(value=user.last_name, disabled=True) }}
                         {% for error in form.last_name.errors %}
                         <small class="form-text text-warn">{{ error }}</small>
@@ -68,11 +68,28 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="">{{ form.email.label }}</label>
+                        <label for="email">{{ form.email.label }}</label>
                         {{ form.email(value=user.email, disabled=True, readonly=True) }}
                         {% for error in form.email.errors %}
                         <small class="form-text text-warn">{{ error }}</small>
                         {% endfor %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">{{ form.phone.label }}</label>
+                        {{ form.phone(value=user.phone, placeholder='(xxx) xxx-xxxx', disabled=True) }}
+                        <ul>
+                            <li>If you don't want a phone number, simply write 'None'</li>
+                        </ul>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="private">{{ form.private.label }}</label>
+                        {% if user.private %}
+                            {{ form.private(value='y', disabled=True, checked=True) }}
+                        {% else %}
+                            {{ form.private(value='n', disabled=True) }}
+                        {% endif %}
                     </div>
 
                     {{ form.submit(disabled=True) }}

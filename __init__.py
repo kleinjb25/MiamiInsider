@@ -1,9 +1,9 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for, abort, flash, session, jsonify
+from flask import Flask, render_template, request, redirect, url_for, abort, flash, session, make_response
 from sqlalchemy.exc import IntegrityError
 from wtforms.validators import ValidationError
 from database.models import *
-from forms import RegistrationForm, LoginForm, SearchForm, UpdateForm
+from forms import *
 
 # -----------------
 # SETTING UP THE FLASK APP
@@ -39,10 +39,18 @@ def index():
 
     return render_template("index.html", 
         locations=Location.query.all(),
+        location_images=LocationImage.query.all(),
         categories=Category.query.all(),
 
         search_form=SearchForm()
     )
+
+@app.route('/location_image/<int:id>')
+def location_image(id):
+    image = LocationImage.query.filter_by(location_id=id).first()
+    response = make_response(image.data)
+    response.headers.set('Content-Type', 'image/jpeg')
+    return response
 
 
 # LOGIN/REGISTER STUFF BEGIN -------------------------
@@ -114,6 +122,7 @@ def register():
         
         # If everything goes fine and account is created:
         flash(f'Account created. Welcome aboard, {form.first_name.data}!', 'success')
+        flash(f'Navigate to your account and set up your profile!', 'info')
 
         session['user_id'] = new_user.id
         session['username'] = new_user.first_name
@@ -151,6 +160,23 @@ def account():
             flash('There was an error validating your login.', 'danger')
             return redirect(url_for('login'))
         else:
+            form = UpdateForm()
+
+            if form.validate_on_submit():
+                user = User.query.filter_by(id=session['user_id']).first()
+                if user != None:
+                    user.first_name =form.first_name.data
+                    user.last_name = form.last_name.data
+                    user.phone = form.phone.data
+                    user.private = form.private.data
+                    db.session.commit()
+                    flash('Your information was successfully updated.', 'success')
+                else:
+                    flash('We were unable to validate your user.', 'danger')
+            else:
+                for error in form.errors:
+                    flash(f'Error with {error} field', 'danger')
+
             return render_template(
                 'account.html', user=user, 
                 form=UpdateForm()
@@ -158,23 +184,6 @@ def account():
     else:
         flash('You are not logged in.', 'danger')
         return redirect(url_for('login'))
-
-@app.route('/account_update', methods=['POST'])
-def account_update():
-    form = UpdateForm()
-
-    if form.validate_on_submit():
-        user = User.query.filter_by(id=session['user_id']).first()
-        if user != None:
-            user.first_name =form.first_name.data
-            user.last_name = form.last_name.data
-            db.session.commit()
-            flash('Your information was successfully updated.', 'success')
-        else:
-            flash('We were unable to validate your user.', 'danger')
-    else:
-        flash('We were unable to validate the form.', 'danger')
-    return redirect(url_for('account'))
 
 # Route to delete your account
 @app.route('/account/delete', methods=['POST'])
@@ -232,48 +241,76 @@ def view_category(id: int):
 
     return render_template("category.html", locations=locs)
 
-# Example of adding a location to the table
-@app.route('/post_loc', methods=['POST'])
-def post_loc():
 
-    # Creates the location based on form data
-    new_loc = Location(
-        name=request.form['name'], 
-        address=request.form['address'], 
-        description=request.form['description'], 
-        contact_email=request.form['contact_email'], 
-        contact_phone=request.form['contact_phone'],
-        category=request.form['category_id']
-    )
+
+# LOCATION MODIFIER STUFF ---------------------------
+
+@app.route('/post_loc', methods=['GET', 'POST'])
+def post_loc():
+    from werkzeug.exceptions import BadRequest
     
-    db.session.add(new_loc)
+    try:
+        new_loc = Location(
+            name=request.form['name'], 
+            address=request.form['address'], 
+            description=request.form['description'], 
+            contact_email=request.form['contact_email'], 
+            contact_phone=request.form['contact_phone'],
+            category=request.form['category_id']
+        )
+
+        db.session.add(new_loc)
+        db.session.commit()
+
+        img = request.files['image']
+
+        loc_image = LocationImage(
+            location_id=new_loc.id,
+            name=new_loc.name,
+            data=img.read()
+        )
+        db.session.add(loc_image)
+        db.session.commit()
+    except BadRequest:
+        print('form submisison failed')
+    
+    return render_template('post_loc.html', 
+        categories=Category.query.all(), 
+        locations=Location.query.all())
+
+# Adding location image
+@app.route('/post_loc_img', methods=['POST'])
+def post_loc_img():
+    img = request.files['image']
+
+    old_img = LocationImage.query.filter_by(location_id=request.form['location_id']).first()
+    if old_img != None:
+        db.session.delete(old_img)
+        db.session.commit()
+
+    new_img = LocationImage(
+        location_id=request.form['location_id'],
+        name=request.form['location_name'],
+        data=img.read()
+    )
+    db.session.add(new_img)
     db.session.commit()
 
-    # Redirects to the home page
-    return redirect(url_for('index'))
+    return redirect(url_for('post_loc'))
 
-'''  SAMPLE LOCATION
-"name": "Fiesta Charra",
-"address": "25 W High St, Oxford, OH 45056",
-"description": "Roomy, booth-lined Mexican restaurant with a low-key vibe, a full bar & lunch specials.",
-"contact_email": "N/A",
-"contact_phone": "(513) 524-3114"
-'''
-
-
-# Example of deleting a location from the table
-@app.route('/del_loc/<int:id>', methods=['POST', 'DELETE'])
+# Deleting location from database
+@app.route('/del_loc/<int:id>', methods=['POST'])
 def del_loc(id: int):
-    # NOTE: Currently POST is included as a method for this funciton because
-    # HTML forms do not recognize DELETE
 
     del_loc = Location.query.filter_by(id=id).first()
+    loc_image = LocationImage.query.filter_by(location_id=id).first()
     db.session.delete(del_loc)
+    db.session.delete(loc_image)
     db.session.commit()
 
-    return redirect(url_for('index'))
+    return redirect(url_for('post_loc'))
 
-
+# LOCAITON STUFF END ---------------------------
 
 
 

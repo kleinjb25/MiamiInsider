@@ -37,3 +37,5 @@ button#del-btn {
     font-weight: bold;
     border-color: #ebebeb;
 }
+
+.text-warn {color: red;}

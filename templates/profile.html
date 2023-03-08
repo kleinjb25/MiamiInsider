@@ -7,12 +7,31 @@
     <body>
         {% include 'utils/nav-template.html' %}
         
-        <div class="jumbotron">
-            <h1 class="display-3">{{ user.first_name }} {{ user.last_name }}</h1>
+        <div class="jumbotron" {% if user.private %} style="margin-bottom: 381px;" {% else %} style="margin-bottom: 23px;" {% endif %}>
+            <h2 class="display-3">{{ user.first_name }} {{ user.last_name }}</h2>
             <!-- Will be able to set email private -->
-            <h4 class="display-6">Email: {{ user.email }}</h4>
             <hr class="my-4">
-
+            {% if user.private %}
+                <p>{{user.first_name}}'s profile is private.</p>
+            {% else %}
+                <h4 class="display-6">Contact information:</h4>
+                <ul>
+                    <li><strong>Email:</strong> {{ user.email }}</li>
+                    <li><strong>Phone number:</strong> {{ user.phone }}</li>
+                </ul>
+                <br>
+                <h4 class="display-6">{{ user.first_name }}'s reviews:</h4>
+                <div class="suggested-container">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Brick Street Bar</h5>
+                            <p><strong>Rating:</strong> 4.2/5</p>
+                            <p class="card-text">My review text</p>
+                            <a href="#" class="btn btn-outline-danger">View location</a>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
         </div>
         {% include 'utils/footer.html' %}
     </body>
