@@ -2,6 +2,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, HiddenField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from wtforms.widgets import TextArea
 import email_validator
 
 def validate_email_domain(form, field):
@@ -77,3 +78,8 @@ class UpdateForm(FlaskForm):
 class SearchForm(FlaskForm):
     query = StringField('Search...', validators=[DataRequired(), Length(min=2)])
     submit = SubmitField('Submit')
+
+class ReviewForm(FlaskForm):
+    rating = HiddenField(validators=[DataRequired()])
+    text = StringField('Text...', widget=TextArea(), validators=[Length(max=250)])
+    submit = SubmitField('Review')

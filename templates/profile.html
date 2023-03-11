@@ -2,10 +2,12 @@
 <html lang="en">
     <head>
         {% include 'utils/header-template.html' %}
-        <title>Document</title>
+        <title>Profile - {{ user.first_name }} {{ user.last_name }}</title>
     </head>
     <body>
         {% include 'utils/nav-template.html' %}
+
+        {% include 'utils/flash_messages.html' %}
         
         <div class="jumbotron" {% if user.private %} style="margin-bottom: 381px;" {% else %} style="margin-bottom: 23px;" {% endif %}>
             <h2 class="display-3">{{ user.first_name }} {{ user.last_name }}</h2>
@@ -21,7 +23,7 @@
                 </ul>
                 <br>
                 <h4 class="display-6">{{ user.first_name }}'s reviews:</h4>
-                <div class="suggested-container">
+                <div class="scroll-container suggested-container">
                     <div class="card" style="width: 18rem;">
                         <div class="card-body">
                             <h5 class="card-title">Brick Street Bar</h5>

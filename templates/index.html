@@ -12,7 +12,7 @@
         <div class="jumbotron">
             <h2 class="display-5">Categories</h2>
             <hr class="my-4">
-            <div class="category-container">
+            <div class="wrap-container category-container">
                 {% if categories|length != 0 %}
                     {% for category in categories %}
                     <div class="category-card" style="width: 18rem;"><a href="#">
@@ -31,15 +31,24 @@
         <div class="jumbotron">
             <h2 class="display-5">Suggested Locations</h2>
             <hr class="my-4">
-            <div class="suggested-container">
+            <div class="scroll-container suggested-container">
                 {% for location in locations %}
                 <div class="card" style="width: 18rem;">
                     <img src="{{ url_for('location_image', id=location.id) }}" alt="{{ location.name }}">
                     <div class="card-body">
                         <h5 class="card-title">{{ location.name }}</h5>
                         <p class="card-text">{{ location.description }}</p>
-                        <p><strong>Rating:</strong> {{ location.avg_rating }}/5</p>
-                        <a href="#" class="btn btn-outline-danger">View location</a>
+                        <strong>Rating: </strong>
+                        <span
+                            {% if location.avg_rating == None %} class="bg-secondary"
+                            {% elif location.avg_rating < 2 %} class="bg-danger"
+                            {% elif location.avg_rating < 3.5 %} class="bg-warning"
+                            {% else %} class="bg-success" {% endif %}
+                        >{{ location.avg_rating }}
+                            <!-- If avg_rating is none just print none -->
+                            {% if location.avg_rating != None %}/5{% endif %}
+                        </span><br><br>
+                        <a href="{{ url_for('location', id=location.id) }}" class="btn btn-outline-danger">View location</a>
                     </div>
                 </div>
                 {% endfor %}

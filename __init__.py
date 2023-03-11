@@ -33,6 +33,10 @@ with app.app_context():
 # PAGES BELOW
 # -----------------
 
+@app.route('/test')
+def test():
+    return render_template('test.html', form=ReviewForm())
+
 # Simply prints the list of current locations for now
 @app.route('/')
 def index():
@@ -223,25 +227,72 @@ def search():
         # TODO: What to do if form not validated?
         return render_template('search.html', results=[])
 
-# Sample route to print all locations of a certain category.
-@app.route('/category/<int:id>', methods=['GET', 'POST'])
-def view_category(id: int):
-    # Gets input from a form to choose how they will be ordered.
-    sort_by = request.form['order']
 
-    # Locations of the same category are found
-    locs = Location.query.filter_by(category_id=id)
+@app.route('/location/<int:id>')
+def location(id: int):
+    loc = Location.query.filter_by(id=id).first()
+    ctg = Category.query.filter_by(id=loc.category).first()
+    reviews = Review.query.filter_by(location_id=id).all()
 
-    if sort_by == "name":
-        locs.order_by(Location.name)
-    elif sort_by == "reviews":
-        locs.order_by(Location.avg_rating)
+    # Sample data
+    reviews_sample = [{
+        "id": 7, "user_id": 3, "location_id": 1, "rating": 3,
+        "text": "Pretty good, I got wasted and vomited on my friend"
+    }]
+
+    if loc != None and ctg != None:
+        return render_template('location.html', location=loc, category=ctg, reviews=reviews, form=ReviewForm(), search_form=SearchForm())
     else:
         abort(404)
 
-    return render_template("category.html", locations=locs)
+# TODO: display reviews on profile
+@app.route('/post_review/<int:loc_id>', methods=['POST'])
+def post_review(loc_id: int):
+    form = ReviewForm()
 
+    if session['logged_in']:
+        if form.validate_on_submit():
+            new_review = Review(
+                    user_id = session['user_id'],
+                    location_id = loc_id,
+                    rating = form.rating.data,
+                    text = form.text.data
+                )
 
+            db.session.add(new_review)
+            loc = Location.query.filter_by(id=loc_id).first()
+            if loc.avg_rating == None:
+                loc.avg_rating = new_review.rating
+            else:
+                loc.avg_rating = round(((float(loc.avg_rating) * float(loc.num_reviews)) + float(new_review.rating)) / float(loc.num_reviews+1), 1)
+            loc.num_reviews+=1
+            db.session.commit()
+            flash('Review posted successfully!', 'success')
+        else:
+            print(form.errors)
+            flash('Error posting review.', 'danger')
+            
+    else:
+        flash('You have to be logged in to post a review.', 'danger')
+    return redirect(url_for('location', id=loc_id))
+
+@app.route('/del_review/<int:id>', methods=['POST'])
+def del_review(id: int):
+    review = Review.query.filter_by(id=id).first()
+    loc_id = review.location_id
+    if review != None:
+        if session['user_id'] == review.user_id:
+            loc = Location.query.filter_by(id=review.location_id).first()
+            loc.avg_rating = round(((float(loc.avg_rating) * float(loc.num_reviews)) - float(review.rating)) / float(loc.num_reviews-1), 1)
+            loc.num_reviews-=1
+            db.session.delete(review)
+            db.session.commit()
+            flash('Your review has been successfully deleted!', 'success')
+        else:
+            flash("You cannot delete someone else's review.", 'danger')
+    else:
+        abort(404)
+    return redirect(url_for('location', id=loc_id))
 
 # LOCATION MODIFIER STUFF ---------------------------
 

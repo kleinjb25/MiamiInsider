@@ -14,6 +14,24 @@ body {
     border-bottom-left-radius: 0!important;
 }
 
+div.wrap-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+div.scroll-container {
+    overflow: auto;
+    white-space: nowrap;
+}
+
+/* For rating coloring */
+span.bg-secondary, span.bg-danger, span.bg-warning, span.bg-success {
+    padding: 1px 4px;
+    border-radius: 6px;
+    color: white;
+    font-weight: bold;
+}
+
 /* CATEGORY RELATED STUFF STARTS */
 
 div.category-container {
@@ -22,11 +40,6 @@ div.category-container {
     padding: 20px;
     background-color: whitesmoke;
     border-radius: 8px;
-
-    /* Flexbox stuff */
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
 }
 
 div.category-card {
@@ -55,15 +68,6 @@ div.category-card {
 }
 /* CATEGORY STUFF ENDS */
 
-div.suggested-container {
-    width: 100%;
-    padding: 20px;
-    background-color: whitesmoke;
-    border-radius: 8px;
-    overflow: auto;
-    white-space: nowrap;
-}
-
 .card {
     display: inline-block !important;
     white-space: normal;
@@ -76,14 +80,36 @@ div.login-body {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 
+div.suggested-container {
+    width: 100%;
+    padding: 20px;
+    background-color: whitesmoke;
+    border-radius: 8px;
+}
+
 div.card img {
     width: 100%;
 }
 
 .text-warn {color: red;}
 
+/* for fontawesome icons */
 .fa-solid {
     margin-right: 5px;
+}
+
+button.review-del {
+    float: right;
+    background: none;
+    border: none;
+    margin-top: 10px;
+    color: black;
+    transition: all 150ms ;
+}
+
+button.review-del:hover { 
+    color: #ba0f0f;
+    transform: scale(1.1); 
 }
 
 footer {

@@ -23,6 +23,7 @@ class User(db.Model):
         self.email = email
         self.password = generate_password_hash(password)
         self.num_reviews = 0
+        self.phone = None
         self.private = True
 
     def __repr__(self):
@@ -87,7 +88,7 @@ class Review(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)  # Relational
     location_id = db.Column(db.Integer, db.ForeignKey('locations.id'), nullable=False)  # Relational
     rating = db.Column(db.Integer, nullable=False)
-    text = db.Column(db.String(1024))
+    text = db.Column(db.String(256))
 
     def __repr__(self):
         return "<Review(id='%d', user_id='%d', location_id='%d')>" % (
