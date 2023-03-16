@@ -33,14 +33,9 @@ with app.app_context():
 # PAGES BELOW
 # -----------------
 
-@app.route('/test')
-def test():
-    return render_template('test.html', form=ReviewForm())
-
 # Simply prints the list of current locations for now
 @app.route('/')
 def index():
-
     return render_template("index.html", 
         locations=Location.query.all(),
         location_images=LocationImage.query.all(),
@@ -50,7 +45,7 @@ def index():
     )
 
 @app.route('/location_image/<int:id>')
-def location_image(id):
+def location_image(id: int):
     image = LocationImage.query.filter_by(location_id=id).first()
     response = make_response(image.data)
     response.headers.set('Content-Type', 'image/jpeg')
@@ -58,8 +53,6 @@ def location_image(id):
 
 
 # LOGIN/REGISTER STUFF BEGIN -------------------------
-
-# TODO: Profile page is currently incomplete
 
 # Login route
 @app.route('/login', methods=['GET', 'POST'])
@@ -152,7 +145,8 @@ def logout():
 @app.route('/profile/<int:id>')
 def profile(id: int):
     user = User.query.filter_by(id=id).first()
-    return render_template('profile.html', user=user, search_form=SearchForm())
+    reviews = Review.query.filter_by(user_id=id).all()
+    return render_template('profile.html', user=user, reviews=reviews, search_form=SearchForm())
 
 # Route to view and update account information
 @app.route('/account', methods=['GET', 'POST'])
@@ -160,7 +154,7 @@ def account():
     if session['logged_in']:
         user = User.query.filter_by(id=session['user_id']).first()
         if user == None:
-            session['logged_in'] = False
+            clear_login_session()
             flash('There was an error validating your login.', 'danger')
             return redirect(url_for('login'))
         else:
@@ -181,10 +175,7 @@ def account():
                 for error in form.errors:
                     flash(f'Error with {error} field', 'danger')
 
-            return render_template(
-                'account.html', user=user, 
-                form=UpdateForm()
-            )
+            return render_template('account.html', user=user, form=UpdateForm())
     else:
         flash('You are not logged in.', 'danger')
         return redirect(url_for('login'))
@@ -234,33 +225,41 @@ def location(id: int):
     ctg = Category.query.filter_by(id=loc.category).first()
     reviews = Review.query.filter_by(location_id=id).all()
 
-    # Sample data
-    reviews_sample = [{
-        "id": 7, "user_id": 3, "location_id": 1, "rating": 3,
-        "text": "Pretty good, I got wasted and vomited on my friend"
-    }]
-
     if loc != None and ctg != None:
-        return render_template('location.html', location=loc, category=ctg, reviews=reviews, form=ReviewForm(), search_form=SearchForm())
+        return render_template(
+            'location.html', 
+            location=loc, 
+            category=ctg, 
+            reviews=reviews, 
+            form=ReviewForm(), 
+
+            search_form=SearchForm()
+        )
     else:
         abort(404)
 
-# TODO: display reviews on profile
+# REVIEW STUFF ------------------------------
+
 @app.route('/post_review/<int:loc_id>', methods=['POST'])
 def post_review(loc_id: int):
     form = ReviewForm()
 
     if session['logged_in']:
         if form.validate_on_submit():
+            user = User.query.filter_by(id=session['user_id']).first()
+            loc = Location.query.filter_by(id=loc_id).first()
+            username = user.first_name + " " + user.last_name
+
             new_review = Review(
-                    user_id = session['user_id'],
-                    location_id = loc_id,
+                    user_id = user.id,
+                    user_name = username,
+                    location_id = loc.id,
+                    location_name = loc.name,
                     rating = form.rating.data,
                     text = form.text.data
                 )
 
             db.session.add(new_review)
-            loc = Location.query.filter_by(id=loc_id).first()
             if loc.avg_rating == None:
                 loc.avg_rating = new_review.rating
             else:
@@ -293,6 +292,9 @@ def del_review(id: int):
     else:
         abort(404)
     return redirect(url_for('location', id=loc_id))
+
+# REVIEW STUFF END ---------------------------
+
 
 # LOCATION MODIFIER STUFF ---------------------------
 

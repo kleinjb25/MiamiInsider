@@ -3,50 +3,10 @@
 
 <head>
     {% include 'utils/header-template.html' %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='stars.css') }}">
     <title>MiamiInsider - {{ location.name }}</title>
     <style>
-        div.stars {
-            width: 120px;
-            display: inline-block;
-        }
-        input.star { display: none; }
-        label.star {
-            float: right;
-            padding: 2px;
-            font-size: 16px;
-            color: #444;
-            transition: all 200ms;
-        }
 
-        label.star-static-full ~ label.star-static-full:before {
-            font-size: 16px;
-            content: '\f005';
-            color: #FD4;
-            font-family: FontAwesome;
-        }
-
-        label.star-static {
-            font-size: 16px;
-            content: '\f005';
-            color: #444;
-            font-family: FontAwesome;
-        }
-
-        label.star-static:before {
-            content: '\f006';
-            font-family: FontAwesome;
-        }
-
-        input.star:checked ~ label.star:before {
-            content: '\f005';
-            color: #FD4;
-            transition: all 250ms;
-        }
-        label.star:hover { transform: scale(1.1); }
-        label.star:before {
-            content: '\f006';
-            font-family: FontAwesome;
-        }
     </style>
 </head>
 
@@ -58,10 +18,16 @@
     <div class="jumbotron">
         <img style="border-radius: 8px;" src="{{ url_for('location_image', id=location.id) }}" alt="{{ location.name }} image">
         <h2 class="display-3">{{ location.name }}</h2>
+        <h4>Rating: <span class="review-{{ location.avg_rating|int }}">{{ location.avg_rating }}
+            <!-- If avg_rating is none just print none -->
+            {% if location.avg_rating != None %}/5{% endif %}
+        </span></h4>
         <hr class="my-4">
         <h4 class="display-6">Contact information:</h4>
         <ul>
-            <li><strong>Email:</strong> {{ location.contact_email }}</li>
+            <li><strong>Email:</strong>
+                <a style="color:red" href="mailto:{{ location.contact_email }}">{{ location.contact_email }}</a>
+            </li>
             <li><strong>Phone number:</strong> {{ location.contact_phone }}</li>
         </ul>
         <hr class="my-4">
@@ -106,7 +72,7 @@
                     {% for review in reviews %}
                     <div class="card" style="width: 18rem;margin-bottom: 20px;">
                         <div class="card-body">
-                            <h5 class="card-title">User Name</h5>
+                            <h5 class="card-title">{{ review.user_name }}</h5>
                             <div class="stars">
                                 {% for i in range(review.rating+1) %}
                                     <label class="star-static-full"></label>

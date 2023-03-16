@@ -39,12 +39,7 @@
                         <h5 class="card-title">{{ location.name }}</h5>
                         <p class="card-text">{{ location.description }}</p>
                         <strong>Rating: </strong>
-                        <span
-                            {% if location.avg_rating == None %} class="bg-secondary"
-                            {% elif location.avg_rating < 2 %} class="bg-danger"
-                            {% elif location.avg_rating < 3.5 %} class="bg-warning"
-                            {% else %} class="bg-success" {% endif %}
-                        >{{ location.avg_rating }}
+                        <span class="review-{{ location.avg_rating|int }}">{{ location.avg_rating }}
                             <!-- If avg_rating is none just print none -->
                             {% if location.avg_rating != None %}/5{% endif %}
                         </span><br><br>

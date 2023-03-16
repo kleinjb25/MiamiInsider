@@ -7,6 +7,8 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='account.css') }}">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
             integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <!-- jQuery included for tooltip feature -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
         <title>MiamiInsider - Account</title>
     </head>
     <body>
@@ -67,7 +69,7 @@
                         {% endfor %}
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" title="You cannot change your email">
                         <label for="email">{{ form.email.label }}</label>
                         {{ form.email(value=user.email, disabled=True, readonly=True) }}
                         {% for error in form.email.errors %}
@@ -75,15 +77,13 @@
                         {% endfor %}
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" title="If you don't want a phone number, simply write 'None'">
                         <label for="phone">{{ form.phone.label }}</label>
                         {{ form.phone(value=user.phone, placeholder='(xxx) xxx-xxxx', disabled=True) }}
-                        <ul>
-                            <li>If you don't want a phone number, simply write 'None'</li>
-                        </ul>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" 
+                            title="Setting your profile to private will prevent people from seeing your contact information and reviews">
                         <label for="private">{{ form.private.label }}</label>
                         {% if user.private %}
                             {{ form.private(value='y', disabled=True, checked=True) }}
@@ -124,5 +124,10 @@
                     });
             }
         }
+
+        // To get tooltips working
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();   
+        });
     </script>
 </html>

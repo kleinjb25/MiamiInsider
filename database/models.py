@@ -12,7 +12,6 @@ class User(db.Model):
     last_name = db.Column(db.String(30), nullable=False)
     email = db.Column(db.String(60), unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
-    num_reviews = db.Column(db.Integer, nullable=False)
 
     phone = db.Column(db.String(14))
     private = db.Column(db.Boolean, nullable=False)
@@ -22,7 +21,6 @@ class User(db.Model):
         self.last_name = last_name
         self.email = email
         self.password = generate_password_hash(password)
-        self.num_reviews = 0
         self.phone = None
         self.private = True
 
@@ -86,7 +84,9 @@ class Review(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)  # Relational
+    user_name = db.Column(db.String(128), nullable=False)
     location_id = db.Column(db.Integer, db.ForeignKey('locations.id'), nullable=False)  # Relational
+    location_name = db.Column(db.String(80), nullable=False)
     rating = db.Column(db.Integer, nullable=False)
     text = db.Column(db.String(256))
 

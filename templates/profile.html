@@ -2,6 +2,7 @@
 <html lang="en">
     <head>
         {% include 'utils/header-template.html' %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='stars.css') }}">
         <title>Profile - {{ user.first_name }} {{ user.last_name }}</title>
     </head>
     <body>
@@ -13,9 +14,14 @@
             <h2 class="display-3">{{ user.first_name }} {{ user.last_name }}</h2>
             <!-- Will be able to set email private -->
             <hr class="my-4">
-            {% if user.private %}
-                <p>{{user.first_name}}'s profile is private.</p>
-            {% else %}
+            {% if session.user_id == user.id and user.private or user.private == False %}
+
+                {% if session.user_id == user.id %}
+                    <p style="font-weight:bold;color:blue">
+                        Your profile is private. Only you can see the information below.
+                    </p>
+                {% endif %}
+
                 <h4 class="display-6">Contact information:</h4>
                 <ul>
                     <li><strong>Email:</strong> {{ user.email }}</li>
@@ -23,16 +29,27 @@
                 </ul>
                 <br>
                 <h4 class="display-6">{{ user.first_name }}'s reviews:</h4>
-                <div class="scroll-container suggested-container">
-                    <div class="card" style="width: 18rem;">
+                <div class="wrap-container">
+                    {% for review in reviews %}
+                    <div class="card" style="width: 18rem;margin-bottom: 20px;">
                         <div class="card-body">
-                            <h5 class="card-title">Brick Street Bar</h5>
-                            <p><strong>Rating:</strong> 4.2/5</p>
-                            <p class="card-text">My review text</p>
-                            <a href="#" class="btn btn-outline-danger">View location</a>
+                            <h5 class="card-title">Location Name</h5>
+                            <div class="stars">
+                                {% for i in range(review.rating+1) %}
+                                    <label class="star-static-full"></label>
+                                {% endfor %}
+                                {% for i in range(5-review.rating) %}
+                                    <label class="star-static"></label>
+                                {% endfor %}
+                            </div>
+                            <p class="card-text">{{ review.text }}</p>
+                            <a href="{{ url_for('location', id=review.location_id) }}" class="btn btn-outline-danger">View location</a>
                         </div>
                     </div>
+                    {% endfor %}
                 </div>
+            {% else %}
+                <p>{{user.first_name}}'s profile is private.</p>
             {% endif %}
         </div>
         {% include 'utils/footer.html' %}
