@@ -184,12 +184,14 @@ def account():
 @app.route('/account/delete', methods=['POST'])
 def account_delete():
     if session['logged_in']:
-        user = User.query.filter_by(id=session['user_id']).first_or_404()
-        db.session.delete(user)
+        user = User.query.filter_by(id=session['user_id']).one_or_none()
         if user == None:
             flash('Your user id was not successfully validated.', 'danger')
             return redirect(url_for('account'))
         else:
+            user_reviews = Review.query.filter_by(user_id=session['user_id']).all()
+            db.session.delete(user_reviews)
+            db.session.delete(user)
             db.session.commit()
             clear_login_session()
             return redirect(url_for('register'))
@@ -268,6 +270,7 @@ def post_review(loc_id: int):
             db.session.commit()
             flash('Review posted successfully!', 'success')
         else:
+            db.session.rollback()
             print(form.errors)
             flash('Error posting review.', 'danger')
             
@@ -357,13 +360,15 @@ def del_loc(id: int):
 
     del_loc = Location.query.filter_by(id=id).first()
     loc_image = LocationImage.query.filter_by(location_id=id).first()
+    loc_reviews = Review.query.filter_by(location_id=id).all()
+    db.session.delete(loc_reviews)
     db.session.delete(del_loc)
     db.session.delete(loc_image)
     db.session.commit()
 
     return redirect(url_for('post_loc'))
 
-# LOCAITON STUFF END ---------------------------
+# LOCATION STUFF END ---------------------------
 
 
 

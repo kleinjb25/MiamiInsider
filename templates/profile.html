@@ -17,7 +17,7 @@
             {% if session.user_id == user.id and user.private or user.private == False %}
 
                 {% if session.user_id == user.id %}
-                    <p style="font-weight:bold;color:blue">
+                    <p style="font-weight:bold;color:yellow">
                         Your profile is private. Only you can see the information below.
                     </p>
                 {% endif %}
@@ -33,7 +33,7 @@
                     {% for review in reviews %}
                     <div class="card" style="width: 18rem;margin-bottom: 20px;">
                         <div class="card-body">
-                            <h5 class="card-title">Location Name</h5>
+                            <h5 class="card-title">{{ review.location_name }}</h5>
                             <div class="stars">
                                 {% for i in range(review.rating+1) %}
                                     <label class="star-static-full"></label>

@@ -21,7 +21,7 @@
         <h4>Rating: <span class="review-{{ location.avg_rating|int }}">{{ location.avg_rating }}
             <!-- If avg_rating is none just print none -->
             {% if location.avg_rating != None %}/5{% endif %}
-        </span></h4>
+        </span><button class="fav-button"><i class="fa-regular fa-heart"></i></button></h4>
         <hr class="my-4">
         <h4 class="display-6">Contact information:</h4>
         <ul>

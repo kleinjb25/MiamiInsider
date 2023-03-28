@@ -38,6 +38,12 @@ span.review-None, span.review-1, span.review-2, span.review-3, span.review-4, sp
     font-weight: bold;
 }
 
+button.fav-button {
+    margin-left: 5vw;
+    background: none;
+    border: none;
+}
+
 /* CATEGORY RELATED STUFF STARTS */
 
 div.category-container {
