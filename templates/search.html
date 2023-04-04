@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% include 'utils/header-template.html' %}
+    <title>MiamiInsider - Search</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="Website.js"></script>
+</head>
+
+<body>
+    {% include 'utils/nav-template.html' %}
+
+    {% include 'utils/flash_messages.html' %}
+
+    <div class="jumbotron">
+        <h2 class="display-5">Location Results</h2>
+        <hr class="my-4">
+        <div class="scroll-container suggested-container">
+            {% include 'utils/location-cards.html' %}
+        </div>
+    </div>
+
+    {% include 'utils/footer.html' %}
+</body>
+
+</html>
