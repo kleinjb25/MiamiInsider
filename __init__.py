@@ -228,6 +228,11 @@ def search():
                     if similarity > similarity_min and word not in common_words:
                         if loc not in loc_list:
                             loc_list.append(loc)
+                            break  # move to the next loc in the outer loop
+                else:
+                    continue  # executed if the inner loop did not break
+                break  # move to the next loc in the outer loop
+
 
         return render_template('search.html', locations=loc_list, search_form=SearchForm())
     else:
