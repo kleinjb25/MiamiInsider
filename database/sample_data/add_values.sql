@@ -4,7 +4,7 @@
 INSERT INTO users VALUES (0, 'Admin', 'User', 'admin@miamioh.edu', 'pbkdf2:sha256:260000$wmVhehZVBBrDErgB$0705ae78c87fb6ac8487724fdcfe5193cec39ce6c3f930455c435d052277329e', NULL, 1, 99);
 INSERT INTO users VALUES (1, 'John', 'Doe', 'doejh14@miamioh.edu', 'pbkdf2:sha256:260000$wmVhehZVBBrDErgB$0705ae78c87fb6ac8487724fdcfe5193cec39ce6c3f930455c435d052277329e', '(513) 433-4884', 1, 0);
 INSERT INTO users VALUES (2, 'Mary', 'Smith', 'smithma@miamioh.edu', 'pbkdf2:sha256:260000$wmVhehZVBBrDErgB$0705ae78c87fb6ac8487724fdcfe5193cec39ce6c3f930455c435d052277329e', '(812) 498-1193', 0, 0);
-INSERT INTO users VALUES (3, 'Jim', 'Buckington', 'buckinjr@miamioh.edu', 'pbkdf2:sha256:260000$wmVhehZVBBrDErgB$0705ae78c87fb6ac8487724fdcfe5193cec39ce6c3f930455c435d052277329e', NULL, 1, 99);
+INSERT INTO users VALUES (3, 'Jim', 'Buckington', 'buckinjr@miamioh.edu', 'pbkdf2:sha256:260000$wmVhehZVBBrDErgB$0705ae78c87fb6ac8487724fdcfe5193cec39ce6c3f930455c435d052277329e', NULL, 1, 0);
 
 INSERT INTO categories VALUES (1, 'Restaurants', 'utensils');
 INSERT INTO categories VALUES (2, 'Clinics', 'suitcase-medical');
