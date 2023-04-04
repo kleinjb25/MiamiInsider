@@ -229,8 +229,6 @@ def search():
                         if loc not in loc_list:
                             loc_list.append(loc)
 
-
-
         return render_template('search.html', locations=loc_list, search_form=SearchForm())
     else:
         flash('Error with form validation - check your search query.', 'danger')  

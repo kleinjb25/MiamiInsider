@@ -15,18 +15,46 @@
             <div class="wrap-container category-container">
                 {% if categories|length != 0 %}
                     {% for category in categories %}
-                    <div class="category-card" style="width: 18rem;"><a href="#">
-                        <h5 class="card-title">
-                            <i class="fa-solid fa-{{ category.fa_tag}}"></i>
-                            {{ category.name }}
-                        </h5>
-                    </a></div>
+                    <div class="category-card" style="width: 18rem;">
+                        <a href="#" data-category="{{ category.name }}">
+                            <h5 class="card-title">
+                                <i class="fa-solid fa-{{ category.fa_tag}}"></i>
+                                {{ category.name }}
+                            </h5>
+                        </a>
+                    </div>
                     {% endfor %}
                 {% else %}
                     <p>No categories right now...</p>
                 {% endif %}
             </div>
         </div>
+        
+        <script>
+            // Get the search input field and search button
+            const searchInput = document.querySelector('.custom-search');
+            const searchBtn = document.querySelector('.custom-search-btn');
+        
+            // Add event listeners to category cards
+            const categoryCards = document.querySelectorAll('.category-card');
+            categoryCards.forEach(card => {
+                const link = card.querySelector('a');
+                link.addEventListener('click', (event) => {
+                    // Prevent the default link behavior
+                    event.preventDefault();
+                    
+                    // Get the category name from the data-category attribute
+                    const categoryName = link.getAttribute('data-category');
+                    
+                    // Set the value of the search input field to the category name
+                    searchInput.value = categoryName;
+                    
+                    // Submit the form
+                    searchBtn.click();
+                });
+            });
+        </script>
+        
 
         <div class="jumbotron">
             <h2 class="display-5">Suggested Locations</h2>
