@@ -14,7 +14,7 @@
             <h2 class="display-3">{{ user.first_name }} {{ user.last_name }}</h2>
             <!-- Will be able to set email private -->
             <hr class="my-4">
-            {% if session.user_id == user.id and user.private or user.private == False %}
+            {% if session.user_id == user.id and user.private%}
 
                 {% if session.user_id == user.id %}
                     <p style="font-weight:bold;color:darkkhaki">
@@ -53,7 +53,36 @@
                     {% endfor %}
                 </div>
             {% else %}
-                <p>{{user.first_name}}'s profile is private.</p>
+            <h4 class="display-6">Contact information:</h4>
+            <ul>
+                <li><strong>Email:</strong> 
+                    <a style="color:red" href="mailto:{{ user.contact_email }}">{{ user.email }}</a></li>
+                <li><strong>Phone number:</strong> {{ user.phone }}</li>
+            </ul>
+            <br>
+            <h4 class="display-6">{{ user.first_name }}'s reviews:</h4>
+            {% if reviews|length == 0 %} <p>{{ user.first_name }} has not posted any reviews.</p> {% endif %}
+            <div id="reviews" class="wrap-container">
+                {% for review in reviews %}
+                <div class="card" style="width: 18rem;margin-bottom: 20px;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ review.location_name }}</h5>
+                        <div class="stars">
+                            {% for i in range(review.rating+1) %}
+                                <label class="star-static-full"></label>
+                            {% endfor %}
+                            {% for i in range(5-review.rating) %}
+                                <label class="star-static"></label>
+                            {% endfor %}
+                        </div>
+                        <p class="card-text">{{ review.text }}</p>
+                        <a href="{{ url_for('location', id=review.location_id) }}" class="btn btn-outline-danger">View location</a>
+                        {% if session.user_id == review.user_id or session.user_permission == 99 %}<button class="review-del"
+                            onclick="confirmDelete({{ review.id }})"><i class="fa-solid fa-trash-can"></i></button>{% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
             {% endif %}
         </div>
         {% include 'utils/footer.html' %}
