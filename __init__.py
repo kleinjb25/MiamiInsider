@@ -216,6 +216,7 @@ def search():
         query = str(form.query.data).lower()
         query_words = query.split()
         loc_list = []
+        similarity_min = 0.7
 
         for loc in Location.query.all():
             loc_name = loc.name.lower()
@@ -224,7 +225,7 @@ def search():
             for word in query_words:
                 for loc_word in loc_name.split() + loc_desc.split():
                     similarity = 1 - Levenshtein.distance(word.lower(), loc_word.lower()) / max(len(word), len(loc_word))
-                    if similarity > 0.8 and word not in common_words:
+                    if similarity > similarity_min and word not in common_words:
                         if loc not in loc_list:
                             loc_list.append(loc)
 
