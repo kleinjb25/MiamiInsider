@@ -5,6 +5,13 @@ from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationE
 from wtforms.widgets import TextArea
 import email_validator
 
+common_words = ['the', 'of' 'and', 'a', 'to', 'in', 'that', 'it', 'for', 'on', 'are', 'with']
+
+def validate_search_common_words(form, field):
+    query = field.data
+    if query in common_words: # Check if search query is common/unspecific word
+        raise ValidationError('This word will not provide an accurate search result.')
+
 def validate_email_domain(form, field):
     email = field.data
     domain = email.split('@')[1] # Get the domain from the email
@@ -76,7 +83,7 @@ class UpdateForm(FlaskForm):
     submit = SubmitField('Update')
 
 class SearchForm(FlaskForm):
-    query = StringField('Search...', validators=[DataRequired(), Length(min=2)])
+    query = StringField('Search...', validators=[DataRequired(), Length(min=2), validate_search_common_words])
     # TODO: Category
     # TODO: Sorting
     submit = SubmitField('Submit')

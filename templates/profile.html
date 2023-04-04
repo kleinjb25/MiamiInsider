@@ -14,7 +14,7 @@
             <h2 class="display-3">{{ user.first_name }} {{ user.last_name }}</h2>
             <!-- Will be able to set email private -->
             <hr class="my-4">
-            {% if session.user_id == user.id and user.private%}
+            {% if session.user_id == user.id and user.private %}
 
                 {% if session.user_id == user.id %}
                     <p style="font-weight:bold;color:darkkhaki">

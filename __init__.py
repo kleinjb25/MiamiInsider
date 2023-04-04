@@ -220,14 +220,18 @@ def search():
             loc_name = loc.name.lower()
             loc_desc = loc.description.lower()
             matches = []
+
             for word in query_words:
-                if word in loc_name or word in loc_desc:
+                if word in loc_name or word in loc_desc and word not in common_words:
                     matches.append(word)
             if len(matches) == len(query_words):
                 loc_list.append(loc)
 
         return render_template('search.html', locations=loc_list, search_form=SearchForm())
-
+    else:
+        flash('Error with form validation - check your search query.', 'danger')  
+        return redirect(url_for('index'))
+        
 
 @app.route('/location/<int:id>')
 def location(id: int):
