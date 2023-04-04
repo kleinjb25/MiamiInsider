@@ -1,4 +1,5 @@
 import os
+import Levenshtein
 from flask import Flask, render_template, request, redirect, url_for, abort, flash, session, make_response
 from sqlalchemy.exc import IntegrityError
 from wtforms.validators import ValidationError
@@ -215,17 +216,18 @@ def search():
         query = str(form.query.data).lower()
         query_words = query.split()
         loc_list = []
+        similarity_min = 0.7
 
         for loc in Location.query.all():
             loc_name = loc.name.lower()
             loc_desc = loc.description.lower()
-            matches = []
 
             for word in query_words:
-                if word in loc_name or word in loc_desc and word not in common_words:
-                    matches.append(word)
-            if len(matches) == len(query_words):
-                loc_list.append(loc)
+                for loc_word in loc_name.split() + loc_desc.split():
+                    similarity = 1 - Levenshtein.distance(word.lower(), loc_word.lower()) / max(len(word), len(loc_word))
+                    if similarity > similarity_min and word not in common_words:
+                        if loc not in loc_list:
+                            loc_list.append(loc)
 
         return render_template('search.html', locations=loc_list, search_form=SearchForm())
     else:
