@@ -31,11 +31,10 @@
         </div>
         
         <script>
-            // Get the search input field and search button
+            // Description: sets the value of the search input to the data-category attribute of the clicked element
             const searchInput = document.querySelector('.custom-search');
             const searchBtn = document.querySelector('.custom-search-btn');
         
-            // Add event listeners to category cards
             const categoryCards = document.querySelectorAll('.category-card');
             categoryCards.forEach(card => {
                 const link = card.querySelector('a');
@@ -43,13 +42,10 @@
                     // Prevent the default link behavior
                     event.preventDefault();
                     
-                    // Get the category name from the data-category attribute
                     const categoryName = link.getAttribute('data-category');
                     
-                    // Set the value of the search input field to the category name
                     searchInput.value = categoryName;
                     
-                    // Submit the form
                     searchBtn.click();
                 });
             });

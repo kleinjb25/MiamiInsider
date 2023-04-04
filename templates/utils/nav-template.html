@@ -14,25 +14,6 @@
     </div>
 </form>
 
-<!-- <script>
-    // Get the search input field and search button
-    const searchInput = document.querySelector('.custom-search');
-    const searchBtn = document.querySelector('.custom-search-btn');
-
-    // Add event listener to search input field
-    searchInput.addEventListener('keydown', (event) => {
-        // Check if the key pressed is the "Enter" key
-        if (event.key === 'Enter') {
-            // Prevent the default form submission behavior
-            event.preventDefault();
-
-            // Programmatically click the search button to submit the form
-            searchBtn.click();
-        }
-    });
-</script> -->
-
-
 {% if not session.logged_in %}
 <div class="btn-group" role="group">
     <a class="btn btn-light" href="{{ url_for('register') }}">Sign up</a>
