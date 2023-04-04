@@ -1,0 +1,12 @@
+{% for location in locations %}
+    <div class="card" style="width: 18rem;">
+        <img src="{{ url_for('location_image', id=location.id) }}" alt="{{ location.name }}">
+        <div class="card-body">
+            <h5 class="card-title">{{ location.name }}</h5>
+            <p class="card-text">{{ location.description }}</p>
+            <strong>Rating: </strong>
+            <span class="review-{{ location.avg_rating|int }}">{{ location.avg_rating }}</span><br><br>
+            <a href="{{ url_for('location', id=location.id) }}" class="btn btn-outline-danger">View location</a>
+        </div>
+    </div>
+{% endfor %}

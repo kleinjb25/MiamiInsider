@@ -3,7 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 db = SQLAlchemy()
 
-
+# Admin permissions is 99
 class User(db.Model):
     __tablename__ = "users"
 
@@ -16,6 +16,8 @@ class User(db.Model):
     phone = db.Column(db.String(14))
     private = db.Column(db.Boolean, nullable=False)
 
+    permission = db.Column(db.Integer, nullable=False)
+
     def __init__(self, first_name, last_name, email, password):
         self.first_name = first_name
         self.last_name = last_name
@@ -23,6 +25,7 @@ class User(db.Model):
         self.password = generate_password_hash(password)
         self.phone = None
         self.private = True
+        self.permission = 0
 
     def __repr__(self):
         return "<User(id='%d', first_name='%s', last_name='%s', email='%s')>" % (

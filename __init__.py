@@ -70,7 +70,7 @@ def login():
             # Sets the session data so that we can check if user is logged in 
             # in other pages
             session['user_id'] = user.id
-            session['username'] = user.first_name
+            session['user_permission'] = user.permission
             session['logged_in'] = True
 
             flash(f'Successfully logged in. Welcome back!', 'success')
@@ -122,7 +122,6 @@ def register():
         flash(f'Navigate to your account and set up your profile!', 'info')
 
         session['user_id'] = new_user.id
-        session['username'] = new_user.first_name
         session['logged_in'] = True
 
         return redirect(url_for('index'))
@@ -202,7 +201,7 @@ def account_delete():
 
 def clear_login_session():
     session.pop('user_id', None)
-    session.pop('username', None)
+    session.pop('user_permission', None)
     session['logged_in'] = False
 
 # LOGIN/REGISTER STUFF END ---------------------------
@@ -213,12 +212,17 @@ def search():
     form = SearchForm()
     if form.validate_on_submit():
         # TODO: Process the form data here
-        results = form.query.data
+        query = str(form.query.data).lower()
+        loc_list = []
 
-        return render_template('search.html', results=results)
+        for loc in Location.query.all():
+            if query in loc.name.lower():
+                loc_list.append(loc)
+
+        return render_template('search.html', locations=loc_list, search_form=SearchForm())
     else:
         # TODO: What to do if form not validated?
-        return render_template('search.html', results=[])
+        return render_template('search.html', locations=[], search_form=SearchForm())
 
 
 @app.route('/location/<int:id>')
@@ -239,6 +243,12 @@ def location(id: int):
         )
     else:
         abort(404)
+
+@app.route('/location/<int:id>/favorite')
+def favorite():
+    # TODO: If user id and location id not in table, add to table.
+    #   Otherwise, remove from table
+    pass
 
 # REVIEW STUFF ------------------------------
 
@@ -283,7 +293,7 @@ def del_review(id: int):
     review = Review.query.filter_by(id=id).first()
     loc_id = review.location_id
     if review != None:
-        if session['user_id'] == review.user_id:
+        if session['user_id'] == review.user_id or session['user_permission'] == 99:
             loc = Location.query.filter_by(id=review.location_id).first()
             loc.avg_rating = round(((float(loc.avg_rating) * float(loc.num_reviews)) - float(review.rating)) / float(loc.num_reviews-1), 1)
             loc.num_reviews-=1
@@ -299,40 +309,63 @@ def del_review(id: int):
 # REVIEW STUFF END ---------------------------
 
 
-# LOCATION MODIFIER STUFF ---------------------------
+# ADMIN STUFF ---------------------------
 
-@app.route('/post_loc', methods=['GET', 'POST'])
-def post_loc():
-    from werkzeug.exceptions import BadRequest
-    
-    try:
-        new_loc = Location(
-            name=request.form['name'], 
-            address=request.form['address'], 
-            description=request.form['description'], 
-            contact_email=request.form['contact_email'], 
-            contact_phone=request.form['contact_phone'],
-            category=request.form['category_id']
-        )
+@app.route('/admin', methods=['GET', 'POST'])
+def admin():
+    if session['user_permission'] == 99:
+        from werkzeug.exceptions import BadRequest
+        
+        try:
+            new_loc = Location(
+                name=request.form['name'], 
+                address=request.form['address'], 
+                description=request.form['description'], 
+                contact_email=request.form['contact_email'], 
+                contact_phone=request.form['contact_phone'],
+                category=request.form['category_id']
+            )
 
-        db.session.add(new_loc)
-        db.session.commit()
+            db.session.add(new_loc)
+            db.session.commit()
 
-        img = request.files['image']
+            img = request.files['image']
 
-        loc_image = LocationImage(
-            location_id=new_loc.id,
-            name=new_loc.name,
-            data=img.read()
-        )
-        db.session.add(loc_image)
-        db.session.commit()
-    except BadRequest:
-        print('form submisison failed')
-    
-    return render_template('post_loc.html', 
-        categories=Category.query.all(), 
-        locations=Location.query.all())
+            loc_image = LocationImage(
+                location_id=new_loc.id,
+                name=new_loc.name,
+                data=img.read()
+            )
+            db.session.add(loc_image)
+            db.session.commit()
+        except BadRequest:
+            print('form submisison failed')
+        
+        return render_template('admin.html', 
+            categories=Category.query.all(), 
+            locations=Location.query.all(),
+            users=User.query.all())
+    else:
+        flash("You do not have the necessary permissions", 'danger')
+        return redirect(url_for('index'))
+
+@app.route('/update_permission', methods=['POST'])
+def update_permission():
+    if request:
+        for user_id, value in request.form.items():
+            user = User.query.get(user_id)
+            if value == 'true':
+                user.permission = 99
+            elif value == 'false':
+                user.permission = 0
+                if user_id == session['user_id']:
+                    session['user_permission'] = 0
+            db.session.commit()
+        
+        flash("Permissions updated successfully!", 'success')
+        return redirect(url_for('admin'))
+    else:
+        flash("Form had issues submitting", 'danger')
 
 # Adding location image
 @app.route('/post_loc_img', methods=['POST'])
@@ -352,7 +385,8 @@ def post_loc_img():
     db.session.add(new_img)
     db.session.commit()
 
-    return redirect(url_for('post_loc'))
+    flash("Location image posted!", 'success')
+    return redirect(url_for('admin'))
 
 # Deleting location from database
 @app.route('/del_loc/<int:id>', methods=['POST'])
@@ -366,9 +400,10 @@ def del_loc(id: int):
     db.session.delete(loc_image)
     db.session.commit()
 
-    return redirect(url_for('post_loc'))
+    flash("Location deleted!", 'success')
+    return redirect(url_for('admin'))
 
-# LOCATION STUFF END ---------------------------
+# ADMIN STUFF END ---------------------------
 
 
 

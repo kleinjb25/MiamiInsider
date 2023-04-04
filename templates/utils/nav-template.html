@@ -20,6 +20,9 @@
     <a class="btn btn-danger" href="{{ url_for('login') }}">Log in</a>
 </div>
 {% else %}
-<a class="btn btn-danger" href="{{ url_for('account') }}">Account</a>
+<div class="btn-group" role="group">
+    <a class="btn btn-light" href="{{ url_for('profile', id=session.user_id) }}">Profile</a>
+    <a class="btn btn-danger" href="{{ url_for('account') }}">Account</a>
+</div>
 {% endif %}
 </nav>

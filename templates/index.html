@@ -32,21 +32,7 @@
             <h2 class="display-5">Suggested Locations</h2>
             <hr class="my-4">
             <div class="scroll-container suggested-container">
-                {% for location in locations %}
-                <div class="card" style="width: 18rem;">
-                    <img src="{{ url_for('location_image', id=location.id) }}" alt="{{ location.name }}">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ location.name }}</h5>
-                        <p class="card-text">{{ location.description }}</p>
-                        <strong>Rating: </strong>
-                        <span class="review-{{ location.avg_rating|int }}">{{ location.avg_rating }}
-                            <!-- If avg_rating is none just print none -->
-                            {% if location.avg_rating != None %}/5{% endif %}
-                        </span><br><br>
-                        <a href="{{ url_for('location', id=location.id) }}" class="btn btn-outline-danger">View location</a>
-                    </div>
-                </div>
-                {% endfor %}
+                {% include 'utils/location-cards.html' %}
             </div>
         </div>
 
