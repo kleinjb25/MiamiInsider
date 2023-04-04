@@ -213,16 +213,24 @@ def search():
     if form.validate_on_submit():
         # TODO: Process the form data here
         query = str(form.query.data).lower()
+        query_words = query.split()
         loc_list = []
 
         for loc in Location.query.all():
-            if query in loc.name.lower():
+            loc_name = loc.name.lower()
+            loc_desc = loc.description.lower()
+            matches = []
+            for word in query_words:
+                if word in loc_name or word in loc_desc:
+                    matches.append(word)
+            if len(matches) == len(query_words):
                 loc_list.append(loc)
 
         return render_template('search.html', locations=loc_list, search_form=SearchForm())
     else:
         # TODO: What to do if form not validated?
         return render_template('search.html', locations=[], search_form=SearchForm())
+
 
 
 @app.route('/location/<int:id>')
