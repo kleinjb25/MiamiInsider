@@ -227,10 +227,6 @@ def search():
                 loc_list.append(loc)
 
         return render_template('search.html', locations=loc_list, search_form=SearchForm())
-    else:
-        # TODO: What to do if form not validated?
-        return render_template('search.html', locations=[], search_form=SearchForm())
-
 
 
 @app.route('/location/<int:id>')
