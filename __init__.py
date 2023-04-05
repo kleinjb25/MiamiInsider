@@ -225,7 +225,7 @@ def search():
             for word in query_words:
                 for loc_word in loc_name.split() + loc_desc.split():
                     similarity = 1 - Levenshtein.distance(word.lower(), loc_word.lower()) / max(len(word), len(loc_word))
-                    if similarity > similarity_min and word not in common_words:
+                    if similarity > similarity_min and word not in stop_words:
                         if loc not in loc_list:
                             loc_list.append(loc)
                             break  # move to the next loc in the outer loop
