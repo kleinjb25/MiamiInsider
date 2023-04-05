@@ -5,11 +5,11 @@ from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationE
 from wtforms.widgets import TextArea
 import email_validator
 
-common_words = ['the', 'of' 'and', 'a', 'to', 'in', 'that', 'it', 'for', 'on', 'are', 'with']
+stop_words = ['a', 'an', 'the', 'and', 'but', 'or', 'if', 'because', 'as', 'of', 'at', 'by', 'for', 'with', 'about', 'against', 'between', 'into', 'through', 'during', 'before', 'after', 'above', 'below', 'to', 'from', 'up', 'down', 'in', 'out', 'on', 'off', 'over', 'under']
 
 def validate_search_common_words(form, field):
     query = field.data
-    if query in common_words: # Check if search query is common/unspecific word
+    if query in stop_words: # Check if search query is common/unspecific word
         raise ValidationError('This word will not provide an accurate search result.')
 
 def validate_email_domain(form, field):
@@ -83,7 +83,7 @@ class UpdateForm(FlaskForm):
     submit = SubmitField('Update')
 
 class SearchForm(FlaskForm):
-    query = StringField('Search...', validators=[DataRequired(), Length(min=2), validate_search_common_words])
+    query = StringField('Search...', validators=[DataRequired(), Length(min=2)])
     # TODO: Category
     # TODO: Sorting
     submit = SubmitField('Submit')
