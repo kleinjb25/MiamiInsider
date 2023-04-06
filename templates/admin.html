@@ -14,10 +14,14 @@
 <body>
 
     <div class="container-fluid">
-        <h1>Admin Page</h1>
+        <div>
+            <h1>Admin Page</h1>
+            <a href="{{ url_for('index') }}">Return home</a>
+        </div>
+        
         {% include 'utils/flash_messages.html' %}
         <div class="row">
-            <div class="col-6 child-body">
+            <div class="col-5 child-body">
                 <h2>Upload Location with Image</h2>
             
                 <form action="{{ url_for('admin') }}" method="POST" enctype="multipart/form-data">
@@ -60,8 +64,7 @@
                 <form action="{{ url_for('update_permission') }}" method="POST">
                     {% for user in users %}
                         <div>
-                            <input type="checkbox" id="{{user.id}}-check" name="{{user.id}}-check" value="{{user.id}}" {% if user.permission == 99 %}checked{% endif %} {% if user.id == 0 %}disabled{% endif %}>
-                            <input type="hidden" name="{{user.id}}-check" value="False">
+                            <input type="checkbox" id="{{user.id}}-check" name="{{user.id}}-check" {% if user.permission == 99 %}value="False"{% else %}value="True"{% endif %} {% if user.permission == 99 %}checked{% endif %} {% if user.id == 0 %}disabled{% endif %}>
                             <label for="{{user.id}}-check" {% if session['user_id'] == user.id %}style="font-weight:bold"{% endif %}>
                                 ID: {{user.id}}, Name: {{user.first_name}} {{user.last_name}}, Email: {{user.email}}
                             </label>
@@ -71,29 +74,44 @@
                 </form>
             </div>
         </div>
-    </div>
-
-    <div class="parent-body">
-        <h2>Locations: </h2>
-        {% for location in locations %}
-            <div class="child-body">
-                <h3>ID: {{location.id}} - {{ location.name }}</h3>
-                <p>Address: {{location.address}}. Email: {{location.contact_email}}. Phone: {{location.contact_phone}}</p>
-                <p><strong>Description:</strong> {{location.description}}</p>
-                <p>Reviews: {{location.num_reviews}}. Avg Rating: {{location.avg_rating}}</p>
-                <p>Category: {{ categories[location.id+1].name }}</p>
-                <form method="POST" action="{{ url_for('post_loc_img') }}" enctype="multipart/form-data">
-                    <input type="hidden" id="location_id" name="location_id" value="{{ location.id }}">
-                    <input type="hidden" id="location_name" name="location_name" value="{{ location.name }}">
-                    <input type="file" id="image" name="image">
-                    <input type="submit", value="Update image">
-                </form>
-                <br>
-                <form method="POST" action="{{ url_for('del_loc', id=location.id) }}">
-                    <input style="background-color: red;" type="submit", value="Delete">
+        <div class="row">
+            <div style="height:270px" class="col-4 child-body">
+                <h2>Add Category</h2>
+            
+                <form action="{{ url_for('post_category') }}" method="POST">
+            
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name"><br><br>
+            
+                    <label for="name">fa-tag:</label>
+                    <input type="text" id="fa-tag" name="fa-tag"><br><br>
+            
+                    <input type="submit" value="Submit">
                 </form>
             </div>
-        {% endfor %}
+            <div class="col-6 parent-body">
+                <h2>Locations: </h2>
+                {% for location in locations %}
+                <div class="child-body">
+                    <h3>ID: {{location.id}} - {{ location.name }}</h3>
+                    <p>Address: {{location.address}}. Email: {{location.contact_email}}. Phone: {{location.contact_phone}}</p>
+                    <p><strong>Description:</strong> {{location.description}}</p>
+                    <p>Reviews: {{location.num_reviews}}. Avg Rating: {{location.avg_rating}}</p>
+                    <p>Category: {{ categories[location.id+1].name }}</p>
+                    <form method="POST" action="{{ url_for('post_loc_img') }}" enctype="multipart/form-data">
+                        <input type="hidden" id="location_id" name="location_id" value="{{ location.id }}">
+                        <input type="hidden" id="location_name" name="location_name" value="{{ location.name }}">
+                        <input type="file" id="image" name="image">
+                        <input type="submit" , value="Update image">
+                    </form>
+                    <br>
+                    <form method="POST" action="{{ url_for('del_loc', id=location.id) }}">
+                        <input style="background-color: red;" type="submit" , value="Delete">
+                    </form>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
 </body>
 </html>

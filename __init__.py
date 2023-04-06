@@ -118,12 +118,13 @@ def register():
             flash(f'Email has to be from the @miamioh.edu domain.', 'danger')
             return redirect(url_for('register'))
         
+        session['user_id'] = new_user.id
+        session['user_permission'] = new_user.permission
+        session['logged_in'] = True
+
         # If everything goes fine and account is created:
         flash(f'Account created. Welcome aboard, {form.first_name.data}!', 'success')
         flash(f'Navigate to your account and set up your profile!', 'info')
-
-        session['user_id'] = new_user.id
-        session['logged_in'] = True
 
         return redirect(url_for('index'))
 
@@ -234,7 +235,7 @@ def search():
                 break  # move to the next loc in the outer loop
 
 
-        return render_template('search.html', locations=loc_list, search_form=SearchForm())
+        return render_template('search.html', locations=loc_list, query=query, search_form=SearchForm())
     else:
         flash('Error with form validation - check your search query.', 'danger')  
         return redirect(url_for('index'))
@@ -368,18 +369,25 @@ def admin():
 def update_permission():
     if request:
         for user_id, value in request.form.items():
-            user = User.query.get(user_id)
-            if value == 'true':
-                user.permission = 99
-            elif value == 'false':
-                user.permission = 0
-                if user_id == session['user_id']:
-                    session['user_permission'] = 0
-            db.session.commit()
+            user_id = user_id.split('-')[0]
+            user = User.query.filter_by(id=user_id).one_or_none()
+            if user != None:
+                if value == "True":
+                    print('admin')
+                    user.permission = 99
+                elif value == "False":
+                    print('not admin')
+                    user.permission = 0
+                    if user_id == session['user_id']:
+                        session['user_permission'] = 0
+                db.session.commit()
+            else:
+                print(f"Unable to find user with id {user_id}")
         
         flash("Permissions updated successfully!", 'success')
         return redirect(url_for('admin'))
     else:
+        print(request)
         flash("Form had issues submitting", 'danger')
 
 # Adding location image
@@ -401,6 +409,19 @@ def post_loc_img():
     db.session.commit()
 
     flash("Location image posted!", 'success')
+    return redirect(url_for('admin'))
+
+@app.route('/post_category', methods=['POST'])
+def post_category():
+    new_ctg = Category(
+        name=request.form['name'],
+        fa_tag=request.form['fa-tag']
+    )
+
+    db.session.add(new_ctg)
+    db.session.commit()
+
+    flash("Category added!", 'success')
     return redirect(url_for('admin'))
 
 # Deleting location from database

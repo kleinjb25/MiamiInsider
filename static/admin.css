@@ -1,14 +1,18 @@
-div.parent-body {
-    background-color: lightgrey;
+div {
     border-radius: 8px;
     margin: 20px;
+}
+
+div.parent-body {
+    background-color: lightgrey;
     padding: 20px;
-    width: 40%;
 }
 
 div.child-body {
     background-color: whitesmoke;
-    border-radius: 8px;
-    margin: 20px;
     padding: 14px;
 }
+
+/*
+Add overflow for user permissions and location list
+*/
