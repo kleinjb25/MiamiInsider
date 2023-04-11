@@ -49,7 +49,7 @@ class Location(db.Model):
     contact_phone = db.Column(db.String(60))
     num_reviews = db.Column(db.Integer, nullable=False)
     avg_rating = db.Column(db.Float)
-    category = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=False)  # Relational
+    category = db.Column(db.Integer, db.ForeignKey('categories.id'))  # Relational
 
     def __init__(self, name, address, description, contact_email, contact_phone, category):
         self.name = name

@@ -16,3 +16,8 @@ div.child-body {
 /*
 Add overflow for user permissions and location list
 */
+div.overflow-div {
+    height:650px;
+    overflow-y:scroll;
+    overflow-x:none;
+}

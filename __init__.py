@@ -424,6 +424,21 @@ def post_category():
     flash("Category added!", 'success')
     return redirect(url_for('admin'))
 
+@app.route('/del_category/<int:id>', methods=['POST'])
+def del_category(id: int):
+    ctg = Category.query.filter_by(id=id).one_or_none()
+    if ctg != None:
+        locs = Location.query.filter_by(category=id).all()
+        for loc in locs: loc.category = None
+
+        db.session.delete(ctg)
+        db.session.commit()
+        flash("Category deleted!", 'success')
+    else:
+        flash("Category ID not found", 'danger')
+
+    return redirect(url_for('admin'))
+
 # Deleting location from database
 @app.route('/del_loc/<int:id>', methods=['POST'])
 def del_loc(id: int):
@@ -431,7 +446,8 @@ def del_loc(id: int):
     del_loc = Location.query.filter_by(id=id).first()
     loc_image = LocationImage.query.filter_by(location_id=id).first()
     loc_reviews = Review.query.filter_by(location_id=id).all()
-    db.session.delete(loc_reviews)
+    for review in loc_reviews: db.session.delete(review)
+
     db.session.delete(del_loc)
     db.session.delete(loc_image)
     db.session.commit()

@@ -62,7 +62,7 @@
             <br>
             <h4 class="display-6">{{ user.first_name }}'s reviews:</h4>
             {% if reviews|length == 0 %} <p>{{ user.first_name }} has not posted any reviews.</p> {% endif %}
-            <div id="reviews" class="wrap-container">
+            <div id="reviews" class="scroll-container">
                 {% for review in reviews %}
                 <div class="card" style="width: 18rem;margin-bottom: 20px;">
                     <div class="card-body">
