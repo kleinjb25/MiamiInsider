@@ -213,11 +213,14 @@ def clear_login_session():
 def search():
     form = SearchForm()
     if form.validate_on_submit():
-        # TODO: Process the form data here
         query = str(form.query.data).lower()
+        sort = str(form.sort.data)
+
+        # sort options: Name, Description, Rating
+
         query_words = query.split()
         loc_list = []
-        similarity_min = 0.7
+        similarity_min = 0.65
 
         for loc in Location.query.all():
             loc_name = loc.name.lower()
@@ -234,11 +237,18 @@ def search():
                     continue  # executed if the inner loop did not break
                 break  # move to the next loc in the outer loop
 
+        if sort == 'Name':
+            loc_list.sort(key=lambda x: x.name)
+        elif sort == 'Description':
+            loc_list.sort(key=lambda x: x.description)
+        elif sort == 'Rating':
+            loc_list.sort(key=lambda x: x.avg_rating, reverse=True)
 
         return render_template('search.html', locations=loc_list, query=query, search_form=SearchForm())
     else:
         flash('Error with form validation - check your search query.', 'danger')  
         return redirect(url_for('index'))
+
         
 
 @app.route('/location/<int:id>')

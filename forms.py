@@ -84,6 +84,7 @@ class UpdateForm(FlaskForm):
 
 class SearchForm(FlaskForm):
     query = StringField('Search...', validators=[DataRequired(), Length(min=2)])
+    sort = HiddenField('Sort Value')
     # TODO: Category
     # TODO: Sorting
     submit = SubmitField('Submit')

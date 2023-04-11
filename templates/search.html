@@ -15,6 +15,57 @@
     <div class="jumbotron">
         <h2 class="display-5">Location Results</h2>
         <hr class="my-4">
+        <h4 class="mb-3 text-center">Sort By:</h4>
+        <div class="row justify-content-center">
+            <div class="btn-group btn-group-lg mb-3" role="group">
+                <button type="button" class="btn btn-outline-danger btn-rounded" id="Name">Name</button>
+                <button type="button" class="btn btn-outline-danger btn-rounded" id="Description">Description</button>
+                <button type="button" class="btn btn-outline-danger btn-rounded" id="Rating">Rating</button>
+
+                <script>
+                    const nameButton = document.querySelector('#Name');
+                    const descriptionButton = document.querySelector('#Description');
+                    const ratingButton = document.querySelector('#Rating');
+                    const sortInput = document.querySelector('#sort');
+                    const searchBtn = document.querySelector('.custom-search-btn');
+
+                    nameButton.addEventListener('click', () => {
+                        changeSearchBar('Name');
+                        updateButtonClasses(nameButton);
+                    });
+
+                    descriptionButton.addEventListener('click', () => {
+                        changeSearchBar('Description');
+                        updateButtonClasses(descriptionButton);
+                    });
+
+                    ratingButton.addEventListener('click', () => {
+                        changeSearchBar('Rating');
+                        updateButtonClasses(ratingButton);
+                    });
+
+                    const changeSearchBar = (name) => {
+                        sortInput.value = name;
+                        searchBtn.click();
+                    };
+
+                    const updateButtonClasses = (activeButton) => {
+                        // Remove the 'btn-outline-danger' class from the clicked button
+                        activeButton.classList.remove('btn-outline-danger');
+                        activeButton.classList.add('btn-danger');
+
+                        // Add the 'btn-outline-danger' class back to the other buttons
+                        const otherButtons = [nameButton, descriptionButton, ratingButton].filter(button => button !== activeButton);
+                        otherButtons.forEach(button => {
+                            button.classList.remove('btn-danger');
+                            button.classList.add('btn-outline-danger');
+                        });
+                    };
+
+                </script>
+
+            </div>
+        </div>
         <div class="scroll-container suggested-container">
             {% include 'utils/location-cards.html' %}
         </div>
