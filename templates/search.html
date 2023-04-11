@@ -50,16 +50,14 @@
                     };
 
                     const updateButtonClasses = (activeButton) => {
-                        // Remove the 'btn-outline-danger' class from the clicked button
-                        activeButton.classList.remove('btn-outline-danger');
-                        activeButton.classList.add('btn-danger');
+                        // activeButton.classList.remove('btn-outline-danger');
+                        // activeButton.classList.add('btn-danger');
 
-                        // Add the 'btn-outline-danger' class back to the other buttons
-                        const otherButtons = [nameButton, descriptionButton, ratingButton].filter(button => button !== activeButton);
-                        otherButtons.forEach(button => {
-                            button.classList.remove('btn-danger');
-                            button.classList.add('btn-outline-danger');
-                        });
+                        // const otherButtons = [nameButton, descriptionButton, ratingButton].filter(button => button !== activeButton);
+                        // otherButtons.forEach(button => {
+                        //     button.classList.remove('btn-danger');
+                        //     button.classList.add('btn-outline-danger');
+                        // });
                     };
 
                 </script>
