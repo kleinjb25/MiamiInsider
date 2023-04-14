@@ -28,6 +28,8 @@ The data model of the project is provided in `models.py` file in the */database*
 ## Database setup
 The */database* directory contains the database.db file, which is the sqlite3 database that the project utilizes. The subdirectory */sample_data* contains a .sql file that can be run to upload sample data to the database.
 
+Run the command below in the */database* directory to upload the sample data to the database.db file.
+
 ```sqlite3 database.db < sample_data/add_values.sql```
 
 ### SQLite installation
