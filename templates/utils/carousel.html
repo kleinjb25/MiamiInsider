@@ -1,0 +1,43 @@
+<div class="bd-example">
+    <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+            <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
+            <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
+            <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner">
+            <div class="carousel-item active" data-interval="5000">
+                <img src="{{ url_for('static', filename='images/uptown_carousel.png') }}" class="d-block w-100" alt="Restaurant">
+                <div class="carousel-caption d-none d-md-block">
+                    <h1>Restaurants</h1>
+                    <h4>Find your new favorite place to eat</h4>
+                    <a href="#" class="btn btn-danger btn-lg" data-category="Restaurants">Browse restaurants</a>
+                </div>
+            </div>
+            <div class="carousel-item" data-interval="5000">
+                <img src="{{ url_for('static', filename='images/brickstreet_carousel.png') }}" class="d-block w-100" alt="Bar">
+                <div class="carousel-caption d-none d-md-block">
+                    <h1>Bars</h1>
+                    <h4>Enjoy a night out with friends at the right place</h4>
+                    <a href="#" class="btn btn-danger btn-lg" data-category="Bars">Browse bars</a>
+                </div>
+            </div>
+            <div class="carousel-item" data-interval="5000">
+                <img src="{{ url_for('static', filename='images/mccullough-hyde_carousel.png') }}" class="d-block w-100" alt="Clinic">
+                <div class="carousel-caption d-none d-md-block">
+                    <h1>Clinics</h1>
+                    <h4>Find the best places to get treated</h4>
+                    <a href="#" class="btn btn-danger btn-lg" data-category="Clinics">Browse clinics</a>
+                </div>
+            </div>
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+</div>

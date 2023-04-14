@@ -15,10 +15,10 @@
     <div class="jumbotron">
         <h2 class="display-5">Location Results</h2>
         <hr class="my-4">
-        <h4 class="mb-3 text-center">Sort By:</h4>
-        <div class="row justify-content-center">
-            <div class="btn-group btn-group-lg mb-3" role="group">
-                <div class="btn-group" role="group">
+        <div id="SortBox">
+            <h4 class="mb-3 text-center">Sort By:</h4>
+            <div class="row justify-content-center">
+                <div class="btn-group btn-group-lg mb-3" role="group">
                     <button type="button" class="btn btn-light" id="Name">Name</button>
                     <button type="button" class="btn btn-light" id="Description">Description</button>
                     <button type="button" class="btn btn-light" id="Rating">Rating</button>
@@ -31,27 +31,31 @@
                     const sortInput = document.querySelector('#sort');
                     const searchBtn = document.querySelector('.custom-search-btn');
 
-                    nameButton.addEventListener('click', () => {
-                        changeSearchBar('Name');
-                    });
-
-                    descriptionButton.addEventListener('click', () => {
-                        changeSearchBar('Description');
-                    });
-
-                    ratingButton.addEventListener('click', () => {
-                        changeSearchBar('Rating');
-                    });
+                    nameButton.addEventListener('click', () => { changeSearchBar('Name'); });
+                    descriptionButton.addEventListener('click', () => { changeSearchBar('Description'); });
+                    ratingButton.addEventListener('click', () => { changeSearchBar('Rating'); });
 
                     const changeSearchBar = (name) => {
                         sortInput.value = name;
                         searchBtn.click();
                     };
 
-                </script>
+                    // Sticky sort box code
+                    window.onscroll = function () { myFunction() };
+                    var scrollBox = document.getElementById("SortBox");
+                    var sticky = scrollBox.offsetTop;
 
+                    function myFunction() {
+                        if (window.pageYOffset >= sticky)
+                            scrollBox.classList.add("sticky")
+                        else
+                            scrollBox.classList.remove("sticky");
+                    }
+
+                </script>
             </div>
         </div>
+        
         <div class="scroll-container suggested-container">
             {% include 'utils/location-cards.html' %}
         </div>

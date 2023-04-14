@@ -57,13 +57,13 @@ Once the requirements have all been downloaded, run the command ```py __init__.p
 ### Step 4
 In the terminal, you should see the following output:
 ~~~
-$ python __init__.py 
+$ py __init__.py 
  * Serving Flask app '__init__'
  * Debug mode: on
 WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
  * Running on all addresses (0.0.0.0)
- * Running on http://127.0.0.1:6969
- * Running on http://172.25.253.29:6969
+ * Running on http://127.0.0.1:8080
+ * Running on http://172.25.253.29:8080
 Press CTRL+C to quit
  * Restarting with stat
  * Debugger is active!

@@ -475,7 +475,7 @@ def del_loc(id: int):
 # Runs the page, port specified below
 # -----------------
 if __name__ == '__main__':
-    # Port is set to 6969, change to anything you want
+    # Port is set to 8080, change to anything you want
     #   Remember, has to be 1024 or above
-    port = int(os.environ.get('PORT', 6969))
+    port = int(os.environ.get('PORT', 8080))
     app.run(host='0.0.0.0', port=port, debug=True)

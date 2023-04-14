@@ -17,12 +17,40 @@ body {
 div.wrap-container {
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-between;
 }
 
 div.scroll-container {
     overflow: auto;
     white-space: nowrap;
 }
+
+h2 {
+    text-align: center;
+}
+
+/* CAROUSEL STUFF */
+.carousel-caption {
+    margin: auto;
+    width: max-content;
+    margin-bottom: 20em;
+}
+
+.carousel-caption h1,
+.carousel-caption h4 {
+    transition-duration: 250ms;
+}
+
+.carousel-caption h1:hover, 
+.carousel-caption h4:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+    
+    padding: 10px;
+    border-radius: 20px;
+
+}
+
+/* CAROUSEL STUFF ENDS */
 
 /* For rating coloring */
 span.review-None { background-color: grey; }
@@ -47,7 +75,7 @@ button.fav-button {
 /* CATEGORY RELATED STUFF STARTS */
 
 div.category-container {
-    width: 40%;
+    width: 60%;
     margin: auto;
     padding: 20px;
     background-color: whitesmoke;
@@ -55,7 +83,6 @@ div.category-container {
 }
 
 div.category-card {
-    margin: auto;
     margin-top: 10px;
     margin-bottom: 10px;
     padding: 15px;
@@ -64,13 +91,14 @@ div.category-card {
     background-color: white;
     width: 40%;
 
+    border: 1px solid lightgrey;
     border-radius: 6px;
 
     transition-duration: 250ms;
 }
 
 .category-card:hover {
-    box-shadow: 0 4px 8px 0 rgba(255, 0, 0, 0.2);
+    background-color: #f0f0f0;
 }
 
 .category-card a,
@@ -101,6 +129,18 @@ div.suggested-container {
 
 div.card img {
     width: 100%;
+}
+
+.sticky {
+    position: fixed;
+
+    background-color: lightgrey;
+    padding: 20px;
+    border-radius: 6px;
+
+    top: 7em;
+    right: 20px;
+    z-index: 1;
 }
 
 .text-warn {color: red;}
