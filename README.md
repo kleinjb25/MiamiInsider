@@ -47,12 +47,12 @@ Navigate to [this link](https://www.python.org/downloads/release/python-3112/) t
 ### Step 2
 In a terminal, navigate to the home directory of this repository where you have cloned it onto your computer. Making sure that you are using Python version 3.11.2, run the following command:
 
-```pip install -r requirements.txt```
+```py -3.11 -m pip install -r requirements.txt```
 
 This command will download all of the necessary Python dependencies the project needs to run.
 
 ### Step 3
-Once the requirements have all been downloaded, run the command ```python __init__.py```. Make sure you are still in the home directory of the project. If this doesn't work, try ```python3 __init__.py```. This command should start running the web application in your terminal.
+Once the requirements have all been downloaded, run the command ```py __init__.py```. Make sure you are still in the home directory of the project. This command should start running the web application in your terminal.
 
 ### Step 4
 In the terminal, you should see the following output:
@@ -69,4 +69,4 @@ Press CTRL+C to quit
  * Debugger is active!
  * Debugger PIN: 678-438-076
 ~~~
-Click on one of the addresses provided.
+Click on one of the addresses provided. This will take you to the homepage of the web server.
