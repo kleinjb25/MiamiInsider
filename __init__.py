@@ -34,11 +34,13 @@ with app.app_context():
 # PAGES BELOW
 # -----------------
 
-# Simply prints the list of current locations for now
+# Only displays locations with rating above 4
+CUTOFF_RATING = 4
+
 @app.route('/')
 def index():
     return render_template("index.html", 
-        locations=Location.query.all(),
+        locations=Location.query.filter(Location.avg_rating >= CUTOFF_RATING).all(),
         location_images=LocationImage.query.all(),
         categories=Category.query.all(),
 

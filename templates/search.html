@@ -18,9 +18,11 @@
         <h4 class="mb-3 text-center">Sort By:</h4>
         <div class="row justify-content-center">
             <div class="btn-group btn-group-lg mb-3" role="group">
-                <button type="button" class="btn btn-outline-danger btn-rounded" id="Name">Name</button>
-                <button type="button" class="btn btn-outline-danger btn-rounded" id="Description">Description</button>
-                <button type="button" class="btn btn-outline-danger btn-rounded" id="Rating">Rating</button>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-light" id="Name">Name</button>
+                    <button type="button" class="btn btn-light" id="Description">Description</button>
+                    <button type="button" class="btn btn-light" id="Rating">Rating</button>
+                </div>
 
                 <script>
                     const nameButton = document.querySelector('#Name');
@@ -31,33 +33,19 @@
 
                     nameButton.addEventListener('click', () => {
                         changeSearchBar('Name');
-                        updateButtonClasses(nameButton);
                     });
 
                     descriptionButton.addEventListener('click', () => {
                         changeSearchBar('Description');
-                        updateButtonClasses(descriptionButton);
                     });
 
                     ratingButton.addEventListener('click', () => {
                         changeSearchBar('Rating');
-                        updateButtonClasses(ratingButton);
                     });
 
                     const changeSearchBar = (name) => {
                         sortInput.value = name;
                         searchBtn.click();
-                    };
-
-                    const updateButtonClasses = (activeButton) => {
-                        // activeButton.classList.remove('btn-outline-danger');
-                        // activeButton.classList.add('btn-danger');
-
-                        // const otherButtons = [nameButton, descriptionButton, ratingButton].filter(button => button !== activeButton);
-                        // otherButtons.forEach(button => {
-                        //     button.classList.remove('btn-danger');
-                        //     button.classList.add('btn-outline-danger');
-                        // });
                     };
 
                 </script>
