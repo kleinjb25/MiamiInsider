@@ -18,6 +18,7 @@ div.wrap-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    align-items: flex-start;
 }
 
 div.scroll-container {
@@ -109,6 +110,7 @@ div.category-card {
 /* CATEGORY STUFF ENDS */
 
 .card {
+    margin-left: 20px;
     display: inline-block !important;
     white-space: normal;
 }

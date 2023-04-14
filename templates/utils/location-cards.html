@@ -5,7 +5,7 @@
             <img src="{{ url_for('location_image', id=location.id) }}" alt="{{ location.name }}">
             <div class="card-body">
                 <h5 class="card-title">{{ location.name }}</h5>
-                <p class="card-text">{{ location.description }}</p>
+                <p class="card-text">{{ location.description[:100] }}{% if location.description|length > 100 %}...{% endif %}</p>
                 <strong>Rating: </strong>
                 <span class="review-{{ location.avg_rating|int }}">{{ location.avg_rating }}</span><br><br>
                 <a href="{{ url_for('location', id=location.id) }}" class="btn btn-outline-danger">View location</a>
