@@ -238,6 +238,12 @@ def search():
                 else:
                     continue  # executed if the inner loop did not break
                 break  # move to the next loc in the outer loop
+        
+        ctg = Category.query.filter_by(name=form.query.data).one_or_none()
+        if ctg != None:
+            ctg_locs = Location.query.filter_by(category=ctg.id)
+            for loc in ctg_locs:
+                if loc not in loc_list: loc_list.append(loc)
 
         if sort == 'Name':
             loc_list.sort(key=lambda x: x.name)

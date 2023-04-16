@@ -37,18 +37,27 @@ h2 {
     margin-bottom: 20em;
 }
 
-.carousel-caption h1,
-.carousel-caption h4 {
-    transition-duration: 250ms;
-}
 
-.carousel-caption h1:hover, 
-.carousel-caption h4:hover {
+.carousel-caption .carousel-caption-inner {
     background-color: rgba(0, 0, 0, 0.8);
     
     padding: 10px;
-    border-radius: 20px;
+    border-radius: 20px 20px 0 0;
 
+    transition-duration: 250ms;
+}
+
+.carousel-caption .carousel-caption-inner:hover {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.carousel-caption .btn {
+    font-weight: bold;
+    border-radius: 0 0 20px 20px;
+}
+
+.carousel-caption .btn:hover {
+    background-color: rgb(255, 114, 114);
 }
 
 /* CAROUSEL STUFF ENDS */
@@ -83,36 +92,42 @@ div.category-container {
     border-radius: 8px;
 }
 
-div.category-card {
+a.category-card {
     margin-top: 10px;
     margin-bottom: 10px;
     padding: 15px;
     text-align: center;
     border: none;
     background-color: white;
-    width: 40%;
+    width: 30%;
 
     border: 1px solid lightgrey;
     border-radius: 6px;
 
+    color: red;
+    text-decoration: none;
+
     transition-duration: 250ms;
 }
 
-.category-card:hover {
+a.category-card:hover {
     background-color: #f0f0f0;
-}
-
-.category-card a,
-.category-card a:hover {
     color: red;
     text-decoration: none;
 }
+
 /* CATEGORY STUFF ENDS */
 
 .card {
     margin-left: 20px;
     display: inline-block !important;
     white-space: normal;
+
+    transition-duration: 250ms;
+}
+
+.card:hover {
+    background-color: #f0f0f0;  
 }
 
 div.login-body {

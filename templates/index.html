@@ -16,14 +16,12 @@
             <div class="wrap-container category-container">
                 {% if categories|length != 0 %}
                     {% for category in categories %}
-                    <div class="category-card" style="width: 18rem;">
-                        <a href="#" data-category="{{ category.name }}">
-                            <h5 class="card-title">
-                                <i class="fa-solid fa-{{ category.fa_tag}}"></i>
-                                {{ category.name }}
-                            </h5>
-                        </a>
-                    </div>
+                    <a class="category-card" href="#" data-category="{{ category.name }}">
+                        <h5 class="card-title">
+                            <i class="fa-solid fa-{{ category.fa_tag}}"></i>
+                            {{ category.name }}
+                        </h5>
+                    </a>
                     {% endfor %}
                 {% else %}
                     <p>No categories right now...</p>
@@ -32,39 +30,23 @@
         </div>
         
         <script>
-            // Description: sets the value of the search input to the data-category attribute of the clicked element
-            const searchInput = document.querySelector('.custom-search');
-            const searchBtn = document.querySelector('.custom-search-btn');
-        
+            function setSearchInputValue(event) {
+                // Prevent the default link behavior
+                event.preventDefault();
+                document.querySelector('.custom-search').value = event.currentTarget.getAttribute('data-category');
+                document.querySelector('.custom-search-btn').click();
+            }
+
             const categoryCards = document.querySelectorAll('.category-card');
             categoryCards.forEach(card => {
-                const link = card.querySelector('a');
-                link.addEventListener('click', (event) => {
-                    // Prevent the default link behavior
-                    event.preventDefault();
-                    
-                    const categoryName = link.getAttribute('data-category');
-                    
-                    searchInput.value = categoryName;
-                    
-                    searchBtn.click();
-                });
+                card.addEventListener('click', setSearchInputValue);
             });
 
             const carouselCaptions = document.querySelectorAll('.carousel-caption');
-                carouselCaptions.forEach(caption => {
-                    const link = caption.querySelector('a');
-                    link.addEventListener('click', (event) => {
-                        // Prevent the default link behavior
-                        event.preventDefault();
-
-                        const categoryName = link.getAttribute('data-category');
-
-                        searchInput.value = categoryName;
-
-                        searchBtn.click();
-                    });
-                });
+            carouselCaptions.forEach(caption => {
+                const link = caption.querySelector('a');
+                link.addEventListener('click', setSearchInputValue);
+            });
         </script>
         
 
