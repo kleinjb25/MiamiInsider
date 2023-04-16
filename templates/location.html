@@ -16,13 +16,19 @@
     {% include 'utils/flash_messages.html' %}
 
     <div class="jumbotron">
-        <img style="border-radius: 8px;" src="{{ url_for('location_image', id=location.id) }}" alt="{{ location.name }} image">
-        <h2 class="display-3">{{ location.name }}</h2>
-        <h4>
-            Rating: <span class="review-{{ location.avg_rating|int }}">{{ location.avg_rating }}</span>
-            <button class="fav-button"><i class="fa-regular fa-heart"></i></button><br><br>
-            Category: <span style="font-weight: 400;">{{ category.name }}</span>
-        </h4>
+        <div class="row">
+            <div class="col-6">
+                <img class="loc-img" src="{{ url_for('location_image', id=location.id) }}" alt="{{ location.name }} image">
+            </div>
+            <div class="col-6">
+                <h2 class="display-3">{{ location.name }}</h2>
+                <h4>
+                    Rating: <span class="review-{{ location.avg_rating|int }}">{{ location.avg_rating }}</span>
+                    <button class="fav-button"><i class="fa-regular fa-heart"></i></button><br><br>
+                    Category: <span style="font-weight: 400;">{{ category.name }}</span>
+                </h4>
+            </div>
+        </div>
         <hr class="my-4">
         <h4 class="display-6">Contact information:</h4>
         <ul>

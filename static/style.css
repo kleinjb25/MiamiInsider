@@ -3,6 +3,10 @@ body {
     box-sizing: border-box;
 }
 
+p, ul {
+    font-size: 18px;
+}
+
 .custom-search {
     width: 400px!important;
     border-top-right-radius: 0!important;
@@ -24,10 +28,6 @@ div.wrap-container {
 div.scroll-container {
     overflow: auto;
     white-space: nowrap;
-}
-
-h2 {
-    text-align: center;
 }
 
 /* CAROUSEL STUFF */
@@ -165,6 +165,11 @@ div.card img {
 /* for fontawesome icons */
 .fa-solid {
     margin-right: 5px;
+}
+
+img.loc-img {
+    border-radius: 8px;
+    max-width: 50em;
 }
 
 button.review-del {
