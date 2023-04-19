@@ -39,7 +39,7 @@ Since the database file is SQLite3, you need to have it installed if you want to
 This app has a very rudimentary permissions system. A user can have two permission - regular user or admin. In the User table, there is a column called *permission*. By default, when a new user is created this value is 0. An admin user will have a permission value of 99. A user with admin permissions will be able to add locations, delete any user review and location, and update location information and images.
 
 ## Detailed installation and setup instructions
-You can get the details of this project's dependencies below. This section details how to set up and run the project from this GitHub repository. 
+This section details how to set up and run the project from this GitHub repository. 
 
 ### Step 1
 Navigate to [this link](https://www.python.org/downloads/release/python-3112/) to download Python v3.11.2, using the appropriate installer for your operating system. Once you have downloaded and installed Python, you can clone this GitHub repository onto your local machine.
