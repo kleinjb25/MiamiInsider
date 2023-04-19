@@ -13,7 +13,7 @@
     {% include 'utils/flash_messages.html' %}
 
     <div class="jumbotron">
-        <h2 class="display-5">Location Results</h2>
+        <h2 id="SearchHead" class="display-5">Location Results</h2>
         <hr class="my-4">
         <div id="SortBox">
             <h4 class="mb-3 text-center">Sort By:</h4>
@@ -43,20 +43,24 @@
                     // Sticky sort box code
                     window.onscroll = function () { myFunction() };
                     var scrollBox = document.getElementById("SortBox");
+                    var searchHeader = document.getElementById("SearchHead");
                     var sticky = scrollBox.offsetTop;
 
                     function myFunction() {
-                        if (window.pageYOffset >= sticky)
+                        if (window.pageYOffset >= sticky) {
                             scrollBox.classList.add("sticky")
-                        else
+                            searchHeader.style.cssText = "margin-top:105px;";
+                        } else {
                             scrollBox.classList.remove("sticky");
+                            searchHeader.style.cssText = NaN;
+                        }
                     }
 
                 </script>
             </div>
         </div>
         
-        <div class="scroll-container suggested-container">
+        <div class="wrap-container suggested-container">
             {% include 'utils/location-cards.html' %}
         </div>
     </div>

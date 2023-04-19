@@ -30,7 +30,18 @@ The */database* directory contains the database.db file, which is the sqlite3 da
 
 Run the command below in the */database* directory to upload the sample data to the database.db file.
 
-```sqlite3 database.db < sample_data/add_values.sql```
+```sqlite3 database.db < sample_data/dump.sql```
+
+Run the set of commands below in the */database* directory to save the current database to dump.sql file:
+
+```
+$ sqlite3 database.db
+SQLite version 3.XX.XX
+Enter ".help" for usage hints.
+sqlite> .output sample_data/dump.sql
+sqlite> .dump
+sqlite> .exit
+```
 
 ### SQLite installation
 Since the database file is SQLite3, you need to have it installed if you want to run SQL commands directly in the database. If you want to install SQLite on Windows 10/11, [this](https://www.youtube.com/watch?v=XA3w8tQnYCA) video is really helpful.

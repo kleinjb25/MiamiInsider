@@ -21,12 +21,13 @@ p, ul {
 div.wrap-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: flex-start;
 }
 
 div.scroll-container {
     overflow: auto;
+    justify-content: flex-start;
     white-space: nowrap;
 }
 
@@ -77,10 +78,15 @@ span.review-None, span.review-1, span.review-2, span.review-3, span.review-4, sp
 }
 
 button.fav-button {
+    font-size: 30px;
+    color: rgb(255, 105, 130);
     margin-left: 5vw;
     background: none;
     border: none;
 }
+
+
+.fav-button:focus { outline: none; }
 
 /* CATEGORY RELATED STUFF STARTS */
 
@@ -160,6 +166,7 @@ div.card img {
     z-index: 1;
 }
 
+
 .text-warn {color: red;}
 
 /* for fontawesome icons */
@@ -169,7 +176,7 @@ div.card img {
 
 img.loc-img {
     border-radius: 8px;
-    max-width: 50em;
+    width: 45vw;
 }
 
 button.review-del {

@@ -20,6 +20,8 @@ class User(db.Model):
     phone = db.Column(db.String(14))
     private = db.Column(db.Boolean, nullable=False)
 
+    biography = db.Column(db.String, nullable=True)
+
     # Permission of 99 means admin
     permission = db.Column(db.Integer, nullable=False)
 

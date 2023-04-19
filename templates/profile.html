@@ -12,7 +12,6 @@
         
         <div class="jumbotron" {% if user.private %} style="margin-bottom: 381px;" {% else %} style="margin-bottom: 23px;" {% endif %}>
             <h2 class="display-3">{{ user.first_name }} {{ user.last_name }}</h2>
-            <!-- Will be able to set email private -->
             <hr class="my-4">
             {% if session.user_id == user.id and user.private %}
 
@@ -28,6 +27,10 @@
                         <a style="color:red" href="mailto:{{ user.contact_email }}">{{ user.email }}</a></li>
                     <li><strong>Phone number:</strong> {{ user.phone }}</li>
                 </ul>
+                <br>
+                <h4 class="display-6">Biography:</h4>
+                <hr class="my-4">
+                <p>{{ user.biography }}</p>
                 <br>
                 <h4 class="display-6">{{ user.first_name }}'s reviews:</h4>
                 {% if reviews|length == 0 %} <p>{{ user.first_name }} has not posted any reviews.</p> {% endif %}

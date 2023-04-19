@@ -1,6 +1,6 @@
 # Imports
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, HiddenField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, HiddenField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from wtforms.widgets import TextArea
 import email_validator
@@ -90,6 +90,7 @@ class UpdateForm(FlaskForm):
     last_name = StringField('Last name', validators=[DataRequired(), Length(min=1, max=30)])
     email = StringField('Email', validators=[DataRequired(), Email(), validate_email_domain])
     phone = StringField('Phone', validators=[DataRequired(), validate_phone_number])
+    biography = TextAreaField('About me', validators=[Length(max=500)])
     private = BooleanField('Keep profile private')
     submit = SubmitField('Update')
 
