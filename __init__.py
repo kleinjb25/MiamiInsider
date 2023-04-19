@@ -62,7 +62,7 @@ def random_number(id: int):
     loc = Location.query.filter_by(category=id).all()
     numLocations = len(loc)
     #get random number based on the number of rows
-    randomLocationID = random.random(1, numLocations)
+    randomLocationID = random.randint(1, numLocations)
 
     # return a redirect to the location page 
     return redirect(url_for('location', id=randomLocationID))
@@ -328,10 +328,10 @@ def location(id: int):
         abort(404)
 
 @app.route('/location/<int:id>/favorite')
-def favorite():
+def favorite(id: int):
     # TODO: If user id and location id not in table, add to table.
     #   Otherwise, remove from table
-    pass
+    return redirect(url_for())
 
 # REVIEW STUFF ------------------------------
 
