@@ -1,3 +1,4 @@
+# Imports
 import os
 import Levenshtein
 from flask import Flask, render_template, request, redirect, url_for, abort, flash, session, make_response
@@ -37,27 +38,35 @@ with app.app_context():
 # Only displays locations with rating above 4
 CUTOFF_RATING = 4
 
-@app.route('/')
+# Index route, displays the home page
+@app.route('/')  # The route to get to this page is specified here
 def index():
+    # The render_template function renders an HTML template from the /templates directory
     return render_template("index.html", 
+        # Below are variables passed to the page. These will be used in the page using Jinja2
         locations=Location.query.filter(Location.avg_rating >= CUTOFF_RATING).all(),
         location_images=LocationImage.query.all(),
         categories=Category.query.all(),
 
+        # The search form is needed for all pages that incorporate the navigation bar, because 
+        #   the search bar is in the navigation
         search_form=SearchForm()
     )
 
+# This route returns an image. This is used within web pages to display location images
 @app.route('/location_image/<int:id>')
 def location_image(id: int):
     image = LocationImage.query.filter_by(location_id=id).first()
     response = make_response(image.data)
     response.headers.set('Content-Type', 'image/jpeg')
+    
+    # Returns a response with content specified as image
     return response
 
 
 # LOGIN/REGISTER STUFF BEGIN -------------------------
 
-# Login route
+# Login route, manages all login related things
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     # Initializes the form
@@ -89,7 +98,7 @@ def login():
         search_form=SearchForm()
     )
 
-# Register route
+# Register route, manages all registering related things
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     # Initializes the form
@@ -120,6 +129,7 @@ def register():
             flash(f'Email has to be from the @miamioh.edu domain.', 'danger')
             return redirect(url_for('register'))
         
+        # Sets session information to new user's information
         session['user_id'] = new_user.id
         session['user_permission'] = new_user.permission
         session['logged_in'] = True
@@ -128,6 +138,7 @@ def register():
         flash(f'Account created. Welcome aboard, {form.first_name.data}!', 'success')
         flash(f'Navigate to your account and set up your profile!', 'info')
 
+        # Redirects to home page
         return redirect(url_for('index'))
 
     return render_template(
@@ -139,6 +150,8 @@ def register():
 # Route to log user out
 @app.route('/logout')
 def logout():
+    # This function clears all session data so that the next user who uses the website
+    #   doesn't have access to the previous user's data
     clear_login_session()
 
     flash(f'You have been successfully logged out.', 'success')
@@ -147,34 +160,41 @@ def logout():
 # Route to view a user's profile
 @app.route('/profile/<int:id>')
 def profile(id: int):
-    user = User.query.filter_by(id=id).first()
-    reviews = Review.query.filter_by(user_id=id).all()
-    return render_template('profile.html', user=user, reviews=reviews, search_form=SearchForm())
+    return render_template('profile.html', 
+        user=User.query.filter_by(id=id).first(), 
+        reviews=Review.query.filter_by(user_id=id).all(), 
+        
+        search_form=SearchForm()
+    )
 
 # Route to view and update account information
 @app.route('/account', methods=['GET', 'POST'])
 def account():
+    # Makes sire that a user is logged in
     if session['logged_in']:
-        user = User.query.filter_by(id=session['user_id']).first()
+        # Gets the user using the user id stored in the session
+        user = User.query.filter_by(id=session['user_id']).one_or_none()
+
+        # Checks to make sure user exists. If not, clears login session
         if user == None:
             clear_login_session()
             flash('There was an error validating your login.', 'danger')
             return redirect(url_for('login'))
         else:
+            # Using the UpdateForm
             form = UpdateForm()
 
+            # Validates form submission
             if form.validate_on_submit():
-                user = User.query.filter_by(id=session['user_id']).first()
-                if user != None:
-                    user.first_name =form.first_name.data
-                    user.last_name = form.last_name.data
-                    user.phone = form.phone.data
-                    user.private = form.private.data
-                    db.session.commit()
-                    flash('Your information was successfully updated.', 'success')
-                else:
-                    flash('We were unable to validate your user.', 'danger')
+                # Updates all user information
+                user.first_name = form.first_name.data
+                user.last_name = form.last_name.data
+                user.phone = form.phone.data
+                user.private = form.private.data
+                db.session.commit()
+                flash('Your information was successfully updated.', 'success')
             else:
+                # If issue with form, display all errors
                 for error in form.errors:
                     flash(f'Error with {error} field', 'danger')
 
@@ -186,16 +206,23 @@ def account():
 # Route to delete your account
 @app.route('/account/delete', methods=['POST'])
 def account_delete():
+    # Checks to make sure that user is logged in
     if session['logged_in']:
+        # Gets user
         user = User.query.filter_by(id=session['user_id']).one_or_none()
+
+        # Checks to make sure user exists
         if user == None:
             flash('Your user id was not successfully validated.', 'danger')
             return redirect(url_for('account'))
         else:
+            # Deletes user and all user's reviews
             user_reviews = Review.query.filter_by(user_id=session['user_id']).all()
             db.session.delete(user_reviews)
             db.session.delete(user)
             db.session.commit()
+
+            # Clears session data and redirects to register page
             clear_login_session()
             return redirect(url_for('register'))
         
@@ -203,6 +230,7 @@ def account_delete():
         flash('You are not logged in', 'danger')
         return redirect(url_for('login'))
 
+# Function that clears all login session data to reset page attributes
 def clear_login_session():
     session.pop('user_id', None)
     session.pop('user_permission', None)

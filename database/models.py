@@ -1,12 +1,16 @@
+# Imports
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 
+# Initializes database
 db = SQLAlchemy()
 
-# Admin permissions is 99
+# SQLAlchemy model for User table
 class User(db.Model):
+    # What the table will be called in the SQL database:
     __tablename__ = "users"
 
+    # The ID is the primary key and automatically increments
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(30), nullable=False)
     last_name = db.Column(db.String(30), nullable=False)
@@ -16,17 +20,20 @@ class User(db.Model):
     phone = db.Column(db.String(14))
     private = db.Column(db.Boolean, nullable=False)
 
+    # Permission of 99 means admin
     permission = db.Column(db.Integer, nullable=False)
 
+    # Used to create new user
     def __init__(self, first_name, last_name, email, password):
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
-        self.password = generate_password_hash(password)
+        self.password = generate_password_hash(password)    # The password is stored in the db hashed for security
         self.phone = None
         self.private = True
-        self.permission = 0
+        self.permission = 0     # Permission is 0 by default (no perms)
 
+    # For debugging if necessary
     def __repr__(self):
         return "<User(id='%d', first_name='%s', last_name='%s', email='%s')>" % (
             self.id,
@@ -35,9 +42,12 @@ class User(db.Model):
             self.email
         )
 
+    # Checks to see if a provided string password matches the hashed 
+    #   password stored in the database
     def check_password(self, password):
         return check_password_hash(self.password, password)
 
+# SQLAlchemy model for Location table
 class Location(db.Model):
     __tablename__ = "locations"
 
@@ -49,7 +59,7 @@ class Location(db.Model):
     contact_phone = db.Column(db.String(60))
     num_reviews = db.Column(db.Integer, nullable=False)
     avg_rating = db.Column(db.Float)
-    category = db.Column(db.Integer, db.ForeignKey('categories.id'))  # Relational
+    category = db.Column(db.Integer, db.ForeignKey('categories.id'))  # Relational, references ID in Category table
 
     def __init__(self, name, address, description, contact_email, contact_phone, category):
         self.name = name
@@ -67,11 +77,14 @@ class Location(db.Model):
             self.avg_rating,
         )
 
+# SQLAlchemy model for LocationImage table
+# NOTE: Location images are stored separately because SQL stores images in binary, so it
+#   is more efficient to store it in a separate table
 class LocationImage(db.Model):
     __tablename__ = "location_images"
 
     id = db.Column(db.Integer, primary_key=True)
-    location_id = db.Column(db.Integer, db.ForeignKey('locations.id'), unique=True, nullable=False)
+    location_id = db.Column(db.Integer, db.ForeignKey('locations.id'), unique=True, nullable=False)  # Relational, references ID in Location table 
     name = db.Column(db.String)
     data = db.Column(db.LargeBinary, nullable=False)
 
@@ -82,13 +95,14 @@ class LocationImage(db.Model):
             self.name,
         )
 
+# SQLAlchemy model for Review table
 class Review(db.Model):
     __tablename__ = "reviews"
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)  # Relational
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)  # Relational, references ID in User table
     user_name = db.Column(db.String(128), nullable=False)
-    location_id = db.Column(db.Integer, db.ForeignKey('locations.id'), nullable=False)  # Relational
+    location_id = db.Column(db.Integer, db.ForeignKey('locations.id'), nullable=False)  # Relational, references ID in Location table
     location_name = db.Column(db.String(80), nullable=False)
     rating = db.Column(db.Integer, nullable=False)
     text = db.Column(db.String(256))
@@ -100,6 +114,7 @@ class Review(db.Model):
             self.location_id,
         )
 
+# SQLAlchemy model for Category table
 class Category(db.Model):
     __tablename__ = "categories"
 
@@ -113,4 +128,3 @@ class Category(db.Model):
             self.user_id,
             self.location_id,
         )
-
