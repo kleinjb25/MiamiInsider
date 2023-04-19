@@ -130,3 +130,9 @@ class Category(db.Model):
             self.user_id,
             self.location_id,
         )
+
+class Favorite(db.Model):
+    __tablename__ = "favorites"
+
+    id = db.Column(db.Integer, primary_key=True)
+    
