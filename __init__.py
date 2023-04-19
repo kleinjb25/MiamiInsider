@@ -176,7 +176,7 @@ def logout():
 def profile(id: int):
     return render_template('profile.html', 
         user=User.query.filter_by(id=id).first(), 
-        reviews=Review.query.filter_by(user_id=id).all(), 
+        reviews=Review.query.filter_by(user_id=id).all(),
         
         search_form=SearchForm()
     )
@@ -331,7 +331,20 @@ def location(id: int):
 def favorite(id: int):
     # TODO: If user id and location id not in table, add to table.
     #   Otherwise, remove from table
-    return redirect(url_for())
+
+    session['user_id']
+    id
+    # fav = query.one_or_none() = None
+
+    if fav != None:
+        # then unfavorite
+        pass
+    else:
+        # favorite
+        pass
+
+
+    return redirect(url_for('location', id=id))
 
 # REVIEW STUFF ------------------------------
 
