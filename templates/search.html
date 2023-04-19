@@ -14,6 +14,8 @@
 
     <div class="jumbotron">
         <h2 id="SearchHead" class="display-5">Location Results</h2>
+        {%if(ctg_id>-1)%} <a href="{{ url_for('random_number', id=ctg_id) }}" class="btn btn-light"
+            id="RandomButton">Random Button</a>{% endif %}
         <hr class="my-4">
         <div id="SortBox">
             <h4 class="mb-3 text-center">Sort By:</h4>
@@ -59,7 +61,7 @@
                 </script>
             </div>
         </div>
-        
+
         <div class="wrap-container suggested-container">
             {% include 'utils/location-cards.html' %}
         </div>

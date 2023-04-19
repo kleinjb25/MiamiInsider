@@ -6,6 +6,7 @@ from sqlalchemy.exc import IntegrityError
 from wtforms.validators import ValidationError
 from database.models import *
 from forms import *
+import random
 
 # -----------------
 # SETTING UP THE FLASK APP
@@ -52,6 +53,19 @@ def index():
         #   the search bar is in the navigation
         search_form=SearchForm()
     )
+
+# Index route, displays the home page
+@app.route('/random_number/<int:id>')  # The route to get to this page is specified here
+def random_number(id: int):
+    # The render_template function renders an HTML template from the /templates directory
+    #query database
+    loc = Location.query.filter_by(category=id).all()
+    numLocations = len(loc)
+    #get random number based on the number of rows
+    randomLocationID = random.random(1, numLocations)
+
+    # return a redirect to the location page 
+    return redirect(url_for('location', id=randomLocationID))
 
 # This route returns an image. This is used within web pages to display location images
 @app.route('/location_image/<int:id>')
@@ -267,11 +281,12 @@ def search():
                     continue  # executed if the inner loop did not break
                 break  # move to the next loc in the outer loop
         
-
+        query_is_ctg = False
         ctg_id = -1
         for ctg in Category.query.all():
             similarity = 1 - Levenshtein.distance(ctg.name.lower(), query) / max(len(ctg.name), len(query))
             if similarity > similarity_min:
+                query_is_ctg = True
                 ctg_id = ctg.id
                 break
 
@@ -286,8 +301,7 @@ def search():
             loc_list.sort(key=lambda x: x.description)
         elif sort == 'Rating':
             loc_list.sort(key=lambda x: x.avg_rating, reverse=True)
-
-        return render_template('search.html', locations=loc_list, query=query, search_form=SearchForm())
+        return render_template('search.html', locations=loc_list, query=query, ctg_id=ctg_id, search_form=SearchForm())
     else:
         flash('Error with form validation - check your search query.', 'danger')  
         return redirect(url_for('index'))
