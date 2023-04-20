@@ -77,7 +77,7 @@ span.review-None, span.review-1, span.review-2, span.review-3, span.review-4, sp
     font-weight: bold;
 }
 
-button.fav-button {
+a.fav-button {
     font-size: 30px;
     color: rgb(255, 105, 130);
     margin-left: 5vw;

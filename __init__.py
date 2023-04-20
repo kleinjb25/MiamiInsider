@@ -4,6 +4,7 @@ import Levenshtein
 from flask import Flask, render_template, request, redirect, url_for, abort, flash, session, make_response
 from sqlalchemy.exc import IntegrityError
 from wtforms.validators import ValidationError
+from werkzeug.exceptions import BadRequest
 from database.models import *
 from forms import *
 import random
@@ -36,7 +37,7 @@ with app.app_context():
 # PAGES BELOW
 # -----------------
 
-# Only displays locations with rating above 4
+# Only displays locations with rating >= 4 (needs to be between 0 and 5)
 CUTOFF_RATING = 4
 
 # Index route, displays the home page
@@ -65,7 +66,7 @@ def random_number(id: int):
     randomLocationID = random.randint(1, numLocations)
 
     # return a redirect to the location page 
-    return redirect(url_for('location', id=randomLocationID))
+    return redirect(url_for('location', id=loc[randomLocationID - 1].id))
 
 # This route returns an image. This is used within web pages to display location images
 @app.route('/location_image/<int:id>')
@@ -399,8 +400,6 @@ def del_review(id: int):
 @app.route('/admin', methods=['GET', 'POST'])
 def admin():
     if session['user_permission'] == 99:
-        from werkzeug.exceptions import BadRequest
-        
         try:
             new_loc = Location(
                 name=request.form['name'], 
@@ -423,6 +422,7 @@ def admin():
             )
             db.session.add(loc_image)
             db.session.commit()
+            flash('Location posted successfully!', 'success')
         except BadRequest:
             print('form submisison failed')
         
