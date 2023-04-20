@@ -175,9 +175,17 @@ def logout():
 # Route to view a user's profile
 @app.route('/profile/<int:id>')
 def profile(id: int):
+    reviews = Review.query.filter_by(user_id=id).all()
+    location_name_list = {}
+    for review in reviews:
+        loc = Location.query.filter_by(id=review.location_id).first()
+        location_name_list[review.location_id] = loc.name
+
+    print(location_name_list)
     return render_template('profile.html', 
         user=User.query.filter_by(id=id).first(), 
-        reviews=Review.query.filter_by(user_id=id).all(),
+        reviews=reviews,
+        location_name_list=location_name_list,
         
         search_form=SearchForm()
     )
@@ -315,13 +323,18 @@ def location(id: int):
     loc = Location.query.filter_by(id=id).first()
     ctg = Category.query.filter_by(id=loc.category).first()
     reviews = Review.query.filter_by(location_id=id).all()
+    review_name_list = {}
+    for review in reviews:
+        user = User.query.filter_by(id=review.user_id).first()
+        review_name_list[review.user_id] = user.first_name + " " + user.last_name
 
     if loc != None and ctg != None:
         return render_template(
             'location.html', 
             location=loc, 
             category=ctg, 
-            reviews=reviews, 
+            reviews=reviews,
+            review_name_list=review_name_list, 
             form=ReviewForm(), 
 
             search_form=SearchForm()
