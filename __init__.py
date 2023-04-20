@@ -65,7 +65,7 @@ def random_number(id: int):
     #get random number based on the number of rows
     randomLocationID = random.randint(1, numLocations)
 
-    # return a redirect to the location page 
+    # return a redirect to the location page
     return redirect(url_for('location', id=loc[randomLocationID - 1].id))
 
 # This route returns an image. This is used within web pages to display location images
