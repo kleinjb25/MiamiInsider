@@ -55,6 +55,12 @@ This website has several fake accounts created to leave reviews on locations to 
 - doejh14@miamioh.edu
 - smithma@miamioh.edu
 - buckinjr@miamioh.edu
+- dimmadd@miamioh.edu
+- snapesp@miamioh.edu
+- kennels@miamioh.edu
+- trumpjd@miamioh.edu
+- fazbeff@miamioh.edu
+- gordonbj@miamioh.edu
 
 ## Detailed installation and setup instructions
 This section details how to set up and run the project from this GitHub repository. 
