@@ -103,9 +103,7 @@ class Review(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)  # Relational, references ID in User table
-    user_name = db.Column(db.String(128), nullable=False)
     location_id = db.Column(db.Integer, db.ForeignKey('locations.id'), nullable=False)  # Relational, references ID in Location table
-    location_name = db.Column(db.String(80), nullable=False)
     rating = db.Column(db.Integer, nullable=False)
     text = db.Column(db.String(256))
 

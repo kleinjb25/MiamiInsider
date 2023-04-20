@@ -42,7 +42,7 @@
                     {% for review in reviews %}
                     <div class="card" style="width: 18rem;margin-bottom: 20px;">
                         <div class="card-body">
-                            <h5 class="card-title">{{ review.location_name }}</h5>
+                            <h5 class="card-title">{{ location_name_list[review.location_id] }}</h5>
                             <div class="stars">
                                 {% for i in range(review.rating+1) %}
                                     <label class="star-static-full"></label>

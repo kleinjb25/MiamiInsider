@@ -4,6 +4,7 @@ import Levenshtein
 from flask import Flask, render_template, request, redirect, url_for, abort, flash, session, make_response
 from sqlalchemy.exc import IntegrityError
 from wtforms.validators import ValidationError
+from werkzeug.exceptions import BadRequest
 from database.models import *
 from forms import *
 import random
@@ -36,7 +37,7 @@ with app.app_context():
 # PAGES BELOW
 # -----------------
 
-# Only displays locations with rating above 4
+# Only displays locations with rating >= 4 (needs to be between 0 and 5)
 CUTOFF_RATING = 4
 
 # Index route, displays the home page
@@ -64,8 +65,8 @@ def random_number(id: int):
     #get random number based on the number of rows
     randomLocationID = random.randint(1, numLocations)
 
-    # return a redirect to the location page 
-    return redirect(url_for('location', id=randomLocationID))
+    # return a redirect to the location page
+    return redirect(url_for('location', id=loc[randomLocationID - 1].id))
 
 # This route returns an image. This is used within web pages to display location images
 @app.route('/location_image/<int:id>')
@@ -174,9 +175,17 @@ def logout():
 # Route to view a user's profile
 @app.route('/profile/<int:id>')
 def profile(id: int):
+    reviews = Review.query.filter_by(user_id=id).all()
+    location_name_list = {}
+    for review in reviews:
+        loc = Location.query.filter_by(id=review.location_id).first()
+        location_name_list[review.location_id] = loc.name
+
+    print(location_name_list)
     return render_template('profile.html', 
         user=User.query.filter_by(id=id).first(), 
-        reviews=Review.query.filter_by(user_id=id).all(),
+        reviews=reviews,
+        location_name_list=location_name_list,
         
         search_form=SearchForm()
     )
@@ -314,13 +323,18 @@ def location(id: int):
     loc = Location.query.filter_by(id=id).first()
     ctg = Category.query.filter_by(id=loc.category).first()
     reviews = Review.query.filter_by(location_id=id).all()
+    review_name_list = {}
+    for review in reviews:
+        user = User.query.filter_by(id=review.user_id).first()
+        review_name_list[review.user_id] = user.first_name + " " + user.last_name
 
     if loc != None and ctg != None:
         return render_template(
             'location.html', 
             location=loc, 
             category=ctg, 
-            reviews=reviews, 
+            reviews=reviews,
+            review_name_list=review_name_list, 
             form=ReviewForm(), 
 
             search_form=SearchForm()
@@ -399,8 +413,6 @@ def del_review(id: int):
 @app.route('/admin', methods=['GET', 'POST'])
 def admin():
     if session['user_permission'] == 99:
-        from werkzeug.exceptions import BadRequest
-        
         try:
             new_loc = Location(
                 name=request.form['name'], 
@@ -423,6 +435,7 @@ def admin():
             )
             db.session.add(loc_image)
             db.session.commit()
+            flash('Location posted successfully!', 'success')
         except BadRequest:
             print('form submisison failed')
         

@@ -1,4 +1,5 @@
 # Imports
+import re
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, HiddenField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
@@ -26,10 +27,10 @@ def validate_email_domain(form, field):
 # Makes sure that provided phone number matches the necessary format
 def validate_phone_number(form, field):
     # Using regex to validate phone number format
-    import re
     pattern = r'^\(\d{3}\) \d{3}-\d{4}$'
     if field.data != 'None' and not re.match(pattern, field.data):
         raise ValidationError('Invalid phone number format. Format should be (XXX) XXX-XXXX')
+
 
 # Below are validators for passwords to make them more secure (requirements that must be met)
 
