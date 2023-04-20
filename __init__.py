@@ -274,7 +274,7 @@ def search():
 
         query_words = query.split()
         loc_list = []
-        similarity_min = 0.65
+        similarity_min = 0.5
 
         for loc in Location.query.all():
             loc_name = loc.name.lower()
@@ -310,7 +310,12 @@ def search():
         elif sort == 'Description':
             loc_list.sort(key=lambda x: x.description)
         elif sort == 'Rating':
-            loc_list.sort(key=lambda x: x.avg_rating, reverse=True)
+            #if a location doesn't have a rating, sort by name instead
+            try:
+                loc_list.sort(key=lambda x: x.avg_rating, reverse=True)
+            except:
+                loc_list.sort(key=lambda x: x.name)
+            
         return render_template('search.html', locations=loc_list, query=query, ctg_id=ctg_id, search_form=SearchForm())
     else:
         flash('Error with form validation - check your search query.', 'danger')  
