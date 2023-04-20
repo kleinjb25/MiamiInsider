@@ -86,7 +86,8 @@
 
                     <div class="form-group">
                         <label for="biography">{{ form.biography.label }}</label><br>
-                        {{ form.biography(id='bio', value=user.biography, placeholder='Maximum 500 characters (optional)', disabled=True, style='width:50%') }}
+                        {% set f = form.biography.process_data(user.biography) %}
+                        {{ form.biography(id='bio', placeholder='Maximum 500 characters (optional)', disabled=True, style='width:70%') }}
                         {% for error in form.biography.errors %}
                         <small class="form-text text-warn">{{ error }}</small>
                         {% endfor %}

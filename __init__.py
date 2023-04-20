@@ -204,6 +204,7 @@ def account():
                 user.first_name = form.first_name.data
                 user.last_name = form.last_name.data
                 user.phone = form.phone.data
+                user.biography = form.biography.data
                 user.private = form.private.data
                 db.session.commit()
                 flash('Your information was successfully updated.', 'success')
@@ -329,19 +330,7 @@ def location(id: int):
 
 @app.route('/location/<int:id>/favorite')
 def favorite(id: int):
-    # TODO: If user id and location id not in table, add to table.
-    #   Otherwise, remove from table
-
-    session['user_id']
-    id
-    # fav = query.one_or_none() = None
-
-    if fav != None:
-        # then unfavorite
-        pass
-    else:
-        # favorite
-        pass
+    
 
 
     return redirect(url_for('location', id=id))
