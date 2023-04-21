@@ -38,8 +38,6 @@ Run the set of commands below in the */database* directory to save the current d
 
 ```
 $ sqlite3 database.db
-SQLite version 3.XX.XX
-Enter ".help" for usage hints.
 sqlite> .output sample_data/dump.sql
 sqlite> .dump
 sqlite> .exit

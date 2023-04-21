@@ -262,7 +262,8 @@ def account_delete():
             # Deletes user and all user's reviews
             user_reviews = Review.query.filter_by(
                 user_id=session['user_id']).all()
-            db.session.delete(user_reviews)
+            for review in user_reviews:
+                db.session.delete(review)
             db.session.delete(user)
             db.session.commit()
 
@@ -296,7 +297,7 @@ def search():
 
         query_words = query.split()
         loc_list = []
-        similarity_min = 0.5
+        similarity_min = 0.7
 
         for loc in Location.query.all():
             loc_name = loc.name.lower()
@@ -451,9 +452,11 @@ def del_review(id: int):
     if review != None:
         if session['user_id'] == review.user_id or session['user_permission'] == 99:
             loc = Location.query.filter_by(id=review.location_id).first()
-            loc.avg_rating = round(((float(loc.avg_rating) * float(loc.num_reviews)) -
-                                   float(review.rating)) / float(loc.num_reviews-1), 1)
-            loc.num_reviews -= 1
+            if loc.num_reviews - 1 > 0:
+                loc.avg_rating = round(((float(loc.avg_rating) * float(loc.num_reviews)) - float(review.rating)) / float(loc.num_reviews-1), 1)
+            else:
+                loc.avg_rating = None
+            loc.num_reviews-=1
             db.session.delete(review)
             db.session.commit()
             flash('Your review has been successfully deleted!', 'success')
