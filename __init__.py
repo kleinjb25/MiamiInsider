@@ -377,18 +377,30 @@ def location(id: int):
 
 @app.route('/location/<int:id>/favorite')
 def favorite(id: int):
-    new_favorite = Favorite(
-        user_id=1,  # this might not work
-        location_id=id
-    )
-    db.session.add(new_favorite)
-    try:
-        db.session.commit()
+    print(session['user_id'])
+    print(id)
+    record = Favorite.query.filter_by(
+        user_id=session['user_id'], location_id=id).one_or_none()
+    if record == None:
+        new_favorite = Favorite(
+            user_id=session['user_id'],  # this might not work
+            location_id=id
+        )
+        db.session.add(new_favorite)
+        try:
+            db.session.commit()
+            print('Entered')
+            print(Favorite.query.all())
 
-    # If the record is already in the database:
-    except IntegrityError:
-        db.session.rollback()
-        db.session.delete(new_favorite)  # this might not work
+        # If the record is already in the database:
+        except IntegrityError:
+            db.session.rollback()
+            db.session.delete(new_favorite)  # this might not work
+            print('Deleted')
+    else:
+        # here
+        db.session.delete(record)
+        db.session.commit()
     return redirect(url_for('location', id=id))
 
 # REVIEW STUFF ------------------------------
