@@ -262,7 +262,8 @@ def account_delete():
             # Deletes user and all user's reviews
             user_reviews = Review.query.filter_by(
                 user_id=session['user_id']).all()
-            db.session.delete(user_reviews)
+            for review in user_reviews:
+                db.session.delete(review)
             db.session.delete(user)
             db.session.commit()
 
@@ -296,7 +297,7 @@ def search():
 
         query_words = query.split()
         loc_list = []
-        similarity_min = 0.5
+        similarity_min = 0.7
 
         for loc in Location.query.all():
             loc_name = loc.name.lower()
