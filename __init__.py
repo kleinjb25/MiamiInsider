@@ -368,9 +368,7 @@ def post_review(loc_id: int):
 
             new_review = Review(
                     user_id = user.id,
-                    user_name = username,
                     location_id = loc.id,
-                    location_name = loc.name,
                     rating = form.rating.data,
                     text = form.text.data
                 )
