@@ -82,7 +82,8 @@ class RegistrationForm(FlaskForm):
     password = PasswordField('Password', validators=[
         DataRequired(),
         Length(min=8),
-        password_contains_number
+        password_contains_number,
+        password_contains_capital
     ])
     confirm_password = PasswordField('Confirm password', validators=[
         DataRequired(),
@@ -125,7 +126,7 @@ class SearchForm(FlaskForm):
     query = StringField('Search...', validators=[
                         DataRequired(), Length(min=2)])
     sort = HiddenField('Sort Value')
-    submit = SubmitField('Submit')
+    submit = SubmitField('Search')
 
 # Form to review a location
 
