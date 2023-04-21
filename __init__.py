@@ -397,7 +397,10 @@ def del_review(id: int):
     if review != None:
         if session['user_id'] == review.user_id or session['user_permission'] == 99:
             loc = Location.query.filter_by(id=review.location_id).first()
-            loc.avg_rating = round(((float(loc.avg_rating) * float(loc.num_reviews)) - float(review.rating)) / float(loc.num_reviews-1), 1)
+            if loc.num_reviews - 1 > 0:
+                loc.avg_rating = round(((float(loc.avg_rating) * float(loc.num_reviews)) - float(review.rating)) / float(loc.num_reviews-1), 1)
+            else:
+                loc.avg_rating = None
             loc.num_reviews-=1
             db.session.delete(review)
             db.session.commit()
