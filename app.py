@@ -47,16 +47,16 @@ CUTOFF_RATING = 4
 def index():
     # The render_template function renders an HTML template from the /templates directory
     return render_template("index.html",
-                           # Below are variables passed to the page. These will be used in the page using Jinja2
-                           locations=Location.query.filter(
-                               Location.avg_rating >= CUTOFF_RATING).all(),
-                           location_images=LocationImage.query.all(),
-                           categories=Category.query.all(),
+        # Below are variables passed to the page. These will be used in the page using Jinja2
+        locations=Location.query.filter(
+            Location.avg_rating >= CUTOFF_RATING).all(),
+        location_images=LocationImage.query.all(),
+        categories=Category.query.all(),
 
-                           # The search form is needed for all pages that incorporate the navigation bar, because
-                           #   the search bar is in the navigation
-                           search_form=SearchForm()
-                           )
+        # The search form is needed for all pages that incorporate the navigation bar, because
+        #   the search bar is in the navigation
+        search_form=SearchForm()
+        )
 
 # Index route, displays the home page
 
@@ -352,8 +352,11 @@ def search():
 
 @app.route('/location/<int:id>')
 def location(id: int):
-    favorite_exists = Favorite.query.filter_by(
-        user_id=session['user_id'], location_id=id).one_or_none()
+    if 'user_id' in session:
+        favorite_exists = Favorite.query.filter_by(
+            user_id=session['user_id'], location_id=id).one_or_none()
+    else:
+        favorite_exists = None
     loc = Location.query.filter_by(id=id).first()
     ctg = Category.query.filter_by(id=loc.category).first()
     reviews = Review.query.filter_by(location_id=id).all()
@@ -381,29 +384,31 @@ def location(id: int):
 
 @app.route('/location/<int:id>/favorite')
 def favorite(id: int):
-    print(session['user_id'])
-    print(id)
-    record = Favorite.query.filter_by(
-        user_id=session['user_id'], location_id=id).one_or_none()
-    if record == None:
-        new_favorite = Favorite(
-            user_id=session['user_id'],  # this might not work
-            location_id=id
-        )
-        db.session.add(new_favorite)
-        try:
-            db.session.commit()
-            print('Entered')
+    if 'user_id' in session:
+        record = Favorite.query.filter_by(
+            user_id=session['user_id'], location_id=id).one_or_none()
+        if record == None:
+            new_favorite = Favorite(
+                user_id=session['user_id'],  # this might not work
+                location_id=id
+            )
+            db.session.add(new_favorite)
+            try:
+                db.session.commit()
+                flash('Location has been favorited', 'success')
 
-        # If the record is already in the database:
-        except IntegrityError:
-            db.session.rollback()
-            db.session.delete(new_favorite)  # this might not work
+            # If the record is already in the database:
+            except IntegrityError:
+                db.session.rollback()
+                db.session.delete(new_favorite)
+        else:
+            # here
+            db.session.delete(record)
+            db.session.commit()
+            flash('Location has been unfavorited', 'success')
+
     else:
-        # here
-        db.session.delete(record)
-        db.session.commit()
-        print('Deleted')
+        flash('You have to be logged in to add a favorite location', 'danger')
     return redirect(url_for('location', id=id))
 
 # REVIEW STUFF ------------------------------
