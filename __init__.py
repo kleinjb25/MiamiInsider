@@ -351,6 +351,8 @@ def search():
 
 @app.route('/location/<int:id>')
 def location(id: int):
+    favorite_exists = Favorite.query.filter_by(
+        user_id=session['user_id'], location_id=id).one_or_none()
     loc = Location.query.filter_by(id=id).first()
     ctg = Category.query.filter_by(id=loc.category).first()
     reviews = Review.query.filter_by(location_id=id).all()
@@ -367,6 +369,7 @@ def location(id: int):
             category=ctg,
             reviews=reviews,
             review_name_list=review_name_list,
+            favorite_exists=favorite_exists,
             form=ReviewForm(),
 
             search_form=SearchForm()
@@ -390,17 +393,16 @@ def favorite(id: int):
         try:
             db.session.commit()
             print('Entered')
-            print(Favorite.query.all())
 
         # If the record is already in the database:
         except IntegrityError:
             db.session.rollback()
             db.session.delete(new_favorite)  # this might not work
-            print('Deleted')
     else:
         # here
         db.session.delete(record)
         db.session.commit()
+        print('Deleted')
     return redirect(url_for('location', id=id))
 
 # REVIEW STUFF ------------------------------

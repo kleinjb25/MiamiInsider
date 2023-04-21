@@ -25,8 +25,16 @@
                 <h2 class="display-3">{{ location.name }}</h2>
                 <h4>
                     Rating: <span class="review-{{ location.avg_rating|int }}">{{ location.avg_rating }}</span>
+                    {% if favorite_exists == None %}
                     <a href="{{ url_for('favorite', id=location.id) }}" class="fav-button"><i
                             class="fa-regular fa-heart"></i></a><br><br>
+
+                    {% else %}
+                    <a href="{{ url_for('favorite', id=location.id) }}" class="fav-button"><i
+                            class="fa-solid fa-heart"></i></a><br><br>
+
+                    {% endif %}
+
                     Category: <span style="font-weight: 400;">{{ category.name }}</span>
                 </h4>
             </div>
