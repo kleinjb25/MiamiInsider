@@ -3,7 +3,9 @@
 ## Description
 This project is a web application developed using the Flask framework. It is a review site for locations in Oxford, Ohio, made for members of the Miami University community. In this site, users can browse the website for locations in Oxford. They can view information about locations such as contact information and description. They can also create an account if they are a member of the Miami University community and leave reviews on locations to better guide others.
 
-**If you want the detailed installation instructions for the project, click [here](https://github.com/kleinjb25/MiamiInsider#detailed-installation-and-setup-instructions).**
+## Hosted
+- This application is currently hosted on Render at [this link](https://cse201-miami-insider.onrender.com/).
+- If you want the detailed installation instructions to install this project locally, click [here](https://github.com/kleinjb25/MiamiInsider#detailed-installation-and-setup-instructions).
 
 
 ## Project dependencies
