@@ -47,16 +47,16 @@ CUTOFF_RATING = 4
 def index():
     # The render_template function renders an HTML template from the /templates directory
     return render_template("index.html",
-        # Below are variables passed to the page. These will be used in the page using Jinja2
-        locations=Location.query.filter(
-            Location.avg_rating >= CUTOFF_RATING).all(),
-        location_images=LocationImage.query.all(),
-        categories=Category.query.all(),
+                           # Below are variables passed to the page. These will be used in the page using Jinja2
+                           locations=Location.query.filter(
+                               Location.avg_rating >= CUTOFF_RATING).all(),
+                           location_images=LocationImage.query.all(),
+                           categories=Category.query.all(),
 
-        # The search form is needed for all pages that incorporate the navigation bar, because
-        #   the search bar is in the navigation
-        search_form=SearchForm()
-        )
+                           # The search form is needed for all pages that incorporate the navigation bar, because
+                           #   the search bar is in the navigation
+                           search_form=SearchForm()
+                           )
 
 # Index route, displays the home page
 
@@ -191,6 +191,10 @@ def logout():
 @app.route('/profile/<int:id>')
 def profile(id: int):
     reviews = Review.query.filter_by(user_id=id).all()
+    # locations = Favorite.query.filter_by(user_id=id).all()
+    locations = db.session.query(Location).filter(
+        Location.id == Favorite.location_id).join(Favorite).filter(Favorite.user_id == id).all()
+
     location_name_list = {}
     for review in reviews:
         loc = Location.query.filter_by(id=review.location_id).first()
@@ -201,6 +205,8 @@ def profile(id: int):
                            user=User.query.filter_by(id=id).first(),
                            reviews=reviews,
                            location_name_list=location_name_list,
+                           locations=locations,
+                           # pass the favorite list
 
                            search_form=SearchForm()
                            )
@@ -458,10 +464,11 @@ def del_review(id: int):
         if session['user_id'] == review.user_id or session['user_permission'] == 99:
             loc = Location.query.filter_by(id=review.location_id).first()
             if loc.num_reviews - 1 > 0:
-                loc.avg_rating = round(((float(loc.avg_rating) * float(loc.num_reviews)) - float(review.rating)) / float(loc.num_reviews-1), 1)
+                loc.avg_rating = round(((float(loc.avg_rating) * float(loc.num_reviews)) - float(
+                    review.rating)) / float(loc.num_reviews-1), 1)
             else:
                 loc.avg_rating = None
-            loc.num_reviews-=1
+            loc.num_reviews -= 1
             db.session.delete(review)
             db.session.commit()
             flash('Your review has been successfully deleted!', 'success')
