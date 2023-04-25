@@ -193,15 +193,19 @@ def profile(id: int):
         loc = Location.query.filter_by(id=review.location_id).first()
         location_name_list[review.location_id] = loc.name
 
-    return render_template('profile.html',
-        user=User.query.filter_by(id=id).first(),
-        reviews=reviews,
-        location_name_list=location_name_list,
-        locations=locations,
-        # pass the favorite list
+    user = User.query.filter_by(id=id).one_or_none()
+    if user != None:
+        return render_template('profile.html',
+            user=user,
+            reviews=reviews,
+            location_name_list=location_name_list,
+            locations=locations,
+            # pass the favorite list
 
-        search_form=SearchForm()
-        )
+            search_form=SearchForm()
+            )
+    else:
+        abort(404)
 
 # Route to view and update account information
 @app.route('/account', methods=['GET', 'POST'])
@@ -364,7 +368,10 @@ def location(id: int):
     
     # Gets location, category of location, reviews for location
     loc = Location.query.filter_by(id=id).one_or_none()
-    ctg = Category.query.filter_by(id=loc.category).one_or_none()
+    if loc != None:
+        ctg = Category.query.filter_by(id=loc.category).one_or_none()
+    else:
+        ctg = None
     reviews = Review.query.filter_by(location_id=id).all()
     
     # Associates reviewer name for each review of location
@@ -375,7 +382,7 @@ def location(id: int):
             " " + user.last_name
 
     # Makes sure that location and category exist before displaying
-    if loc != None and ctg != None:
+    if loc != None or ctg != None:
         return render_template(
             'location.html',
             location=loc,
@@ -621,6 +628,20 @@ def del_loc(id: int):
     return redirect(url_for('admin'))
 
 # ADMIN STUFF END ---------------------------
+
+
+# EXCEPTION HANDLING ------------------------
+@app.errorhandler(400)
+def handle_not_found(e):
+    return render_template('exceptions/error_400.html', search_form=SearchForm())
+
+@app.errorhandler(404)
+def handle_not_found(e):
+    return render_template('exceptions/error_404.html', search_form=SearchForm())
+
+@app.errorhandler(500)
+def handle_not_found(e):
+    return render_template('exceptions/error_500.html', search_form=SearchForm())
 
 
 # -----------------
