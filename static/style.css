@@ -34,8 +34,8 @@ div.scroll-container {
 /* CAROUSEL STUFF */
 .carousel-caption {
     margin: auto;
-    width: max-content;
-    margin-bottom: 20em;
+    width: 30vw;
+    margin-bottom: 15vw;
 }
 
 
@@ -47,6 +47,10 @@ div.scroll-container {
 
     transition-duration: 250ms;
 }
+
+.carousel-caption-inner h1 { font-size: 2.5vw; }
+
+.carousel-caption-inner h4 { font-size: 1.4vw; }
 
 .carousel-caption .carousel-caption-inner:hover {
     background-color: rgba(0, 0, 0, 0.6);
@@ -81,9 +85,11 @@ a.fav-button {
     font-size: 30px;
     color: rgb(255, 105, 130);
     margin-left: 5vw;
-    background: none;
-    border: none;
+
+    transition-duration: 200ms;
 }
+
+a.fav-button:hover { color: rgb(255, 161, 176); }
 
 
 .fav-button:focus { outline: none; }
@@ -139,7 +145,7 @@ a.category-card:hover {
 div.login-body {
     margin: auto;
     margin-bottom: 60px;
-    width: 25%;
+    width: 35%;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% include 'utils/header-template.html' %}
+    <title>404</title>
+</head>
+
+<body>
+    {% include 'utils/nav-template.html' %}
+
+    <div class="jumbotron" style="text-align: center;">
+        <h2>404</h2>
+        <p>A 404 exception occurred - unfortunately, it appears we can't find what you're looking for.</p>
+        <a class="btn btn-danger" href="{{ url_for('index') }}">Return home</a>
+    </div>
+
+    {% include 'utils/footer.html' %}
+</body>
+
+</html>

@@ -18,13 +18,23 @@
     <div class="jumbotron">
         <div class="row">
             <div class="col-6">
-                <img class="loc-img" src="{{ url_for('location_image', id=location.id) }}" alt="{{ location.name }} image">
+                <img class="loc-img" src="{{ url_for('location_image', id=location.id) }}"
+                    alt="{{ location.name }} image">
             </div>
             <div class="col-6">
                 <h2 class="display-3">{{ location.name }}</h2>
                 <h4>
                     Rating: <span class="review-{{ location.avg_rating|int }}">{{ location.avg_rating }}</span>
-                    <a href="{{ url_for('favorite', id=location.id) }}" class="fav-button"><i class="fa-regular fa-heart"></i></a><br><br>
+                    {% if favorite_exists == None %}
+                    <a href="{{ url_for('favorite', id=location.id) }}" class="fav-button"><i
+                            class="fa-regular fa-heart"></i></a><br><br>
+
+                    {% else %}
+                    <a href="{{ url_for('favorite', id=location.id) }}" class="fav-button"><i
+                            class="fa-solid fa-heart"></i></a><br><br>
+
+                    {% endif %}
+
                     Category: <span style="font-weight: 400;">{{ category.name }}</span>
                 </h4>
             </div>
@@ -65,10 +75,11 @@
                             {{ form.csrf_token }}
 
                             {{ form.rating() }}
-                    
-                            {{ form.text(style="resize: none;", rows=4, cols=30, maxlength=250, placeholder="Maximum 250 characters (optional)") }}
-                    
-                            <br>{{ form.submit(class="btn btn-outline-danger") }}
+
+                            {{ form.text(style="resize: none;", rows=4, cols=30, maxlength=250, placeholder="Maximum 250
+                            characters (optional)") }}
+
+                            <br>{{ form.submit(class="btn btn-danger") }}
                         </form>
                     </div>
                 </div>
@@ -82,15 +93,18 @@
                             <h5 class="card-title">{{ review_name_list[review.user_id] }}</h5>
                             <div class="stars">
                                 {% for i in range(review.rating+1) %}
-                                    <label class="star-static-full"></label>
+                                <label class="star-static-full"></label>
                                 {% endfor %}
                                 {% for i in range(5-review.rating) %}
-                                    <label class="star-static"></label>
+                                <label class="star-static"></label>
                                 {% endfor %}
                             </div>
                             <p class="card-text">{{ review.text }}</p>
-                            <a href="{{ url_for('profile', id=review.user_id) }}" class="btn btn-outline-danger">View profile</a>
-                            {% if session.user_id == review.user_id or session.user_permission == 99 %}<button class="review-del" onclick="confirmDelete({{ review.id }})"><i class="fa-solid fa-trash-can"></i></button> {% endif %}
+                            <a href="{{ url_for('profile', id=review.user_id) }}" class="btn btn-outline-danger">View
+                                profile</a>
+                            {% if session.user_id == review.user_id or session.user_permission == 99 %}<button
+                                class="review-del" onclick="confirmDelete({{ review.id }})"><i
+                                    class="fa-solid fa-trash-can"></i></button> {% endif %}
                         </div>
                     </div>
                     {% endfor %}

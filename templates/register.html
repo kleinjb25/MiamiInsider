@@ -28,6 +28,10 @@
                 {% for error in form.email.errors %}
                 <small class="form-text text-warn">{{error}}</small>
                 {% endfor %}
+
+                <ul>
+                    <li>Must be of @miamioh.edu domain</li>
+                </ul>
             </div>
 
             <div class="form-group">
@@ -39,6 +43,7 @@
 
                 <ul>
                     <li>Must be at least 8 characters long</li>
+                    <li>Must contain a capital letter</li>
                     <li>Must contain a number</li>
                 </ul>
             </div>

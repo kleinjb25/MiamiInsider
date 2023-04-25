@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% include 'utils/header-template.html' %}
+    <title>400</title>
+</head>
+
+<body>
+    {% include 'utils/nav-template.html' %}
+
+    <div class="jumbotron" style="text-align: center;">
+        <h2>400</h2>
+        <p>A 400 exception occurred - something about your request could not be understood.</p>
+        <a class="btn btn-danger" href="{{ url_for('index') }}">Return home</a>
+    </div>
+
+    {% include 'utils/footer.html' %}
+</body>
+
+</html>
