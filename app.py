@@ -345,11 +345,7 @@ def search():
         elif sort == 'Description':
             loc_list.sort(key=lambda x: x.description)
         elif sort == 'Rating':
-            # if a location doesn't have a rating, sort by name instead
-            try:
-                loc_list.sort(key=lambda x: x.avg_rating, reverse=True)
-            except:
-                loc_list.sort(key=lambda x: x.name)
+            loc_list.sort(key=lambda x: x.avg_rating if x.avg_rating is not None else 0, reverse=True)
 
         return render_template('search.html', locations=loc_list, query=query, ctg_id=ctg_id, search_form=SearchForm())
     else:
