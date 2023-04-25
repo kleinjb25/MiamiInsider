@@ -41,8 +41,6 @@ with app.app_context():
 CUTOFF_RATING = 4
 
 # Index route, displays the home page
-
-
 @app.route('/')  # The route to get to this page is specified here
 def index():
     # The render_template function renders an HTML template from the /templates directory
@@ -122,8 +120,6 @@ def login():
     )
 
 # Register route, manages all registering related things
-
-
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     # Initializes the form
@@ -174,8 +170,6 @@ def register():
     )
 
 # Route to log user out
-
-
 @app.route('/logout')
 def logout():
     # This function clears all session data so that the next user who uses the website
@@ -186,28 +180,30 @@ def logout():
     return redirect(url_for('login'))
 
 # Route to view a user's profile
-
-
 @app.route('/profile/<int:id>')
 def profile(id: int):
     reviews = Review.query.filter_by(user_id=id).all()
+    # locations = Favorite.query.filter_by(user_id=id).all()
+    locations = db.session.query(Location).filter(
+        Location.id == Favorite.location_id).join(Favorite).filter(Favorite.user_id == id).all()
+
+    # Associates a Location name with a review
     location_name_list = {}
     for review in reviews:
         loc = Location.query.filter_by(id=review.location_id).first()
         location_name_list[review.location_id] = loc.name
 
-    print(location_name_list)
     return render_template('profile.html',
-                           user=User.query.filter_by(id=id).first(),
-                           reviews=reviews,
-                           location_name_list=location_name_list,
+        user=User.query.filter_by(id=id).first(),
+        reviews=reviews,
+        location_name_list=location_name_list,
+        locations=locations,
+        # pass the favorite list
 
-                           search_form=SearchForm()
-                           )
+        search_form=SearchForm()
+        )
 
 # Route to view and update account information
-
-
 @app.route('/account', methods=['GET', 'POST'])
 def account():
     # Makes sire that a user is logged in
@@ -245,8 +241,6 @@ def account():
         return redirect(url_for('login'))
 
 # Route to delete your account
-
-
 @app.route('/account/delete', methods=['POST'])
 def account_delete():
     # Checks to make sure that user is logged in
@@ -276,8 +270,6 @@ def account_delete():
         return redirect(url_for('login'))
 
 # Function that clears all login session data to reset page attributes
-
-
 def clear_login_session():
     session.pop('user_id', None)
     session.pop('user_permission', None)
@@ -286,28 +278,38 @@ def clear_login_session():
 # LOGIN/REGISTER STUFF END ---------------------------
 
 
+# Search route
 @app.route('/search', methods=['GET', 'POST'])
 def search():
+    # Initialize search form
     form = SearchForm()
     if form.validate_on_submit():
+
+        # Initialize query and sort variables
         query = str(form.query.data).lower()
         sort = str(form.sort.data)
 
         # sort options: Name, Description, Rating
 
+        # Dividing up query into individual words
         query_words = query.split()
-        loc_list = []
-        similarity_min = 0.7
+        loc_list = []   # List of matching locations
+        similarity_min = 0.7    # Similarity variable for Levenshtein
 
+        # Iterate through locations
         for loc in Location.query.all():
+            # Get location name and description in lowercase
             loc_name = loc.name.lower()
             loc_desc = loc.description.lower()
 
+            # Iterate through query words
             for word in query_words:
+                # Check for matches in location name or description
                 for loc_word in loc_name.split() + loc_desc.split():
                     similarity = 1 - \
                         Levenshtein.distance(
                             word.lower(), loc_word.lower()) / max(len(word), len(loc_word))
+                    # Add if similar enough
                     if similarity > similarity_min and word not in stop_words:
                         if loc not in loc_list:
                             loc_list.append(loc)
@@ -316,23 +318,24 @@ def search():
                     continue  # executed if the inner loop did not break
                 break  # move to the next loc in the outer loop
 
-        query_is_ctg = False
+        # Checks if query matches category
         ctg_id = -1
         for ctg in Category.query.all():
             similarity = 1 - \
                 Levenshtein.distance(ctg.name.lower(), query) / \
                 max(len(ctg.name), len(query))
             if similarity > similarity_min:
-                query_is_ctg = True
                 ctg_id = ctg.id
                 break
 
+        # If query matches category, add all location in category
         if ctg_id != -1:
             ctg_locs = Location.query.filter_by(category=ctg_id)
             for loc in ctg_locs:
                 if loc not in loc_list:
                     loc_list.append(loc)
 
+        # Determine sorting type
         if sort == 'Name':
             loc_list.sort(key=lambda x: x.name)
         elif sort == 'Description':
@@ -349,23 +352,29 @@ def search():
         flash('Error with form validation - check your search query.', 'danger')
         return redirect(url_for('index'))
 
-
+# Location route
 @app.route('/location/<int:id>')
 def location(id: int):
+    # Checks if user has favorited location
     if 'user_id' in session:
         favorite_exists = Favorite.query.filter_by(
             user_id=session['user_id'], location_id=id).one_or_none()
     else:
         favorite_exists = None
-    loc = Location.query.filter_by(id=id).first()
-    ctg = Category.query.filter_by(id=loc.category).first()
+    
+    # Gets location, category of location, reviews for location
+    loc = Location.query.filter_by(id=id).one_or_none()
+    ctg = Category.query.filter_by(id=loc.category).one_or_none()
     reviews = Review.query.filter_by(location_id=id).all()
+    
+    # Associates reviewer name for each review of location
     review_name_list = {}
     for review in reviews:
         user = User.query.filter_by(id=review.user_id).first()
         review_name_list[review.user_id] = user.first_name + \
             " " + user.last_name
 
+    # Makes sure that location and category exist before displaying
     if loc != None and ctg != None:
         return render_template(
             'location.html',
@@ -381,7 +390,7 @@ def location(id: int):
     else:
         abort(404)
 
-
+# Location favorite route
 @app.route('/location/<int:id>/favorite')
 def favorite(id: int):
     if 'user_id' in session:
@@ -413,7 +422,7 @@ def favorite(id: int):
 
 # REVIEW STUFF ------------------------------
 
-
+# Posting a review route
 @app.route('/post_review/<int:loc_id>', methods=['POST'])
 def post_review(loc_id: int):
     form = ReviewForm()
@@ -449,7 +458,7 @@ def post_review(loc_id: int):
         flash('You have to be logged in to post a review.', 'danger')
     return redirect(url_for('location', id=loc_id))
 
-
+# Deleting a review route
 @app.route('/del_review/<int:id>', methods=['POST'])
 def del_review(id: int):
     review = Review.query.filter_by(id=id).first()
@@ -458,10 +467,11 @@ def del_review(id: int):
         if session['user_id'] == review.user_id or session['user_permission'] == 99:
             loc = Location.query.filter_by(id=review.location_id).first()
             if loc.num_reviews - 1 > 0:
-                loc.avg_rating = round(((float(loc.avg_rating) * float(loc.num_reviews)) - float(review.rating)) / float(loc.num_reviews-1), 1)
+                loc.avg_rating = round(((float(loc.avg_rating) * float(loc.num_reviews)) - float(
+                    review.rating)) / float(loc.num_reviews-1), 1)
             else:
                 loc.avg_rating = None
-            loc.num_reviews-=1
+            loc.num_reviews -= 1
             db.session.delete(review)
             db.session.commit()
             flash('Your review has been successfully deleted!', 'success')
@@ -476,6 +486,7 @@ def del_review(id: int):
 
 # ADMIN STUFF ---------------------------
 
+# Admin page route
 @app.route('/admin', methods=['GET', 'POST'])
 def admin():
     if session['user_permission'] == 99:
@@ -513,7 +524,7 @@ def admin():
         flash("You do not have the necessary permissions", 'danger')
         return redirect(url_for('index'))
 
-
+# Permission updating route
 @app.route('/update_permission', methods=['POST'])
 def update_permission():
     if request:
@@ -540,8 +551,6 @@ def update_permission():
         flash("Form had issues submitting", 'danger')
 
 # Adding location image
-
-
 @app.route('/post_loc_img', methods=['POST'])
 def post_loc_img():
     img = request.files['image']
@@ -563,7 +572,7 @@ def post_loc_img():
     flash("Location image posted!", 'success')
     return redirect(url_for('admin'))
 
-
+# Posting a category route
 @app.route('/post_category', methods=['POST'])
 def post_category():
     new_ctg = Category(
@@ -577,7 +586,7 @@ def post_category():
     flash("Category added!", 'success')
     return redirect(url_for('admin'))
 
-
+# Deleting a category route
 @app.route('/del_category/<int:id>', methods=['POST'])
 def del_category(id: int):
     ctg = Category.query.filter_by(id=id).one_or_none()
@@ -595,8 +604,6 @@ def del_category(id: int):
     return redirect(url_for('admin'))
 
 # Deleting location from database
-
-
 @app.route('/del_loc/<int:id>', methods=['POST'])
 def del_loc(id: int):
 
