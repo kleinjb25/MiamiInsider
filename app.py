@@ -45,16 +45,16 @@ CUTOFF_RATING = 4
 def index():
     # The render_template function renders an HTML template from the /templates directory
     return render_template("index.html",
-        # Below are variables passed to the page. These will be used in the page using Jinja2
-        locations=Location.query.filter(
-            Location.avg_rating >= CUTOFF_RATING).all(),
-        location_images=LocationImage.query.all(),
-        categories=Category.query.all(),
+                           # Below are variables passed to the page. These will be used in the page using Jinja2
+                           locations=Location.query.filter(
+                               Location.avg_rating >= CUTOFF_RATING).all(),
+                           location_images=LocationImage.query.all(),
+                           categories=Category.query.all(),
 
-        # The search form is needed for all pages that incorporate the navigation bar, because
-        #   the search bar is in the navigation
-        search_form=SearchForm()
-        )
+                           # The search form is needed for all pages that incorporate the navigation bar, because
+                           #   the search bar is in the navigation
+                           search_form=SearchForm()
+                           )
 
 # Index route, displays the home page
 
