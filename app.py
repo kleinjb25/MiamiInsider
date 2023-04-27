@@ -340,14 +340,14 @@ def search():
                     loc_list.append(loc)
 
         # Determine sorting type
-        if sort == 'Name':
-            loc_list.sort(key=lambda x: x.name)
-        elif sort == 'Description':
-            loc_list.sort(key=lambda x: x.description)
-        elif sort == 'Rating':
-            loc_list.sort(key=lambda x: x.avg_rating if x.avg_rating is not None else 0, reverse=True)
+        sort_vals = sort.split("-")
+        is_checked = (sort_vals[1].lower() == 'true')
+        loc_list.sort(
+            key=lambda x: getattr(x, sort_vals[0]) if getattr(x, sort_vals[0]) is not None else 0, 
+            reverse=is_checked
+        )
 
-        return render_template('search.html', locations=loc_list, query=query, ctg_id=ctg_id, search_form=SearchForm())
+        return render_template('search.html', locations=loc_list, is_checked=is_checked, query=query, ctg_id=ctg_id, search_form=SearchForm())
     else:
         flash('Error with form validation - check your search query.', 'danger')
         return redirect(url_for('index'))

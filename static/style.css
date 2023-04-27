@@ -68,13 +68,13 @@ div.scroll-container {
 /* CAROUSEL STUFF ENDS */
 
 /* For rating coloring */
-span.review-None { background-color: grey; }
+span.review-0 { background-color: grey; }
 span.review-1 { background-color: red; }
 span.review-2 { background-color: rgb(205, 133, 0); }
 span.review-3 { background-color: #adad00; }
 span.review-4 { background-color: #68cd32; }
 span.review-5 { background-color: green; }
-span.review-None, span.review-1, span.review-2, span.review-3, span.review-4, span.review-5 {
+span.review-0, span.review-1, span.review-2, span.review-3, span.review-4, span.review-5 {
     padding: 1px 4px;
     border-radius: 6px;
     color: white;
@@ -160,12 +160,19 @@ div.card img {
     width: 100%;
 }
 
+#SortBox {
+    margin: auto;
+    text-align: center;
+    width: 10em;
+}
+
 .sticky {
     position: fixed;
 
     background-color: lightgrey;
     padding: 20px;
     border-radius: 6px;
+    width: 20em!important;
 
     top: 7em;
     right: 20px;

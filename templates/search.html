@@ -27,41 +27,46 @@
                     <button type="button" class="btn btn-light" id="Description">Description</button>
                     <button type="button" class="btn btn-light" id="Rating">Rating</button>
                 </div>
-
-                <script>
-                    const nameButton = document.querySelector('#Name');
-                    const descriptionButton = document.querySelector('#Description');
-                    const ratingButton = document.querySelector('#Rating');
-                    const sortInput = document.querySelector('#sort');
-                    const searchBtn = document.querySelector('.custom-search-btn');
-
-                    nameButton.addEventListener('click', () => { changeSearchBar('Name'); });
-                    descriptionButton.addEventListener('click', () => { changeSearchBar('Description'); });
-                    ratingButton.addEventListener('click', () => { changeSearchBar('Rating'); });
-
-                    const changeSearchBar = (name) => {
-                        sortInput.value = name;
-                        searchBtn.click();
-                    };
-
-                    // Sticky sort box code
-                    window.onscroll = function () { myFunction() };
-                    var scrollBox = document.getElementById("SortBox");
-                    var searchHeader = document.getElementById("SearchHead");
-                    var sticky = scrollBox.offsetTop;
-
-                    function myFunction() {
-                        if (window.pageYOffset >= sticky) {
-                            scrollBox.classList.add("sticky")
-                            searchHeader.style.cssText = "margin-top:105px;";
-                        } else {
-                            scrollBox.classList.remove("sticky");
-                            searchHeader.style.cssText = NaN;
-                        }
-                    }
-
-                </script>
             </div>
+            <p style="font-weight: bold;">
+                Descending
+                <input type="checkbox" id="Ascending" {% if is_checked %} checked {% endif %}>
+            </p>
+
+            <script>
+                const nameButton = document.querySelector('#Name');
+                const descriptionButton = document.querySelector('#Description');
+                const ratingButton = document.querySelector('#Rating');
+                const ascBox = document.querySelector('#Ascending');
+                const sortInput = document.querySelector('#sort');
+                const searchBtn = document.querySelector('.custom-search-btn');
+
+                nameButton.addEventListener('click', () => { changeSearchBar('name'); });
+                descriptionButton.addEventListener('click', () => { changeSearchBar('description'); });
+                ratingButton.addEventListener('click', () => { changeSearchBar('avg_rating'); });
+
+                const changeSearchBar = (name) => {
+                    sortInput.value = name + '-' + ascBox.checked;
+                    searchBtn.click();
+                };
+
+                // Sticky sort box code
+                window.onscroll = function () { myFunction() };
+                var scrollBox = document.getElementById("SortBox");
+                var searchHeader = document.getElementById("SearchHead");
+                var sticky = scrollBox.offsetTop;
+
+                function myFunction() {
+                    if (window.pageYOffset >= sticky) {
+                        scrollBox.classList.add("sticky")
+                        searchHeader.style.cssText = "margin-top:105px;";
+                    } else {
+                        scrollBox.classList.remove("sticky");
+                        searchHeader.style.cssText = NaN;
+                    }
+                }
+
+            </script>
         </div>
 
         <div class="wrap-container suggested-container">
