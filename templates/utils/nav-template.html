@@ -21,8 +21,8 @@
 </div>
 {% else %}
 <div class="btn-group" role="group">
-    <a class="btn btn-light" href="{{ url_for('profile', id=session.user_id) }}">Profile</a>
-    <a class="btn btn-danger" href="{{ url_for('account') }}">Account</a>
+    <a class="btn btn-light" href="{{ url_for('account') }}">Account</a>
+    <a class="btn btn-danger" href="{{ url_for('profile', id=session.user_id) }}">Profile</a>
 </div>
 {% endif %}
 </nav>
