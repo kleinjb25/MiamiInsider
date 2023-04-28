@@ -45,16 +45,16 @@ CUTOFF_RATING = 4
 def index():
     # The render_template function renders an HTML template from the /templates directory
     return render_template("index.html",
-                           # Below are variables passed to the page. These will be used in the page using Jinja2
-                           locations=Location.query.filter(
-                               Location.avg_rating >= CUTOFF_RATING).all(),
-                           location_images=LocationImage.query.all(),
-                           categories=Category.query.all(),
+        # Below are variables passed to the page. These will be used in the page using Jinja2
+        locations=Location.query.filter(
+                Location.avg_rating >= CUTOFF_RATING).order_by(Location.avg_rating.desc()).all(),
+        location_images=LocationImage.query.all(),
+        categories=Category.query.all(),
 
-                           # The search form is needed for all pages that incorporate the navigation bar, because
-                           #   the search bar is in the navigation
-                           search_form=SearchForm()
-                           )
+        # The search form is needed for all pages that incorporate the navigation bar, because
+        #   the search bar is in the navigation
+        search_form=SearchForm()
+        )
 
 # Index route, displays the home page
 
@@ -341,9 +341,15 @@ def search():
 
         # Determine sorting type
         sort_vals = sort.split("-")
-        is_checked = (sort_vals[1].lower() == 'true')
+        if len(sort_vals) == 2:
+            is_checked = sort_vals[1].lower() == 'true'
+            sort_attr = sort_vals[0]
+        else:
+            is_checked = False
+            sort_attr = 'name'
+          
         loc_list.sort(
-            key=lambda x: getattr(x, sort_vals[0]) if getattr(x, sort_vals[0]) is not None else 0, 
+            key=lambda x: getattr(x, sort_attr) if getattr(x, sort_attr) is not None else 0, 
             reverse=is_checked
         )
 
