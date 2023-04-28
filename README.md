@@ -50,7 +50,7 @@ Since the database file is SQLite3, you need to have it installed if you want to
 This app has a very rudimentary permissions system. A user can have two permission - regular user or admin. In the User table, there is a column called *permission*. By default, when a new user is created this value is 0. An admin user will have a permission value of 99. A user with admin permissions will be able to add locations, delete any user review and location, and update location information and images.
 
 ## Sample accounts
-This website has several fake accounts created to leave reviews on locations to simulate what the website would look like when active. The emails are listed below, and all of the password are 'password123'.
+This website has several fake accounts created to leave reviews on locations to simulate what the website would look like when active. The emails are listed below, and all of the password are 'password123'. (Accounts that are listed after gordonbj@miamioh.edu have a password of 'Password123')
 - admin@miamioh.edu
 - doejh14@miamioh.edu
 - smithma@miamioh.edu
@@ -61,6 +61,7 @@ This website has several fake accounts created to leave reviews on locations to 
 - trumpjd@miamioh.edu
 - fazbeff@miamioh.edu
 - gordonbj@miamioh.edu
+- dibitetvr@miamioh.edu
 
 ## Detailed installation and setup instructions
 This section details how to set up and run the project from this GitHub repository. 
