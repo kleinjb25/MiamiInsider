@@ -3,6 +3,13 @@
 ## Description
 This project is a web application developed using the Flask framework. It is a review site for locations in Oxford, Ohio, made for members of the Miami University community. In this site, users can browse the website for locations in Oxford. They can view information about locations such as contact information and description. They can also create an account if they are a member of the Miami University community and leave reviews on locations to better guide others.
 
+## Developed By
+- Yusuf Ozdemir (Team Lead)
+- Frazier Kyle
+- Justin Klein
+- Timmy Boush
+*"The IT Help Desk"*
+
 ## Hosted
 - This application is currently hosted on Render [here](https://miamiinsider.onrender.com/).
 - If you want the detailed installation instructions to install this project locally, click [here](https://github.com/kleinjb25/MiamiInsider#detailed-installation-and-setup-instructions).
@@ -51,7 +58,6 @@ This app has a very rudimentary permissions system. A user can have two permissi
 
 ## Sample accounts
 This website has several fake accounts created to leave reviews on locations to simulate what the website would look like when active. The emails are listed below, and all of the password are 'password123'. (Accounts that are listed after gordonbj@miamioh.edu have a password of 'Password123')
-- admin@miamioh.edu
 - doejh14@miamioh.edu
 - smithma@miamioh.edu
 - buckinjr@miamioh.edu
