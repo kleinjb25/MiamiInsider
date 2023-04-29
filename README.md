@@ -8,6 +8,7 @@ This project is a web application developed using the Flask framework. It is a r
 - Frazier Kyle
 - Justin Klein
 - Timmy Boush
+
 *"The IT Help Desk"*
 
 ## Hosted
