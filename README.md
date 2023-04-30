@@ -76,6 +76,8 @@ This section details how to set up and run the project from this GitHub reposito
 ### Step 1
 Navigate to [this link](https://www.python.org/downloads/release/python-3112/) to download Python v3.11.2, using the appropriate installer for your operating system. Once you have downloaded and installed Python, you can clone this GitHub repository onto your local machine.
 
+![Python Installer Links](https://ibb.co/dk3X4pJ)
+
 ### Step 2
 In a terminal, navigate to the home directory of this repository where you have cloned it onto your computer. Making sure that you are using Python version 3.11.2, run the following command:
 
@@ -83,8 +85,12 @@ In a terminal, navigate to the home directory of this repository where you have 
 
 This command will download all of the necessary Python dependencies the project needs to run.
 
+![Python Installer Links](https://ibb.co/Z61D7yZ)
+
 ### Step 3
 Once the requirements have all been downloaded, run the command ```py __init__.py```. Make sure you are still in the home directory of the project. This command should start running the web application in your terminal.
+
+![Python Installer Links](https://ibb.co/KDSJPh2)
 
 ### Step 4
 In the terminal, you should see the following output:
