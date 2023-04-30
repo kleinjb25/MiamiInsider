@@ -75,8 +75,7 @@ This section details how to set up and run the project from this GitHub reposito
 
 ### Step 1
 Navigate to [this link](https://www.python.org/downloads/release/python-3112/) to download Python v3.11.2, using the appropriate installer for your operating system. Once you have downloaded and installed Python, you can clone this GitHub repository onto your local machine.
-
-![Python Installer Links](https://ibb.co/dk3X4pJ)
+<img src="https://ibb.co/dk3X4pJ" />
 
 ### Step 2
 In a terminal, navigate to the home directory of this repository where you have cloned it onto your computer. Making sure that you are using Python version 3.11.2, run the following command:
