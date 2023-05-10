@@ -23,9 +23,9 @@
             <h4 class="mb-3 text-center">Sort By:</h4>
             <div class="row justify-content-center">
                 <div class="btn-group btn-group-lg mb-3" role="group">
-                    <button type="button" class="btn btn-light" id="Name">Name</button>
-                    <button type="button" class="btn btn-light" id="Description">Description</button>
-                    <button type="button" class="btn btn-light" id="Rating">Rating</button>
+                    <button type="button" class="btn btn-light btn-sm" id="Name">Name</button>
+                    <button type="button" class="btn btn-light btn-sm" id="Description">Description</button>
+                    <button type="button" class="btn btn-light btn-sm" id="Rating">Rating</button>
                 </div>
             </div>
             <p style="font-weight: bold;">
@@ -59,7 +59,7 @@
                 function myFunction() {
                     if (window.pageYOffset >= sticky) {
                         scrollBox.classList.add("sticky")
-                        searchHeader.style.cssText = "margin-top:105px;";
+                        searchHeader.style.cssText = "margin-top:165px;";
                     } else {
                         scrollBox.classList.remove("sticky");
                         searchHeader.style.cssText = NaN;

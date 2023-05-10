@@ -1,28 +1,34 @@
 <nav class="navbar sticky-top navbar-dark bg-dark">
-<a class="navbar-brand" href="{{ url_for('index') }}">
-    <img style="max-width: 80px;"
-        src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Miami_Redhawks_logo.svg/1200px-Miami_Redhawks_logo.svg.png">
-    MiamiInsider
-</a>
+    <span>
+        <a class="navbar-brand" href="{{ url_for('index') }}">
+            <img style="max-width: 80px;"
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Miami_Redhawks_logo.svg/1200px-Miami_Redhawks_logo.svg.png">
+            MiamiInsider
+        </a>
+    </span>
 
-<form method="POST" action="{{ url_for('search') }}" class="form-inline">
-    {{ search_form.hidden_tag() }}
+    <span>
+        <form method="POST" action="{{ url_for('search') }}" class="form-inline">
+            {{ search_form.hidden_tag() }}
+        
+            <div class="form-group input-container">
+                {{ search_form.query(class="custom-search form-control", placeholder="Search...") }}
+                {{ search_form.submit(class="custom-search-btn btn btn-light") }}
+            </div>
+        </form>
+    </span>
     
-    <div class="form-group">
-        {{ search_form.query(class="custom-search form-control", placeholder="Search...") }}
-        {{ search_form.submit(class="custom-search-btn btn btn-light") }}
-    </div>
-</form>
-
-{% if not session.logged_in %}
-<div class="btn-group" role="group">
-    <a class="btn btn-light" href="{{ url_for('register') }}">Sign up</a>
-    <a class="btn btn-danger" href="{{ url_for('login') }}">Log in</a>
-</div>
-{% else %}
-<div class="btn-group" role="group">
-    <a class="btn btn-light" href="{{ url_for('account') }}">Account</a>
-    <a class="btn btn-danger" href="{{ url_for('profile', id=session.user_id) }}">Profile</a>
-</div>
-{% endif %}
+    <span>
+        {% if not session.logged_in %}
+        <div class="btn-group" role="group">
+            <a class="btn btn-light" href="{{ url_for('register') }}">Sign up</a>
+            <a class="btn btn-danger" href="{{ url_for('login') }}">Log in</a>
+        </div>
+        {% else %}
+        <div class="btn-group" role="group">
+            <a class="btn btn-light" href="{{ url_for('account') }}">Account</a>
+            <a class="btn btn-danger" href="{{ url_for('profile', id=session.user_id) }}">Profile</a>
+        </div>
+        {% endif %}
+    </span>
 </nav>

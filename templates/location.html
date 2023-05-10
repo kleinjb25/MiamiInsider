@@ -17,11 +17,11 @@
 
     <div class="jumbotron">
         <div class="row">
-            <div class="col-6">
+            <div class="col-sm-12 col-md-6">
                 <img class="loc-img" src="{{ url_for('location_image', id=location.id) }}"
                     alt="{{ location.name }} image">
             </div>
-            <div class="col-6">
+            <div class="col-sm-12 col-md-6">
                 <h2 class="display-3">{{ location.name }}</h2>
                 <h4>
                     Rating: <span class="review-{{ location.avg_rating|int }}">{{ location.avg_rating }}</span>

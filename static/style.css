@@ -7,8 +7,10 @@ p, ul {
     font-size: 18px;
 }
 
+
+/* NAVBAR STUFF */
 .custom-search {
-    width: 400px!important;
+    width: 40vw!important;
     border-top-right-radius: 0!important;
     border-bottom-right-radius: 0!important;
 }
@@ -17,6 +19,30 @@ p, ul {
     border-top-left-radius: 0!important;
     border-bottom-left-radius: 0!important;
 }
+
+@media (max-width: 820px) {
+    nav { padding: 1vw 0 0 0!important; }
+
+    nav span, nav span .btn-group, nav span .input-container { width: 100%; }
+
+    .form-group {
+        margin: 0!important;
+    }
+
+    .input-container {
+        display: flex;
+    }
+
+    input[type=text] {
+        flex: 3;
+    }
+
+    input[type=submit] {
+        flex: 1;
+    }
+}
+
+/* NAVBAR STUFF ENDS */
 
 div.wrap-container {
     display: flex;
@@ -48,9 +74,20 @@ div.scroll-container {
     transition-duration: 250ms;
 }
 
-.carousel-caption-inner h1 { font-size: 2.5vw; }
+@media (max-width: 850px) {
+    .carousel-caption {
+        width: 80%;
+        margin-bottom: 10vw;
+    }
 
-.carousel-caption-inner h4 { font-size: 1.4vw; }
+    .carousel-caption-inner h1, .carousel-caption a {
+        font-size: 4vw!important;
+    }
+    
+    .carousel-caption-inner h4 {
+        font-size: 2.8vw;
+    }
+}
 
 .carousel-caption .carousel-caption-inner:hover {
     background-color: rgba(0, 0, 0, 0.6);
@@ -128,6 +165,14 @@ a.category-card:hover {
     text-decoration: none;
 }
 
+@media (min-width: 851px) and (max-width: 1100px) {
+    h5 span { font-size: 1.5vw; }
+}
+
+@media (max-width: 850px) {
+    h5 span { display: none; }
+}
+
 /* CATEGORY STUFF ENDS */
 
 .card {
@@ -166,19 +211,43 @@ div.card img {
     width: 10em;
 }
 
-.sticky {
+#SortBox.sticky {
     position: fixed;
 
     background-color: lightgrey;
     padding: 20px;
     border-radius: 6px;
-    width: 20em!important;
+    width: 20em;
 
     top: 7em;
     right: 20px;
     z-index: 1;
 }
 
+@media (max-width: 820px) {
+    #SortBox.sticky {
+        background-color: rgba(211, 211, 211, 0.85);
+        padding: 20px 0 6px 0;
+
+        top: 9em;
+        right: 0;
+        border-radius: 0;
+        width: 100%;
+    }
+
+    #SortBox h4 {
+        font-size: 1.1em;
+    }
+
+    #SortBox p {
+        font-size: 0.8em;
+    }
+
+    #SortBox .btn-group-lg .btn {
+        font-size: 1rem;
+        padding: 0.25em 0.5em;
+    }
+}
 
 .text-warn {color: red;}
 
@@ -190,6 +259,12 @@ div.card img {
 img.loc-img {
     border-radius: 8px;
     width: 45vw;
+}
+
+@media (max-width: 590px) {
+    img.loc-img {
+        width: 75vw;
+    }
 }
 
 button.review-del {
